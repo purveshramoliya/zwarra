@@ -60,7 +60,7 @@ class ZoneController extends Controller
         
     }
 
-   public function saveZonemap(Request $request)
+    public function saveZonemap(Request $request)
     {
         // Validate the request data
         $request->validate([
@@ -78,7 +78,16 @@ class ZoneController extends Controller
             // Return response indicating error
             return response()->json(['error' => 'Please select a country.'], 400);
         }
+        // Check if the zone already exists
+        $existingZone = Zone::where('country_id', $request->input('country_id'))
+            ->where('city_id', $request->input('city_id'))
+            ->where('zone_id', $request->input('zone_id'))
+            ->where('Healthcareid',0)
+            ->first();
 
+        if ($existingZone) {
+            return response()->json(['error' => 'Zone already exists.'], 409);
+        }
         // Proceed to save the shape data to the database
         $shape = Zone::create([
             'Healthcareid' => $request->input('healthcare_id'),
@@ -93,8 +102,8 @@ class ZoneController extends Controller
         // Log the user ID after save
         Log::info('User after save: ' . Auth::guard('web')->id());
 
-           // Return success response with saved shape data
-        return response()->json(['message' => 'Zone saved successfully', 'shape' => $shape]);
+        // Return success response with saved shape data
+        return response()->json(['success' => 'Zone saved successfully', 'shape' => $shape]);
     }
 
     /**

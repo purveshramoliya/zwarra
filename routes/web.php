@@ -120,6 +120,7 @@ Route::get('/admin/get-zones-by-city/{city_id}', [LocationController::class, 'ge
 // Service Provider routes
 Route::middleware(['auth:serviceprovider'])->group(function () {
     Route::post('/hsave', [HealthcareZoneController::class, 'hsaveZonemap']);
+    Route::get('/fetch-coordinates', [HealthcareZoneController::class, 'fetchCoordinates']);
     Route::get('/hgetrectangles', [HealthcareZoneController::class, 'hgetRectangles']);
 
       Route::get('/healthcare/dashboard/{status?}', [DashboardController::class, 'healthcareIndex'])
