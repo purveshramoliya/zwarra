@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Rules\UniqueEmail;
+use App\Rules\ValidDomainEmail;
 
 class ServiceProviderController extends Controller
 {
@@ -67,7 +68,7 @@ class ServiceProviderController extends Controller
         //
         $request->validate([
             'Enname' => 'required',
-            'Email' => ['required', 'email', new UniqueEmail], // unique rule added
+            'Email' => ['required', 'email', new ValidDomainEmail, 'unique:serviceprovider,email'],
             'Password' => 'required',
             'Phone' => 'required',
             'Crnumber' => 'required',
@@ -76,10 +77,9 @@ class ServiceProviderController extends Controller
             'Vat' => 'required',
             'Typeofservice' => 'required',
             'Financialshare' => 'required',
-            // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
             'Logo' => 'required|mimes:jpeg,jpg,png|max:2048',
-
         ]);
+        
 
         $Password = Hash::make($request->input('Password'));
 
