@@ -5,6 +5,8 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <style>
     body {
         margin: 0;
@@ -155,7 +157,7 @@
             marker: true,
             placeholder: 'Search for a zone'
         });
-        
+
         $(document).ready(function() {
             function fetchCoordinates(countryId, cityId, zoneId) {
                 return fetch(`/fetch-coordinates?country_id=${countryId}&city_id=${cityId}&zone_id=${zoneId}`)
@@ -202,16 +204,53 @@
                             body: JSON.stringify(postData)
                         })
                         .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
+                            if (response.status === 409) {
+                                // Handle the case where the zone already exists
+                                return response.json().then(data => {
+                                    throw new Error(data.error);
+                                });
+                            } else if (!response.ok) {
+                                throw new Error(data.error);
                             }
                             return response.json();
                         })
                         .then(data => {
-                            console.log('Shape saved successfully:', data);
-                            fetchAndDisplayShapes();
+                            if (data.success) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Shape saved successfully.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    fetchAndDisplayShapes(); // Call your function to fetch and display shapes
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: data.message,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                            if (data.error) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'No matching zone found',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    fetchAndDisplayShapes(); // Call your function to fetch and display shapes
+                                });
+                            }
+
                         })
                         .catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: error.message || 'There was a problem saving the shape. Please try again.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
                             console.error('Error saving shape:', error);
                         });
                 });

@@ -92,7 +92,7 @@ class HealthcareZoneController extends Controller
     public function hsaveZonemap(Request $request)
     {
         $request->validate([
-           // 'Healthcareid' => 'required|integer',
+            // 'Healthcareid' => 'required|integer',
             'country_id' => 'required',
             'city_id' => 'required',
             'zone_id' => 'required',
@@ -100,25 +100,38 @@ class HealthcareZoneController extends Controller
             // 'coordinates' => 'required', // Adjust validation as per your needs
         ]);
 
-
+        // Check if the zone already exists
+        $exists = Zone::where('country_id', $request->input('country_id'))
+            ->where('city_id', $request->input('city_id'))
+            ->where('zone_id', $request->input('zone_id'))
+            ->where('Healthcareid', Auth::guard('serviceprovider')->id())
+            ->exists();
+        // dd($exists);
+        if ($exists) {
+            // Return error response indicating the zone already exists
+            return response()->json(['error' => 'Zone already exists.'], 409);
+        }
+        $notexists = Zone::where('country_id', $request->input('country_id'))
+            ->where('city_id', $request->input('city_id'))
+            ->where('zone_id', $request->input('zone_id'))
+            ->exists();
+        if(!$notexists){
+            return response()->json(['error' => 'Zone Not exists.'], 409);
+        }
         // Save the shape data to the database
         $coordinatesString = $request->input('coordinates');
-
-    $cleanedCoordinatesString = str_replace('"', '', $coordinatesString);
-
-    // Decode and re-encode to ensure it's valid JSON
-    $coordinates = json_decode($cleanedCoordinatesString, true);
+        $cleanedCoordinatesString = str_replace('"', '', $coordinatesString);
+        // Decode and re-encode to ensure it's valid JSON
+        $coordinates = json_decode($cleanedCoordinatesString, true);
         $shape = Zone::create([
             'Healthcareid' => Auth::guard('serviceprovider')->id(),
             'country_id' => $request->input('country_id'),
             'city_id' => $request->input('city_id'),
             'zone_id' => $request->input('zone_id'),
             'shape_type' => $request->input('shape_type'),
-            'coordinates' =>json_encode($coordinates), // Store coordinates as JSON string
+            'coordinates' => json_encode($coordinates), // Store coordinates as JSON string
         ]);
-// print_r(json_encode($request->input('coordinates')));
-        // Optionally return response if needed
-        return response()->json(['message' => 'zone saved successfully', 'shape' => $shape]);
+        return response()->json(['success' => 'zone saved successfully', 'shape' => $shape]);
     }
 
 
