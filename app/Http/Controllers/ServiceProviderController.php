@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Hash;
-use App\Models\ServiceProvider;
 use App\Models\Bankings;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use App\Rules\UniqueEmail;
+use Illuminate\Http\Request;
+use App\Models\ServiceProvider;
 use App\Rules\ValidDomainEmail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceProviderController extends Controller
 {
@@ -67,17 +67,20 @@ class ServiceProviderController extends Controller
     {
         //
         $request->validate([
-            'Enname' => 'required',
+            'Enname' => 'required|alpha',
+            'Arname' => 'required|alpha',
             'Email' => ['required', 'email', new ValidDomainEmail, 'unique:serviceprovider,email'],
             'Password' => 'required',
-            'Phone' => 'required',
-            'Crnumber' => 'required',
+            'Phone' => 'required|digits:10',
+            'Crnumber' => 'required|numeric',
             'City' => 'required',
-            'Countrycode' => 'required',
-            'Vat' => 'required',
-            'Typeofservice' => 'required',
-            'Financialshare' => 'required',
+            'Countrycode' => 'required|numeric',
+            'Vat' => 'required|numeric',
+            'Regcertificate' => 'required|mimes:jpeg,jpg,png|max:2048',
             'Logo' => 'required|mimes:jpeg,jpg,png|max:2048',
+            'Comcerregister' => 'required|mimes:jpeg,jpg,png|max:2048',
+            'Healthlicence' => 'required|mimes:jpeg,jpg,png|max:2048',
+           
         ]);
         
 

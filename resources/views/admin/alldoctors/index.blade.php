@@ -18,13 +18,13 @@
             </div>
           </div> -->
           <div class="row">
-           <!-- <div class="col-12 col-md-12 col-lg-6">
+            <!-- <div class="col-12 col-md-12 col-lg-6">
               <h1 class="poppins-semibold zw_46 zw_text_AF2245 mt-2">
               <span class="mr-3"><img src="{{url('dist/img/zwaara_user.png')}}" alt="Zwaara User" class=" "></span>Doctors</h1>
               <p class="poppins-regular zw_16 zw_text_111535 mt-2 mb-1">You have 10 Doctors</p>
                <h1>Doctors</h1>
             </div> -->
-           <div class="col-12 col-md-12 col-lg-6">
+            <div class="col-12 col-md-12 col-lg-6">
               <!-- <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item active">Doctors</li>
@@ -66,8 +66,8 @@
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
                 <div class="pre_next">
-        {{ $alldoctors->links() }}
-    </div>
+                  {{ $alldoctors->links() }}
+                </div>
                 <table class="table table-hover text-nowrap zw_table">
                   <thead class="zw_bg_AF2245 zw_text_ffffff">
                     <tr>
@@ -84,24 +84,31 @@
                   <tbody>
                     @foreach ($alldoctors as $alldoctors)
                     <tr>
-                      <td class="poppins-regular zw_14 zw_text_333333"><img class="center-block" src="{{ asset($alldoctors->Logo) }}" height="" width="50px" /></td>
+                      <td class="poppins-regular zw_14 zw_text_333333">@if(!empty($alldoctors->Logo))
+                        <img
+                          class="img-fluid mx-auto d-block"
+                          src="{{ asset($alldoctors->Logo) }}"
+                          alt="Doctor's Logo"
+                          width="50">
+                        @endif
+                      </td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $alldoctors->Enname }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $alldoctors->Email }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $alldoctors->Phone }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ \Carbon\Carbon::parse($alldoctors->CreatedAt)->format('d-m-Y') }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333" style="text-align: center;">{{ $alldoctors->Yearofexp }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333">
-                       <form id="statusForm" class="statusForm">
+                        <form id="statusForm" class="statusForm">
                           @csrf
                           <input type="hidden" name="did" id="did" class="did" value="{{ $alldoctors->id }}">
-                          <input type="checkbox" data-toggle="toggle" data-size="sm" id="StatusUpdate" class="StatusUpdate" data-on="Active" data-off="In Active"  {{ $alldoctors->Status ? 'checked' : '' }}> 
-                        </form> 
+                          <input type="checkbox" data-toggle="toggle" data-size="sm" id="StatusUpdate" class="StatusUpdate" data-on="Active" data-off="In Active" {{ $alldoctors->Status ? 'checked' : '' }}>
+                        </form>
                       </td>
-                       <td class="poppins-regular zw_14 zw_text_333333">
-                         <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('alldoctors.show',$alldoctors->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> </a>
-                         </td>
-                        <td>
-                         <form action="{{ route('alldoctors.destroy',$alldoctors->id) }}" method="POST">
+                      <td class="poppins-regular zw_14 zw_text_333333">
+                        <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('alldoctors.show',$alldoctors->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> </a>
+                      </td>
+                      <td>
+                        <form action="{{ route('alldoctors.destroy',$alldoctors->id) }}" method="POST">
                           <!-- <a class="btn zw_btn" href="{{ route('alldoctors.show',$alldoctors->id) }}">Show</a> -->
                           @csrf
                           @method('DELETE')
@@ -128,18 +135,18 @@
       $('.StatusUpdate').change(function() {
         var status = $(this).prop('checked');
         var did = $(this).closest('.statusForm').find('.did').val();
-        
+
         $.ajax({
           url: "{{ route('docupdate.status') }}",
           method: 'POST',
           data: {
             _token: "{{ csrf_token() }}",
-            id:  did,
+            id: did,
             status: status
           },
           success: function(response) {
             console.log('Status updated successfully');
-                // You can add any additional logic here if needed
+            // You can add any additional logic here if needed
           },
           error: function(xhr, status, error) {
             console.error('Error updating status:', error);

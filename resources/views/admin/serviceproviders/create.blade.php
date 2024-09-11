@@ -49,34 +49,39 @@
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-4">
                       <label for="exampleInputErname" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">En name</label><span style="color: red;">*</span></label>
-                      <input type="text" name="Enname" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputErname" placeholder="Enter Enname">
+                      <input type="text" name="Enname" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputErname" placeholder="Enter Enname" value="{{ old('Enname') }}">
                     </div>
                     <div class="form-group col-md-4">
                       <label for="exampleInputarname" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Ar name </label><span style="color: red;">*</span></label>
-                      <input type="text" name="Arname" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputarname" placeholder="Enter Arname">
+                      <input type="text" name="Arname" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputarname" placeholder="Enter Arname" value="{{ old('Arname') }}">
                     </div>
                     <div class="form-group col-md-4">
                       <label for="exampleInputEmail1" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Email address <span style="color: red;">*</span></label>
                       <input type="email" name="Email" class="form-control @error('Email') is-invalid @enderror poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputEmail1" placeholder="Enter email" value="{{ old('Email') }}" required autofocus>
                     </div>
                     @error('Email')
-                          <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
-                      @enderror
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                   </div>
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-4">
                       <label for="exampleInputPassword1" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Password <span style="color: red;">*</span></label>
-                      <input type="password" name="Password" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputPassword1" placeholder="Password">
+                      <input type="password" name="Password" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputPassword1" placeholder="Password" value="{{ old('Password') }}" pattern="^\S+$"
+                        title="Password must not contain any spaces."
+                        required>
+                      @error('Password')
+                      <div class="text-danger">{{ $message }}</div>
+                      @enderror
                     </div>
                     <div class="form-group col-md-4">
                       <label for="exampleInputphone" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Phone <span style="color: red;">*</span></label>
-                      <input type="phone" name="Phone" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputphone" placeholder="Enter phone">
+                      <input type="phone" name="Phone" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputphone" placeholder="Enter phone" value="{{ old('Phone') }}">
                     </div>
                     <div class="form-group col-md-4">
                       <label for="exampleInputcommerticalregisternumber" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Commerical register number <span style="color: red;">*</span></label>
-                      <input type="phone" name="Crnumber" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputcommerticalregisternumber" placeholder="Enter commerical register number">
+                      <input type="phone" name="Crnumber" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputcommerticalregisternumber" placeholder="Enter commerical register number" value="{{ old('Crnumber') }}">
                     </div>
                   </div>
                   <div class="form-row zw_form_row">
@@ -112,16 +117,16 @@
                     </div>
                     <div class="form-group col-md-4">
                       <label for="exampleInputcountrycode" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Country code <span style="color: red;">*</span></label>
-                      <input type="text" name="Countrycode" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputcountrycode" placeholder="Enter country code">
+                      <input type="text" name="Countrycode" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputcountrycode" placeholder="Enter country code" value="{{ old('Countrycode') }}">
                     </div>
                     <div class="form-group col-md-4">
                       <label for="exampleInputvat" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Vat <span style="color: red;">*</span></label>
-                      <input type="text" name="Vat" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputvat" placeholder="Enter Vat">
+                      <input type="text" name="Vat" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputvat" placeholder="Enter Vat" value="{{ old('Vat') }}">
                     </div>
                   </div>
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-4 zw_select_file">
-                      <label for="exampleInputvatcertificate" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload vat registration certificate</label>
+                      <label for="exampleInputvatcertificate" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload vat registration certificate<span style="color: red;">*</span></label>
                       <div class="input-group">
                         <div class="custom-file">
                           <input type="file" name="Regcertificate" class="custom-file-input" id="exampleInputvatcertificate" onchange="updateFileName(this)">
@@ -131,7 +136,7 @@
                       <!-- <input type="file" name="Regcertificate" id="Regcertificate"> -->
                     </div>
                     <div class="form-group col-md-4 zw_select_file">
-                      <label for="exampleInputlogo" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload logo</label>
+                      <label for="exampleInputlogo" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload logo<span style="color: red;">*</span></label>
                       <div class="input-group">
                         <div class="custom-file">
                           <input type="file" name="Logo" class="custom-file-input" id="exampleInputlogo" onchange="updateFileName(this)">
@@ -141,10 +146,10 @@
                       <!-- <input type="file" name="Logo" id="Logo"> -->
                     </div>
                     <div class="form-group col-md-4 zw_select_file">
-                      <label for="exampleInputcomregister" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload commercial register</label>
+                      <label for="exampleInputcomregister" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload commercial register<span style="color: red;">*</span></label>
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" name="Comcerregister" class="custom-file-input" id="exampleInputcomregister"onchange="updateFileName(this)">
+                          <input type="file" name="Comcerregister" class="custom-file-input" id="exampleInputcomregister" onchange="updateFileName(this)">
                           <label class="custom-file-label zw_form_control" for="exampleInputcomregister">Choose file</label>
                         </div>
                       </div>
@@ -153,7 +158,7 @@
                   </div>
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-4 zw_select_file">
-                      <label for="exampleInputhealthlicence" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload ministry health licence</label>
+                      <label for="exampleInputhealthlicence" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload ministry health licence<span style="color: red;">*</span></label>
                       <div class="input-group">
                         <div class="custom-file">
                           <input type="file" name="Healthlicence" class="custom-file-input" id="exampleInputhealthlicence" onchange="updateFileName(this)">
@@ -162,7 +167,7 @@
                       </div>
                     </div>
                     <div class="form-group col-md-4">
-                      <label for="exampleInputShare" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Fin. share type <span style="color: red;">*</span></label>
+                      <label for="exampleInputShare" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Fin. share type </label>
                       <select name="Share" class="custom-select poppins-regular zw_18 zw_text_898B9F zw_form_control zw_box_shadow_none">
                         <option value="">Select</option>
                         <option value="Percantage">Percantage</option>
@@ -170,13 +175,13 @@
                       </select>
                     </div>
                     <div class="form-group col-md-4">
-                      <label for="exampleInputfinancialsahre" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Financial share <span style="color: red;">*</span></label>
-                       <input type="text" name="Financialshare" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputfinancialsahre" placeholder="Enter Financial share">
+                      <label for="exampleInputfinancialsahre" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Financial share </label>
+                      <input type="text" name="Financialshare" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputfinancialsahre" placeholder="Enter Financial share" value="{{ old('Financialshare') }}">
                     </div>
                   </div>
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-4">
-                      <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEndescription">Estimated time for service <span style="color: red;">*</span></label>
+                      <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEndescription">Estimated time for service </label>
                       <select name="EstimatedTime" class="custom-select poppins-regular zw_18 zw_text_898B9F zw_form_control zw_box_shadow_none">
                         <option value="00:30">00:30</option>
                         <option value="00:45">00:45 </option>
@@ -187,17 +192,17 @@
                         <option value="03:00">03:00</option>
                       </select>
                     </div>
-                      <div class="form-group col-md-4">
-                      <label for="exampleInputLocation" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Select location <span style="color: red;">*</span></label>
+                    <div class="form-group col-md-4">
+                      <label for="exampleInputLocation" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Select location </label>
                       <select name="Location" class="custom-select poppins-regular zw_18 zw_text_898B9F zw_form_control zw_box_shadow_none">
                         <option value="">Select</option>
                         <option value="Center visit">Center visit</option>
                         <option value="Home visit">Home visit</option>
                         <option value="Both">Both</option>
-                        </select>
+                      </select>
                     </div>
                     <div class="form-group col-md-4">
-                      <label for="exampleInputtypeofservice" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Type of service <span style="color: red;">*</span></label>
+                      <label for="exampleInputtypeofservice" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Type of service </label>
                       <select name="Typeofservice" class="custom-select poppins-regular zw_18 zw_text_898B9F zw_form_control zw_box_shadow_none">
                         <option value="">Select</option>
                         <option value="Medical">Medical</option>
@@ -209,14 +214,14 @@
                   </div>
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-4">
-                      <label for="exampleInputvisitfees" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Visit Fees <span style="color: red;">*</span></label>
-                       <input type="text" name="Visitfees" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputfinancialsahre" placeholder="Enter Visit fees">
+                      <label for="exampleInputvisitfees" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Visit Fees </label>
+                      <input type="text" name="Visitfees" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputfinancialsahre" placeholder="Enter Visit fees" value="{{ old('Visitfees') }}">
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-12">
-                        <button type="submit" class="btn zw_submit zw_submit_wh">Submit</button>
-                    </div> 
+                      <button type="submit" class="btn zw_submit zw_submit_wh">Submit</button>
+                    </div>
                   </div>
                 </div>
                 <!-- /.card-body -->

@@ -12,13 +12,13 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6 zw_back">
-              <a href="" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
+              <button onclick="history.back()" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
                 <i class="fas fa-arrow-left right mr-2"></i>Back
-              </a>
+              </button>
             </div>
           </div>
           <div class="row mb-2">
-           <div class="col-12 col-md-12 col-lg-6">
+            <div class="col-12 col-md-12 col-lg-6">
               <h1 class="poppins-semibold zw_46 zw_text_AF2245">New Appointments </h1>
             </div>
           </div>
@@ -51,21 +51,21 @@
               @endif
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
-                 <!-- Add more buttons/links for other status as needed -->
-                 <div class="row">
+                <!-- Add more buttons/links for other status as needed -->
+                <div class="row">
                   <div class="col-12">
                     <a class="btn zw_service_btn active" href="{{ route('bookings.index') }}">All</a>
                     <a class="btn zw_service_btn active" href="{{ route('bookings.status', ['status' => 'Pending']) }}">Pending </a>
                     <a class="btn zw_service_btn active" href="{{ route('bookings.status', ['status' => 'Approved']) }}">Approved </a>
                     <a class="btn zw_service_btn active" href="{{ route('bookings.status', ['status' => 'Rejected']) }}">Rejected </a>
                     <a class="btn zw_service_btn" href="{{ route('bookings.status', ['status' => 'Completed']) }}">Completed </a>
-                     <a class="btn zw_service_btn" href="{{ route('bookings.status', ['status' => 'InCompleted']) }}">InCompleted </a>
+                    <a class="btn zw_service_btn" href="{{ route('bookings.status', ['status' => 'InCompleted']) }}">InCompleted </a>
                     <a class="btn zw_service_btn" href="{{ route('bookings.status', ['status' => 'Refund']) }}">Refunded</a>
                   </div>
                 </div>
-              <div class="pre_next">
+                <div class="pre_next">
                   {{ $booking->links() }}
-              </div>
+                </div>
 
                 <table class="table table-hover text-nowrap zw_table">
                   <thead class="zw_bg_AF2245 zw_text_ffffff">
@@ -87,23 +87,23 @@
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $booking->Servicename }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333">
 
-                      @php
-                          $patientsJson = $booking->Patients; // Get the JSON string
-                          $patients = json_decode($patientsJson, true); // Decode JSON to associative array
+                        @php
+                        $patientsJson = $booking->Patients; // Get the JSON string
+                        $patients = json_decode($patientsJson, true); // Decode JSON to associative array
 
-                          // Check if decoding was successful and if the result is an array
-                          if (json_last_error() === JSON_ERROR_NONE && is_array($patients)) {
-                              foreach ($patients as $patient) {
-                                  // Make sure each $patient is an array and has the required keys
-                                  if (is_array($patient) && isset($patient['Firstname']) && isset($patient['Lastname'])) {
-                                      echo "<p>{$patient['Firstname']} {$patient['Lastname']}</p>";
-                                  }
-                              }
-                          } else {
-                              // Handle errors or empty result
-                              echo "<p>Invalid</p>";
-                          }
-                      @endphp
+                        // Check if decoding was successful and if the result is an array
+                        if (json_last_error() === JSON_ERROR_NONE && is_array($patients)) {
+                        foreach ($patients as $patient) {
+                        // Make sure each $patient is an array and has the required keys
+                        if (is_array($patient) && isset($patient['Firstname']) && isset($patient['Lastname'])) {
+                        echo "<p>{$patient['Firstname']} {$patient['Lastname']}</p>";
+                        }
+                        }
+                        } else {
+                        // Handle errors or empty result
+                        echo "<p>Invalid</p>";
+                        }
+                        @endphp
 
                       </td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $booking->Phone }}</td>
@@ -118,23 +118,23 @@
                       </td> -->
                       <td class="poppins-regular zw_14 zw_text_333333">
                         <select name="status" class="status-dropdown poppins-regular zw_form_control zw_14 zw_text_333333 zw_box_shadow_none">
-                            <option value="Approved" {{ $booking->Status == 'Approved' ? 'selected' : '' }}>Approved</option>
-                            <option value="Rejected" {{ $booking->Status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
-                            <option value="Incompleted" {{ $booking->Status == 'Incompleted' ? 'selected' : '' }}>Incompleted</option>
-                            <option value="Completed" {{ $booking->Status == 'Completed' ? 'selected' : '' }}>Completed</option>
-                            <option value="Pending" {{ $booking->Status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="Refund" {{ $booking->Status == 'Refund' ? 'selected' : '' }}>Refund</option>
+                          <option value="Approved" {{ $booking->Status == 'Approved' ? 'selected' : '' }}>Approved</option>
+                          <option value="Rejected" {{ $booking->Status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
+                          <option value="Incompleted" {{ $booking->Status == 'Incompleted' ? 'selected' : '' }}>Incompleted</option>
+                          <option value="Completed" {{ $booking->Status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                          <option value="Pending" {{ $booking->Status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                          <option value="Refund" {{ $booking->Status == 'Refund' ? 'selected' : '' }}>Refund</option>
                         </select>
                       </td>
                       <td>
                         <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('bookings.show',$booking->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> </a>
                       </td>
-            
+
                       <td>
                         <form action="{{ route('bookings.destroy',$booking->id) }}" method="POST">
                           @csrf
                           @method('DELETE')
-                           <button type="submit" class="btn zw_text_AF2245 zw_a zw_24"><i class="fas fa-trash"></i></button>
+                          <button type="submit" class="btn zw_text_AF2245 zw_a zw_24"><i class="fas fa-trash"></i></button>
                         </form>
                       </td>
                     </tr>
@@ -157,7 +157,7 @@
                       <textarea id="commentText" class="form-control" placeholder="Add a comment"></textarea>
                     </div>
                     <div class="modal-footer">
-                    
+
                       <button type="button" class="btn zw_submit zw_submit_wh" id="submitComment">Submit</button>
                     </div>
                   </div>
@@ -173,47 +173,47 @@
     </div>
     @include('admin.layouts.footer')
   </div>
-<script>
-$(document).ready(function() {
-    $('.status-dropdown').change(function() {
+  <script>
+    $(document).ready(function() {
+      $('.status-dropdown').change(function() {
         var status = $(this).val();
         var appointmentId = $(this).closest('tr').data('id');
-        
-        if (status === 'Rejected') {
-            $('#commentModal').data('appointment-id', appointmentId).modal('show');
-        } else {
-            updateStatus(appointmentId, status);
-        }
-    });
 
-    $('#submitComment').click(function() {
+        if (status === 'Rejected') {
+          $('#commentModal').data('appointment-id', appointmentId).modal('show');
+        } else {
+          updateStatus(appointmentId, status);
+        }
+      });
+
+      $('#submitComment').click(function() {
         var comment = $('#commentText').val();
         var appointmentId = $('#commentModal').data('appointment-id');
-        
+
         updateStatus(appointmentId, 'Rejected', comment);
         $('#commentModal').modal('hide');
         $('#commentText').val('');
-    });
+      });
 
-    function updateStatus(id, status, comment = '') {
+      function updateStatus(id, status, comment = '') {
         $.ajax({
-            url: "{{ route('bookings.update', '') }}/" + id,
-            method: 'PUT',
-            data: {
-                _token: '{{ csrf_token() }}',
-                status: status,
-                comment: comment
-            },
-            success: function(response) {
-                //alert('Status updated successfully');
-                $('tr[data-id="'+id+'"] .status-dropdown').val(status);
-            },
-            error: function(response) {
-               // alert('Error updating status');
-            }
+          url: "{{ route('bookings.update', '') }}/" + id,
+          method: 'PUT',
+          data: {
+            _token: '{{ csrf_token() }}',
+            status: status,
+            comment: comment
+          },
+          success: function(response) {
+            //alert('Status updated successfully');
+            $('tr[data-id="' + id + '"] .status-dropdown').val(status);
+          },
+          error: function(response) {
+            // alert('Error updating status');
+          }
         });
-    }
-});
-</script>
+      }
+    });
+  </script>
 </body>
 </html>
