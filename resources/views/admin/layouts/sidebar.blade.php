@@ -63,7 +63,7 @@
              <li class="nav-item">
                <a href="pages/layout/boxed.html" class="nav-link">
                  <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Pending order</p>
+                 <p class="zw_12">Pending orders</p>
                </a>
              </li>
            </ul>
@@ -86,7 +86,7 @@
              <li class="nav-item">
                <a href="{{ url('admin/subservices') }}" class="nav-link">
                  <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Sub services</p>
+                 <p class="zw_12">Sub Services</p>
                </a>
              </li>
            </ul>
@@ -107,56 +107,28 @@
                </a>
              </li>
              <li class="nav-item">
-               <a href="{{ url('admin/doctorpositions') }}" class="nav-link">
-                 <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Doctor position</p>
-               </a>
-             </li>
-             <li class="nav-item">
                <a href="{{ url('admin/alldoctors') }}" class="nav-link">
                  <!-- <i class="far fa-circle nav-icon"></i> -->
                  <p class="zw_12">Add doctors</p>
                </a>
              </li>
              <li class="nav-item">
+               <a href="{{ url('admin/doctorpositions') }}" class="nav-link">
+                 <!-- <i class="far fa-circle nav-icon"></i> -->
+                 <p class="zw_12">Doctor position</p>
+               </a>
+             </li>
+             <li class="nav-item">
                <a href="{{ url('admin/doctorrequest') }}" class="nav-link">
                  <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Join Doctor Request</p>
+                 <p class="zw_12">Join request doctors </p>
                </a>
              </li>
            </ul>
          </li>
 
 
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-tree"></i>
-             <p class="zw_12">
-               Zone
-               <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
-             </p>
-           </a>
-           <ul class="nav nav-treeview">
-             <li class="nav-item">
-               <a href="{{ url('admin/locations') }}" class="nav-link">
-                 <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Add Countrys & Citys & Zones</p>
-               </a>
-             </li>
-             <li class="nav-item">
-               <a href="{{ url('admin/zones') }}" class="nav-link">
-                 <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Select Zone</p>
-               </a>
-             </li>
-             <li class="nav-item">
-               <a href="{{ url('admin/zonelist') }}" class="nav-link">
-                 <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Zone List</p>
-               </a>
-             </li>
-           </ul>
-         </li>
+        
          <!-- <li class="nav-item">
            <a href="{{ url('admin/patientregistration') }}" class="nav-link">
              <i class="nav-icon fas fa-edit"></i>
@@ -189,7 +161,7 @@
            <a href="{{ url('admin/users') }}" class="nav-link">
              <i class="nav-icon far fa-calendar-alt"></i>
              <p class="zw_12">
-               Users
+               Admin Dashboard Users
                <span class="badge badge-info right">2</span>
              </p>
            </a>
@@ -206,7 +178,7 @@
            <a href="#" class="nav-link">
              <i class="nav-icon fas fa-book"></i>
              <p class="zw_12">
-               Payments
+               Payments Details
                <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
              </p>
            </a>
@@ -223,6 +195,35 @@
                <a href="{{ url('admin/bankings') }}" class="nav-link">
                  <!-- <i class="far fa-circle nav-icon"></i> -->
                  <p class="zw_12">Health care banking info...</p>
+               </a>
+             </li>
+           </ul>
+         </li>
+         <li class="nav-item">
+           <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-tree"></i>
+             <p class="zw_12">
+               Add Zone
+               <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
+             </p>
+           </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="{{ url('admin/locations') }}" class="nav-link">
+                 <!-- <i class="far fa-circle nav-icon"></i> -->
+                 <p class="zw_12">Add Country & City</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="{{ url('admin/zones') }}" class="nav-link">
+                 <!-- <i class="far fa-circle nav-icon"></i> -->
+                 <p class="zw_12">Select Zone</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="{{ url('admin/zonelist') }}" class="nav-link">
+                 <!-- <i class="far fa-circle nav-icon"></i> -->
+                 <p class="zw_12">Zone List</p>
                </a>
              </li>
            </ul>
