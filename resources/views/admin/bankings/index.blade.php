@@ -19,7 +19,7 @@
           </div>
           <div class="row mb-2">
            <div class="col-12 col-md-12 col-lg-6">
-              <h1 class="poppins-semibold zw_46 zw_text_AF2245">  Banking Information </h1>
+              <h1 class="poppins-semibold zw_46 zw_text_AF2245"> Health Care Banking Info </h1>
             </div>
            <div class="col-12 col-md-12 col-lg-6">
               <!-- <a class="btn zw_add_btn float-right m-2 poppins-medium zw_18" href="{{ route('bankings.create') }}"> <i class="fas fa-plus right mr-2"></i>Add New Banking Information</a> -->

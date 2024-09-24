@@ -19,7 +19,10 @@
                with font-awesome or any other icon font library -->
          <li class="nav-item menu-open">
            <a href="{{ url('admin/dashboard') }}" class="nav-link active">
-             <i class="nav-icon fas fa-tachometer-alt"></i>
+             <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
+             <!-- <i class="nav-icon fa fa-table" aria-hidden="true"></i> -->
+             <div class="dashboard-icon">
+             </div>
              <p class="zw_12">
                Dashboard
                <!-- <i class="right fas fa-angle-left"></i> -->
@@ -28,12 +31,19 @@
          </li>
          <li class="nav-item">
            <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-copy"></i>
+             <div class="bg-icon">
+             </div>
              <p class="zw_12">
                Visit/Service Provider
                <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
-               <!-- <span class="badge badge-info right">6</span> -->
              </p>
+             <!-- <i class="nav-icon fas fa-copy"></i> -->
+             <!-- <img src="{{ asset('images/icon/Path 47.png') }}" class="nav-icon" alt=" Visit/Service Provider Image"> -->
+             <!-- <p class="zw_12">
+               Visit/Service Provider
+               <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i> -->
+             <!-- <span class="badge badge-info right">6</span> -->
+             <!-- </p> -->
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
@@ -70,7 +80,9 @@
          </li>
          <li class="nav-item">
            <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-chart-pie"></i>
+             <!-- <i class="nav-icon fas fa-chart-pie"></i> -->
+             <div class="visit-service-icon">
+             </div>
              <p class="zw_12">
                Visit/Service
                <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
@@ -93,7 +105,9 @@
          </li>
          <li class="nav-item">
            <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-tree"></i>
+             <!-- <i class="nav-icon fas fa-tree"></i> -->
+             <div class="doctor-practitioner-video-icon">
+             </div>
              <p class="zw_12">
                Doctor-Practitioner/Video
                <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
@@ -128,7 +142,7 @@
          </li>
 
 
-        
+
          <!-- <li class="nav-item">
            <a href="{{ url('admin/patientregistration') }}" class="nav-link">
              <i class="nav-icon fas fa-edit"></i>
@@ -137,12 +151,14 @@
               </p>
             </a>
           </li> -->
-          <li class="nav-item">
-            <a href="{{ url('admin/patientregistration') }}" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p class="zw_12">
-                Patients
-                <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
+         <li class="nav-item">
+           <a href="{{ url('admin/patientregistration') }}" class="nav-link">
+             <!-- <i class="nav-icon fas fa-edit"></i> -->
+             <div class="patients-icon">
+             </div>
+             <p class="zw_12">
+               Patients
+               <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
              </p>
            </a>
            <ul class="nav nav-treeview">
@@ -159,7 +175,9 @@
 
          <li class="nav-item">
            <a href="{{ url('admin/users') }}" class="nav-link">
-             <i class="nav-icon far fa-calendar-alt"></i>
+             <!-- <i class="nav-icon far fa-calendar-alt"></i> -->
+             <div class="Users-icon">
+             </div>
              <p class="zw_12">
                Admin Dashboard Users
                <span class="badge badge-info right">2</span>
@@ -168,7 +186,9 @@
          </li>
          <li class="nav-item">
            <a href="{{ url('admin/offers') }}" class="nav-link">
-             <i class="nav-icon far fa-image"></i>
+             <!-- <i class="nav-icon far fa-image"></i> -->
+             <div class="offers-icon">
+             </div>
              <p class="zw_12">
                Offers
              </p>
@@ -176,20 +196,48 @@
          </li>
          <li class="nav-item">
            <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-book"></i>
+             <!-- <i class="nav-icon fas fa-book"></i> -->
+             <!-- <i class="fa fa-credit-card"></i> -->
+             <div class="finance-icon">
+             </div>
              <p class="zw_12">
-               Payments Details
+               Finance
                <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
              </p>
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="{{ url('admin/payments') }}" class="nav-link">
-                 <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Payments</p>
+               <a href="{{ url('admin/refundPayments') }}" class="nav-link">
+                 <p class="zw_12">Refund Payments</p>
                </a>
              </li>
            </ul>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="{{ url('admin/completePayments') }}" class="nav-link">
+                 <p class="zw_12">Complete payments</p>
+               </a>
+             </li>
+           </ul>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="{{ url('admin/incompleteBookings') }}" class="nav-link">
+                 <p class="zw_12">incomplete bookings</p>
+               </a>
+             </li>
+           </ul>
+         </li>
+         <li class="nav-item">
+           <a href="#" class="nav-link">
+             <!-- <i class="nav-icon fas fa-book"></i> -->
+             <!-- <i class="fa fa-credit-card"></i> -->
+             <div class="payment-icon">
+             </div>
+             <p class="zw_12">
+               Payments Details
+               <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
+             </p>
+           </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
                <a href="{{ url('admin/bankings') }}" class="nav-link">
@@ -198,10 +246,20 @@
                </a>
              </li>
            </ul>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="{{ url('admin/payments') }}" class="nav-link">
+                 <!-- <i class="far fa-circle nav-icon"></i> -->
+                 <p class="zw_12">Payments</p>
+               </a>
+             </li>
+           </ul>
          </li>
          <li class="nav-item">
            <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-tree"></i>
+             <!-- <i class="nav-icon fas fa-tree"></i> -->
+             <div class="zone-icon">
+             </div>
              <p class="zw_12">
                Add Zone
                <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
@@ -230,13 +288,17 @@
          </li>
          <li class="nav-item">
            <a href="{{ url('admin/contacts') }}" class="nav-link">
-             <i class="nav-icon fas fa-ellipsis-h"></i>
+             <!-- <i class="nav-icon fas fa-ellipsis-h"></i> -->
+             <div class="zone-icon">
+             </div>
              <p class="zw_12">Contact & Support</p>
            </a>
          </li>
          <li class="nav-item">
            <a href="{{ url('admin/termconditions') }}" class="nav-link">
-             <i class="nav-icon fas fa-edit"></i>
+             <!-- <i class="nav-icon fas fa-edit"></i> -->
+             <div class="zone-icon">
+             </div>
              <p class="zw_12">
                Terms & Conditions
              </p>
@@ -244,14 +306,17 @@
          </li>
          <li class="nav-item">
            <a href="{{ url('admin/privacypolicys') }}" class="nav-link">
-             <i class="nav-icon fas fa-ellipsis-h"></i>
+             <!-- <i class="nav-icon fas fa-ellipsis-h"></i> -->
+             <div class="zone-icon">
+             </div>
              <p class="zw_12">Privacy & Policy</p>
            </a>
          </li>
 
          <li class="nav-item">
-           <a href="{{ route('signout') }}" class="nav-link">
-             <i class="nav-icon fas fa-logout-h"></i>
+           <a href="{{ route('signout') }}" class="nav-link active">
+             <!-- <i class="nav-icon fas fa-logout-h"></i> -->
+             <img src="{{url('images/icon/logout.png')}}" alt="Logout Image" style="margin-right: 5px;">
              <p class="zw_12">Logout</p>
            </a>
          </li>

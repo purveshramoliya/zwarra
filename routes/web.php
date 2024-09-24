@@ -34,6 +34,7 @@ use App\Http\Controllers\HealthcareSubserviceController;
 use App\Http\Controllers\HealthcareSettingsController;
 use App\Http\Controllers\DoctorSettingsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\HealthcareZoneController;
 use App\Http\Controllers\PaymentsController;
@@ -87,8 +88,6 @@ Route::middleware(['auth:web'])->group(function () {
     Route::resource('admin/images', ImageController::class);
     Route::resource('admin/practitioners', PractitionersController::class);
     Route::resource('admin/payments', PaymentsController::class);
-
-
     //Route::get('healthcare/services', [HealthcareSubserviceController::class,'index']);
     Route::get('admin/subservice/createbody', [SubServicesController::class, 'createbody'])->name('subservices.createbody');
     Route::get('admin/subservice/singleservices', [SubServicesController::class, 'single'])->name('subservices.single');
@@ -111,6 +110,9 @@ Route::middleware(['auth:web'])->group(function () {
     Route::post('admin/locations/get-cities', [LocationController::class, 'getCities'])->name('locations.getCities');
 
     Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
+    Route::get('admin/refundPayments', [FinanceController::class, 'refundPayments'])->name('admin/refundPayments');
+    Route::get('admin/completePayments', [FinanceController::class, 'completePayments'])->name('admin/completePayments');
+    Route::get('admin/incompleteBookings', [FinanceController::class, 'incompleteBookings'])->name('admin/incompleteBookings');
 });
 
 Route::get('admin/get-cities-by-country/{country_id}', [LocationController::class, 'getCitiesByCountry'])->name('getCitiesByCountry');

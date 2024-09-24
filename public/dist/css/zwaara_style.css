@@ -154,11 +154,16 @@ body {
     font-size: 15px;
 }
 .zw_16 {
-    font-size: 16px;
+    font-size: 24px;
 }
 .zw_18 {
     font-size: 18px;
 }
+
+.zw_19 {
+    font-size: 18px;
+}
+
 .zw_20 {
     font-size: 20px;
 }
@@ -246,7 +251,7 @@ body {
     background-color: #fff;
 }
 .zw_sidebar .nav-treeview {
-    padding-left: 20px;
+    padding-left: 40px;
 }
 .zw_sidebar .form-check-input:checked {
     background-color: #af2245;
@@ -318,13 +323,44 @@ body {
 .zw_back {
     /* padding: 15px 5px; */
 }
-.zw_sidebar .custom-file-input:lang(en) ~ .custom-file-label::after {
+
+.inline-container {
+    display: flex;
+    /* Use flexbox for inline alignment */
+    align-items: center;
+    /* Center vertically */
+    margin-bottom: 10px;
+    /* Space below the inline elements */
+}
+
+.upload-label {
+    margin-right: 10px;
+    /* Space between the label and "Upload" */
+}
+
+.upload-button {
+    background-color: #ffffff;
+    color: #898b9f;
+    border: 1px solid #af2245;
+    border-radius: 6px;
+    padding: 5px 10px;
+    /* Padding for the button */
+    cursor: pointer;
+    /* Pointer cursor for interactivity */
+}
+
+.input-group {
+    margin-top: 10px;
+    /* Space between inline elements and file input */
+}
+
+/* .zw_select_file .zw_label_height::after {
     content: "Upload";
     background-color: #ffffff;
     color: #898b9f;
     border: 1px solid #af2245;
     border-radius: 6px;
-}
+} */
 /* .zw_sidebar .custom-file-input_:lang(en)::after{
     content: "Upload";
     background-color: #ffffff;
@@ -356,8 +392,8 @@ body {
 .zw_box_shadow_none {
     box-shadow: none;
 }
-.zw_form_row.form-row > .col,
-.zw_form_row.form-row > [class*="col-"] {
+.zw_form_row.form-row>.col,
+.zw_form_row.form-row>[class*="col-"] {
     padding-right: 15px;
     padding-left: 15px;
     margin-bottom: 20px;
@@ -563,7 +599,7 @@ input[type="radio"] {
     vertical-align: middle;
     padding: 10px 5px;
 }
-.zw_table tbody > tr > td:first-of-type {
+.zw_table tbody>tr>td:first-of-type {
     padding-left: 10px !important;
 }
 /* .form-switch {
@@ -618,7 +654,7 @@ button.zw_service_btn.active {
 input:-internal-autofill-selected {
     background-color: #af2245;
 }
-.custom-file-input:focus ~ .custom-file-label {
+.custom-file-input:focus~.custom-file-label {
     border-color: #af2245;
 }
 /*  Start Upload vat registration certificate*/
@@ -821,4 +857,212 @@ input.uploadInput {
 
 .fs-10 {
     font-size: 0.85rem !important;
+}
+
+.nav-link {
+    display: inline-flex;
+    /* Use inline-flex to keep elements inline */
+    align-items: center;
+    /* Center items vertically */
+    text-decoration: none;
+    /* Remove underline from link */
+}
+
+.visit-service-icon {
+    background-image: url('/images/icon/visit_service.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+
+.nav-link:hover .visit-service-icon {
+    background-image: url('/images/icon/visit_service_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.doctor-practitioner-video-icon {
+    background-image: url('/images/icon/doctor_practitioner_video.png');
+    background-size: cover;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+
+.nav-link:hover .doctor-practitioner-video-icon {
+    background-image: url('/images/icon/doctor_practitioner_video_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.patients-icon {
+    background-image: url('/images/icon/patients.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+
+.nav-link:hover .patients-icon {
+    background-image: url('/images/icon/patients_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.Users-icon {
+    background-image: url('/images/icon/Users.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+
+.nav-link:hover .Users-icon {
+    background-image: url('/images/icon/Users_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.offers-icon {
+    background-image: url('/images/icon/offers.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+
+.nav-link:hover .offers-icon {
+    background-image: url('/images/icon/offers_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.zone-icon {
+    background-image: url('/images/icon/zone.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.nav-link:hover .zone-icon {
+    background-image: url('/images/icon/zone_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.payment-icon {
+    background-image: url('/images/icon/payment.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.nav-link:hover .payment-icon {
+    background-image: url('/images/icon/payment_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.finance-icon {
+    background-image: url('/images/icon/finance.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.nav-link:hover .finance-icon {
+    background-image: url('/images/icon/finance_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.bg-icon {
+    background-image: url('/images/icon/visit_service_provider.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+
+.nav-link:hover .bg-icon {
+    background-image: url('/images/icon/visit_service_provider_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.dashboard-icon {
+    background-image: url('/images/icon/dashboard.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.zw_btn_pdf {
+    color: #ffffff;
+    background-color: #44eb70;
+    border-radius: 6px;
+}
+
+.pb35 {
+    padding-bottom: 20px;
+}
+.custom-padding {
+    padding-bottom: 10px; /* Adjust the value as needed */
 }
