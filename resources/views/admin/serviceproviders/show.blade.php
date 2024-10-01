@@ -33,7 +33,7 @@
                 </div> -->
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <div class="card-body">
+                            <div class="card-body" style="border: 1px solid #0000004f;border-radius: 5px;">
                                 <div class="form-row zw_form_row">
                                     <div class="form-group col-md-4 zw_18 poppins-medium">
                                         <label for="exampleInputErname" class="zw_text_AF2245 poppins-bold">En name :</label>
@@ -122,7 +122,7 @@
             <section class="content-header">
                 <div class="row">
                     <!-- left column -->
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="margin-top: -80px;"> 
                         <h3 class="poppins-semibold zw_34 zw_text_AF2245 mt-4 mb-4">Attachments</h3>
                         <!-- general form elements -->
                         <!-- <div class="card zw_card"> -->

@@ -1,43 +1,49 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CustomAuthController;
-use App\Http\Controllers\CustomerReviewController;
-use App\Http\Controllers\ServiceProviderController;
-use App\Http\Controllers\ServicesController;
-use App\Http\Controllers\OurServicesController;
-use App\Http\Controllers\SubServicesController;
-use App\Http\Controllers\MedicalSpecialtiesController;
-use App\Http\Controllers\SubMedicalSpecialtiesController;
-use App\Http\Controllers\AllDoctorsController;
-use App\Http\Controllers\DoctorPositionsController;
-use App\Http\Controllers\JoinDoctorRequestController;
-use App\Http\Controllers\PatientRegistrationController;
+use App\Http\Controllers\BodyController;
+use App\Http\Controllers\ZoneController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\OffersController;
-use App\Http\Controllers\BookingsController;
+use App\Http\Controllers\DoctorBankingInfo;
+use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\RejectedRequested;
 use App\Http\Controllers\BankingsController;
+use App\Http\Controllers\BookingsController;
 use App\Http\Controllers\ContactsController;
-use App\Http\Controllers\ComplaintsController;
-use App\Http\Controllers\ForgotPasswordController;
-use App\Http\Controllers\ZoneController;
-use App\Http\Controllers\ServiceProviderRequestController;
-use App\Http\Controllers\TermConditionController;
-use App\Http\Controllers\PrivacyPolicyController;
-use App\Http\Controllers\GeneralJoinRequestController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\PractitionersController;
-
-use App\Http\Controllers\HealthcareController;
-use App\Http\Controllers\AdminHealthcareServiceController;
-use App\Http\Controllers\HealthcareSubserviceController;
-use App\Http\Controllers\HealthcareSettingsController;
-use App\Http\Controllers\DoctorSettingsController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
-use App\Http\Controllers\HealthcareZoneController;
 use App\Http\Controllers\PaymentsController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AllDoctorsController;
+use App\Http\Controllers\ComplaintsController;
+use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\HealthcareController;
+use App\Http\Controllers\OurServicesController;
+use App\Http\Controllers\SubServicesController;
+use App\Http\Controllers\PractitionersController;
+use App\Http\Controllers\PrivacyPolicyController;
+use App\Http\Controllers\TermConditionController;
+use App\Http\Controllers\CustomerReviewController;
+
+use App\Http\Controllers\DoctorSettingsController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\HealthcareZoneController;
+use App\Http\Controllers\bookingsDeclineController;
+use App\Http\Controllers\DoctorPositionsController;
+use App\Http\Controllers\ServiceProviderController;
+use App\Http\Controllers\JoinDoctorRequestController;
+use App\Http\Controllers\GeneralJoinRequestController;
+use App\Http\Controllers\HealthcareSettingsController;
+use App\Http\Controllers\MedicalSpecialtiesController;
+use App\Http\Controllers\PatientRegistrationController;
+use App\Http\Controllers\HealthcareSubserviceController;
+use App\Http\Controllers\SubMedicalSpecialtiesController;
+use App\Http\Controllers\AdminHealthcareServiceController;
+use App\Http\Controllers\ServiceProviderRequestController;
+use App\Http\Controllers\RegisteredAndNonRegisteredPatients;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +72,7 @@ Route::middleware(['auth:web'])->group(function () {
 
     Route::resource('admin/serviceproviders', ServiceProviderController::class);
     Route::resource('admin/ourservices', OurServicesController::class);
+    Route::resource('admin/doctorbanking', DoctorBankingInfo::class);
     Route::resource('admin/subservices', SubServicesController::class);
     Route::resource('admin/medicalspecialties', MedicalSpecialtiesController::class);
     Route::resource('admin/submedicalspecialties', SubMedicalSpecialtiesController::class);
@@ -76,10 +83,20 @@ Route::middleware(['auth:web'])->group(function () {
     Route::resource('admin/users', UsersController::class);
     Route::resource('admin/offers', OffersController::class);
     Route::resource('admin/bookings', BookingsController::class);
+    Route::get('admin/bookingsDecline', [bookingsDeclineController::class, 'decline'])->name('admin.bookingsDecline');
+    Route::resource('admin/rejectedrequested', RejectedRequested::class);
+    Route::get('admin/registered-and-non-registered-patients', [RegisteredAndNonRegisteredPatients::class, 'index'])
+    ->name('admin.registeredAndNonRegisteredPatients');
+    Route::get('admin/body', [BodyController::class,'index'])->name('admin.body');
+    Route::get('admin/body/create', [BodyController::class,'create'])->name('admin.body.create');
+
     Route::resource('admin/bankings', BankingsController::class);
     Route::resource('admin/contacts', ContactsController::class);
     Route::resource('admin/complaints', ComplaintsController::class);
     Route::resource('admin/zones', ZoneController::class);
+    Route::get('admin/addcountry', [ZoneController::class,'addCountry'])->name('admin/addcountry');
+    Route::get('admin/addcity', [ZoneController::class,'addCity'])->name('admin/addcity');
+    Route::get('admin/addzone', [ZoneController::class,'addZone'])->name('admin/addzone');
     Route::resource('admin/termconditions', TermConditionController::class);
     Route::resource('admin/privacypolicys', PrivacyPolicyController::class);
     Route::resource('admin/serviceproviderrequest', ServiceProviderRequestController::class);
@@ -87,8 +104,6 @@ Route::middleware(['auth:web'])->group(function () {
     Route::resource('admin/images', ImageController::class);
     Route::resource('admin/practitioners', PractitionersController::class);
     Route::resource('admin/payments', PaymentsController::class);
-
-
     //Route::get('healthcare/services', [HealthcareSubserviceController::class,'index']);
     Route::get('admin/subservice/createbody', [SubServicesController::class, 'createbody'])->name('subservices.createbody');
     Route::get('admin/subservice/singleservices', [SubServicesController::class, 'single'])->name('subservices.single');
@@ -111,6 +126,9 @@ Route::middleware(['auth:web'])->group(function () {
     Route::post('admin/locations/get-cities', [LocationController::class, 'getCities'])->name('locations.getCities');
 
     Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
+    Route::get('admin/refundPayments', [FinanceController::class, 'refundPayments'])->name('admin/refundPayments');
+    Route::get('admin/completePayments', [FinanceController::class, 'completePayments'])->name('admin/completePayments');
+    Route::get('admin/incompleteBookings', [FinanceController::class, 'incompleteBookings'])->name('admin/incompleteBookings');
 });
 
 Route::get('admin/get-cities-by-country/{country_id}', [LocationController::class, 'getCitiesByCountry'])->name('getCitiesByCountry');
@@ -202,6 +220,7 @@ Route::post('supdate-status', [ServicesController::class,'updatestatus'])->name(
 Route::post('osupdate-status', [OurServicesController::class,'updatestatus'])->name('osupdate.status');
 Route::post('ssupdate-status', [SubServicesController::class,'updatestatus'])->name('ssupdate.status');
 Route::post('msupdate-status', [MedicalSpecialtiesController::class,'updatestatus'])->name('msupdate.status');
+Route::post('dpupdate-status', [MedicalSpecialtiesController::class,'updatestatus'])->name('dpupdate.status');
 Route::post('smupdate-status', [SubMedicalSpecialtiesController::class,'updatestatus'])->name('smupdate.status');
 Route::post('docupdate-status', [AllDoctorsController::class,'updatestatus'])->name('docupdate.status');
 Route::post('drupdate-status', [JoinDoctorRequestController::class,'updatestatus'])->name('drupdate.status');

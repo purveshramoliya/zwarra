@@ -22,7 +22,7 @@ class SubServicesController extends Controller
         // Check if the ID is provided
         if ($id) {
         // Retrieve the service provider record based on the Spid
-            $subservices = SubServices::where('Healthcareid', $id)->latest()->paginate(20);
+            $subservices = SubServices::where('Healthcareid', $id)->latest()->paginate(5);
 
         // Check if the service provider record exists
             /*if ($subservices->isEmpty()) {
@@ -42,10 +42,12 @@ class SubServicesController extends Controller
                 $query->where('Enname', 'LIKE', "%$searchTerm%");
             }
 
-            $subservices = $query->latest()->paginate(20);
+            $subservices = $query->latest()->paginate(5);
         }
 
-        return view('admin.subservices.index', compact('subservices', 'id'));
+        $dropdownOptions = ServiceProvider::all();
+        $sdropdownOptions = OurServices::all();
+        return view('admin.subservices.index', compact('subservices','sdropdownOptions','dropdownOptions', 'id'));
     }
    
 

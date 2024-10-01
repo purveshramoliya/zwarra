@@ -17,18 +17,18 @@ class DoctorPositionsController extends Controller
 
     public function index(Request $request)
     {
-    $query = DoctorPositions::query();
+        $query = DoctorPositions::query();
 
-    // Check if search query exists
-    if ($request->has('search')) {
-        $searchTerm = $request->input('search');
-        $query->where('Enname', 'LIKE', "%$searchTerm%");
-    }
+        // Check if search query exists
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->where('Enname', 'LIKE', "%$searchTerm%");
+        }
 
-    // Get paginated offers
-    $doctorpositions = $query->latest()->paginate(20);
-
-    return view('admin.doctorpositions.index', compact('doctorpositions'));
+        // Get paginated offers
+        $doctorpositions = $query->latest()->paginate(20);
+        $dropdownOptions = MedicalSpecialties::all();
+        return view('admin.doctorpositions.index', compact('doctorpositions', 'dropdownOptions'));
     }
 
     /**
@@ -54,16 +54,18 @@ class DoctorPositionsController extends Controller
         //
         $request->validate([
             'Enname' => 'required',
+            'Arname' => 'required',
             // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
-           // 'Regcertificate' => 'required|mimes:pdf,jpg,png|max:2048',
+            // 'Regcertificate' => 'required|mimes:pdf,jpg,png|max:2048',
 
         ]);
-         // Store file information in the database
-         $doctorpositions = new DoctorPositions();
-         DoctorPositions::create($request->all());
-     
-        return redirect()->route('doctorpositions.index')
-                        ->with('success','Doctor Postion created successfully.');
+        // Store file information in the database
+        $doctorpositions = new DoctorPositions();
+        DoctorPositions::create($request->all());
+
+        // return redirect()->route('doctorpositions.index')
+        //     ->with('success', 'Doctor Postion created successfully.');
+        return response()->json(['success' => true, 'message' => 'Doctor Postion created successfully']);
     }
 
     /**
@@ -77,8 +79,8 @@ class DoctorPositionsController extends Controller
         // Retrieve dropdown options from the database
         $dropdownOptions = MedicalSpecialties::all();
 
-       // Return the view with the dropdown options
-        return view('admin.doctorpositions.show', compact('doctorposition','dropdownOptions'));
+        // Return the view with the dropdown options
+        return view('admin.doctorpositions.show', compact('doctorposition', 'dropdownOptions'));
     }
 
     /**
@@ -90,10 +92,10 @@ class DoctorPositionsController extends Controller
     public function edit(DoctorPositions $doctorposition)
     {
         // Retrieve dropdown options from the database
-         $dropdownOptions = MedicalSpecialties::all();
+        $dropdownOptions = MedicalSpecialties::all();
 
-         // Return the view with the dropdown options
-         return view('admin.doctorpositions.edit', compact('doctorposition','dropdownOptions'));
+        // Return the view with the dropdown options
+        return view('admin.doctorpositions.edit', compact('doctorposition', 'dropdownOptions'));
     }
 
     /**
@@ -106,14 +108,14 @@ class DoctorPositionsController extends Controller
     public function update(Request $request, DoctorPositions $doctorposition)
     {
         //
-         $request->validate([
+        $request->validate([
             'Enname' => 'required',
         ]);
-    
+
         $doctorposition->update($request->all());
-    
+
         return redirect()->route('doctorpositions.index')
-                        ->with('success',' Doctor Position updated successfully');
+            ->with('success', ' Doctor Position updated successfully');
     }
 
     /**
@@ -125,9 +127,9 @@ class DoctorPositionsController extends Controller
     public function destroy(DoctorPositions $doctorposition)
     {
         //
-         $doctorposition->delete();
-    
+        $doctorposition->delete();
+
         return redirect()->route('doctorpositions.index')
-                        ->with('success',' Doctor Position deleted successfully');
+            ->with('success', ' Doctor Position deleted successfully');
     }
 }

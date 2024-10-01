@@ -66,7 +66,7 @@ class AllDoctorsController extends Controller
             'Phone' => 'required',
             'Licenceno' => 'required',
             // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
-            //'Logo' => 'required|mimes:jpg,png|max:2048',
+            'Logo' => 'required|mimes:jpg,png|max:2048',
 
         ]);
 

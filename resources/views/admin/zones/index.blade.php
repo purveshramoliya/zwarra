@@ -1,4 +1,3 @@
-
 @include('admin.layouts.headermodule')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -40,6 +39,13 @@
         @include('admin.layouts.header')
         @include('admin.layouts.sidebar')
         <div class="content-wrapper">
+            <div class="row mb-2">
+                <div class="col-sm-6 zw_back">
+                    <a onclick="history.back()" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
+                        <i class="fas fa-arrow-left right mr-2"></i>Back
+                    </a>
+                </div>
+            </div>
             @if(session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}

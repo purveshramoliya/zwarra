@@ -18,7 +18,7 @@
         </div>
         <div class="row">
           <div class="col-sm-12">
-            <h3 class="poppins-semibold zw_34 zw_text_AF2245 mt-3">Add New Medical Department</h3>
+            <h3 class="poppins-semibold zw_34 zw_text_AF2245 mt-3 text-center">Add Medical Department</h3>
           </div>
           <!-- left column -->
           <div class="col-md-12">
@@ -45,7 +45,25 @@
               <form action="{{ route('medicalspecialties.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
-                  <div class="form-row zw_form_row">
+                  <div class="container mt-5 mb-4">
+                    <div class="form-row align-items-center">
+                      <div class="col-auto">
+                        <img id="imagePreview" src="#" alt="Image Preview" />
+                      </div>
+                      <div class="col-auto">
+                        <label for="exampleInputLogo" class="mt-5 zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload Logo</label>
+                        <div class="input-group">
+                          <div class="custom-file">
+                            <input type="file" name="Logo" class="custom-file-input" id="exampleInputLogo" onchange="updateFileName(this)">
+                            <label class="custom-file-label zw_form_control" for="exampleInputLogo">Choose file</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- <div class="form-row zw_form_row">
                     <div class="form-group col-md-6">
                       <label for="exampleInputLogo" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Upload Logo</label>
                       <div class="input-group">
@@ -55,21 +73,21 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-6">
-                      <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEnname">En name</label>
-                      <input type="text" name="Enname" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputEnname" placeholder="Enter Enname">
+                      <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEnname">En name<span style="color: red;">*</span></label>
+                      <input type="text" name="Enname" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputEnname" placeholder="En name">
                     </div>
                     <div class="form-group col-md-6">
                       <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputArname">Ar name <span style="color: red;">*</span></label>
-                      <input type="text" name="Arname" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputArname" placeholder="Enter Arname">
+                      <input type="text" name="Arname" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputArname" placeholder="Ar name">
                     </div>
                   </div>
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-6">
-                      <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEndescription">Estimated Time for Service <span style="color: red;">*</span></label>
-                      <select name="Estimatedtime" class="custom-select poppins-regular zw_18 zw_text_898B9F zw_form_control zw_box_shadow_none">
+                      <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEndescription">Estimated time for a service <span style="color: red;">*</span></label>
+                      <select name="Estimatedtime" class="estimatetime form-control zw_form_control mb-4">
                         <option>1 Hour</option>
                         <option>2 Hour </option>
                         <option>3 Hour</option>
@@ -82,8 +100,8 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12">
-                      <button type="submit" class="btn zw_submit zw_submit_wh">Submit</button>
+                    <div class="offset-md-2 col-md-8">
+                      <button type="submit" class="btn zw_submit zw_submit_wh">Send</button>
                     </div>
                   </div>
                 </div>
@@ -105,6 +123,27 @@
   </section>
   </div>
   @include('admin.layouts.footer')
+  <script>
+    function updateFileName(input) {
+      const file = input.files[0];
+      const label = input.nextElementSibling;
+
+      if (file) {
+        label.textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imagePreview = document.getElementById('imagePreview');
+          imagePreview.src = e.target.result;
+          imagePreview.style.display = 'inline'; // Show inline
+        };
+        reader.readAsDataURL(file);
+      } else {
+        label.textContent = 'Choose file';
+        document.getElementById('imagePreview').style.display = 'none';
+      }
+    }
+  </script>
+
   </div>
 </body>
 

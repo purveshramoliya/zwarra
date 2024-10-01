@@ -52,6 +52,8 @@ class MedicalSpecialtiesController extends Controller
         //
         $request->validate([
             'Enname' => 'required',
+            'Arname' => 'required',
+            'Estimatedtime' => 'required',
             // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
             //'Logo' => 'required|mimes:jpg,png|max:2048',
 
