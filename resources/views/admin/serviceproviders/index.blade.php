@@ -22,8 +22,8 @@
               <h1 class="poppins-semibold zw_46 zw_text_AF2245 mt-2">Service Providers</h1>
             </div>
             <div class="col-12 col-md-12 col-lg-6">
-            <a class="btn zw_add_btn float-right m-2 poppins-medium zw_18" href="{{ route('serviceproviders.create') }}"> <i class="fas fa-plus right mr-2"></i>Add New Service Provider</a>
-          </div>
+              <a class="btn zw_add_btn float-right m-2 poppins-medium zw_18" href="{{ route('serviceproviders.create') }}"> <i class="fas fa-plus right mr-2"></i>Add New Service Provider</a>
+            </div>
           </div>
         </div><!-- /.container-fluid -->
       </section>
@@ -103,11 +103,18 @@
                         <!--  <div class="form-switch">
                           <input type="checkbox" class="form-check-input" id="site_state" style="cursor: pointer;">
                         </div> -->
-                        <form id="statusForm" class="statusForm">
+                        <label class="switch">
+                          <form id="statusForm" class="statusForm">
+                            <input type="hidden" name="spid" id="spid" class="spid" value="{{ $serviceprovider->id }}">
+                            <input type="checkbox" id="StatusUpdate" class="StatusUpdate" data-on="Active" data-off="In Active" {{ $serviceprovider->Status ? 'checked' : '' }}>
+                            <span class="slider"></span>
+                          </form>
+                        </label>
+                        <!-- <form id="statusForm" class="statusForm">
                           @csrf
                           <input type="hidden" name="spid" id="spid" class="spid" value="{{ $serviceprovider->id }}">
                           <input type="checkbox" data-toggle="toggle" data-size="sm" id="StatusUpdate" class="StatusUpdate" data-on="Active" data-off="In Active" {{ $serviceprovider->Status ? 'checked' : '' }}>
-                        </form>
+                        </form> -->
                       </td>
                       <td>
                         <a class="btn zw_btn" href="{{ route('zones.index',['id' =>$serviceprovider->id]) }}">Zone</a>
@@ -120,7 +127,7 @@
                         <form action="{{ route('serviceproviders.destroy',$serviceprovider->id) }}" method="POST">
                           @csrf
                           @method('DELETE')
-                          <button type="submit" class="btn zw_text_AF2245 zw_a zw_24"><i class="fas fa-trash"></i></button>
+                          <button type="submit" class="btn zw_text_AF2245 zw_a zw_24"><i class="fas fa-angle-down right zw_text_AF2245 zw_16"></i></button>
                         </form>
                       </td>
                     </tr>
@@ -152,7 +159,7 @@
           method: 'POST',
           data: {
             _token: "{{ csrf_token() }}",
-            id:  spid,
+            id: spid,
             status: status
           },
           success: function(response) {
@@ -166,5 +173,14 @@
       });
     });
   </script>
+  <script>
+    const toggle = document.getElementById('toggle');
+
+    toggle.addEventListener('change', function() {
+      // You can add any functionality you want here when the toggle changes
+      console.log(this.checked ? 'Toggle is On' : 'Toggle is Off');
+    });
+  </script>
 </body>
+
 </html>

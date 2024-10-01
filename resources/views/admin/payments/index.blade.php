@@ -12,7 +12,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6 zw_back">
-              <a href="" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
+              <a onclick="history.back()" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
                 <i class="fas fa-arrow-left right mr-2"></i>Back
               </a>
             </div>

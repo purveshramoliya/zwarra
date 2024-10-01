@@ -173,4 +173,16 @@ class ZoneController extends Controller
 
         return response()->json($zones);
     }
+    public function addCountry()
+    {
+        return view('admin.zones.add_country');
+    }
+    public function addCity()
+    {
+        return view('admin.zones.add_city');
+    }
+    public function addZone()
+    {
+        return view('admin.zones.add_zone');
+    }
 }

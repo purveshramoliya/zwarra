@@ -1,6 +1,6 @@
   <!-- mital -->
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand zw_bg_f7e9ec navbar-light">
+  <nav class="main-header navbar navbar-expand zw_bg_f7e9ec navbar-light main-headerrr">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item d-none d-sm-inline-block">
@@ -14,7 +14,7 @@
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
       <a class="btn zw_lanbtn float-right m-2 poppins-medium zw_18" data-toggle="dropdown" href="#" >
-        Languages <img src="{{url('dist/img/languages_icon.svg')}}" alt="languages" class="brand-image " style="padding: 0 20px;"><i class="fas fa-angle-down right mr-2"></i>
+        Languages <img src="{{url('dist/img/languages_icon.svg')}}" alt="languages" class="brand-image " style="padding: 0 20px;"><i class="fas fa-angle-down right"></i>
       </a>
         <!-- <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>

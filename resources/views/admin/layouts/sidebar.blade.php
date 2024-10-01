@@ -101,6 +101,11 @@
                  <p class="zw_12">Sub Services</p>
                </a>
              </li>
+             <li class="nav-item">
+               <a href="{{ url('admin/body') }}" class="nav-link">
+                 <p class="zw_12">Body</p>
+               </a>
+             </li>
            </ul>
          </li>
          <li class="nav-item">
@@ -163,10 +168,28 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
+               <a href="{{ route('admin.registeredAndNonRegisteredPatients') }}" class="nav-link">
+                 <p class="zw_12">
+                   Regis... & non Regis... Patients
+                 </p>
+               </a>
+
+             </li>
+           </ul>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
                <a href="{{ url('admin/bookings') }}" class="nav-link">
-                 <i class="nav-icon far fa-envelope"></i>
                  <p class="zw_12">
                    Appointments
+                 </p>
+               </a>
+             </li>
+           </ul>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="{{ url('admin/rejectedrequested') }}" class="nav-link">
+                 <p class="zw_12">
+                   Rejected appointments
                  </p>
                </a>
              </li>
@@ -248,9 +271,9 @@
            </ul>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="{{ url('admin/payments') }}" class="nav-link">
+               <a href="{{ url('admin/doctorbanking') }}" class="nav-link">
                  <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Payments</p>
+                 <p class="zw_12">Doctors banking info...</p>
                </a>
              </li>
            </ul>
@@ -267,21 +290,15 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="{{ url('admin/locations') }}" class="nav-link">
+               <a href="{{ url('admin/zonelist') }}" class="nav-link">
                  <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Add Country & City</p>
-               </a>
-             </li>
-             <li class="nav-item">
-               <a href="{{ url('admin/zones') }}" class="nav-link">
-                 <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Select Zone</p>
+                 <p class="zw_12">Add country & City</p>
                </a>
              </li>
              <li class="nav-item">
                <a href="{{ url('admin/zonelist') }}" class="nav-link">
                  <!-- <i class="far fa-circle nav-icon"></i> -->
-                 <p class="zw_12">Zone List</p>
+                 <p class="zw_12">Add Zone</p>
                </a>
              </li>
            </ul>

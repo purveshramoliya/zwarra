@@ -10,6 +10,13 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6 zw_back">
+              <a onclick="history.back()" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
+                <i class="fas fa-arrow-left right mr-2"></i>Back
+              </a>
+            </div>
+          </div>
           <!-- <div class="row mb-2">
             <div class="col-sm-6 zw_back">
               <a href="" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
@@ -18,15 +25,16 @@
             </div>
           </div> -->
           <div class="row">
-           <div class="col-12 col-md-12 col-lg-6">
+            <div class="col-12 col-md-12 col-lg-6">
               <h1 class="poppins-semibold zw_46 zw_text_AF2245 mt-2">
-              <span class="mr-3"><img src="{{url('dist/img/zwaara_user.png')}}" alt="Zwaara User" class=" "></span>Our Services</h1>
+                <span class="mr-3"><img src="{{url('dist/img/zwaara_user.png')}}" alt="Zwaara User" class=" "></span>Our Services
+              </h1>
               <p class="poppins-regular zw_16 zw_text_111535 mt-2 mb-1">You have 10 List of main services</p>
             </div>
           </div>
         </div><!-- /.container-fluid -->
       </section>
-       
+
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <div class="row">
@@ -57,9 +65,9 @@
               @endif
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
-              <div class="pre_next">
-                {{ $ourservices->links() }}
-              </div>
+                <div class="pre_next">
+                  {{ $ourservices->links() }}
+                </div>
                 <table class="table table-hover text-nowrap zw_table">
                   <thead class="zw_bg_AF2245 zw_text_ffffff">
                     <tr>
@@ -83,11 +91,11 @@
                         <form id="statusForm" class="statusForm">
                           @csrf
                           <input type="hidden" name="id" id="id" class="id" value="{{ $ourservices->id }}">
-                          <input type="checkbox" data-toggle="toggle" data-size="sm" id="StatusUpdate" class="StatusUpdate" data-on="Active" data-off="In Active"  {{ $ourservices->Status ? 'checked' : '' }}> 
+                          <input type="checkbox" data-toggle="toggle" data-size="sm" id="StatusUpdate" class="StatusUpdate" data-on="Active" data-off="In Active" {{ $ourservices->Status ? 'checked' : '' }}>
                         </form>
                       </td>
                       <td class="poppins-regular zw_14 zw_text_333333">
-                         <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('ourservices.show',$ourservices->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> </a>
+                        <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('ourservices.show',$ourservices->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> </a>
                       </td>
                       <td class="poppins-regular zw_14 zw_text_333333">
                         <form action="{{ route('ourservices.destroy',$ourservices->id) }}" method="POST">
@@ -97,8 +105,8 @@
 
                           <button type="submit" class="btn zw_text_AF2245 zw_a zw_24"><i class="fas fa-trash"></i></button>
                         </form>
-                        </td>
-                      
+                      </td>
+
                     </tr>
                     @endforeach
                   </tbody>
@@ -116,11 +124,11 @@
   </div>
   <script>
     $(document).ready(function() {
-      
-        $('.StatusUpdate').change(function() {
+
+      $('.StatusUpdate').change(function() {
         var status = $(this).prop('checked');
         var id = $(this).closest('.statusForm').find('.id').val();
-        
+
         $.ajax({
           url: "{{ route('osupdate.status') }}",
           method: 'POST',
@@ -131,7 +139,7 @@
           },
           success: function(response) {
             console.log('Status updated successfully');
-                // You can add any additional logic here if needed
+            // You can add any additional logic here if needed
           },
           error: function(xhr, status, error) {
             console.error('Error updating status:', error);

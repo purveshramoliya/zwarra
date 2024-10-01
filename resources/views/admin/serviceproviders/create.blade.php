@@ -101,11 +101,11 @@
                 <div class="card-body">
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-4">
-                      <label for="exampleInputErname" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">En name</label><span style="color: red;">*</span></label>
+                      <label for="exampleInputErname" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">En name<span style="color: red;">*</span></label>
                       <input type="text" name="Enname" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputErname" placeholder="Enter Enname" value="{{ old('Enname') }}">
                     </div>
                     <div class="form-group col-md-4">
-                      <label for="exampleInputarname" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Ar name </label><span style="color: red;">*</span></label>
+                      <label for="exampleInputarname" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Ar name <span style="color: red;">*</span></label>
                       <input type="text" name="Arname" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputarname" placeholder="Enter Arname" value="{{ old('Arname') }}">
                     </div>
                     <div class="form-group col-md-4">
@@ -121,8 +121,15 @@
                   <div class="form-row zw_form_row">
                     <div class="form-group col-md-4">
                       <label for="exampleInputPassword1" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Password <span style="color: red;">*</span></label>
-                      <input type="password" name="Password" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputPassword1" placeholder="Password" value="{{ old('Password') }}" pattern="^\S+$"
+                      <!-- <input type="password" name="Password" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputPassword1" placeholder="Password" value="{{ old('Password') }}" pattern="^\S+$"
                         title="Password must not contain any spaces."
+                        required> -->
+                      <input type="password" name="Password" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control"
+                        id="exampleInputPassword1"
+                        placeholder="Password"
+                        value="{{ old('Password') }}"
+                        pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9 ]{6,8}$"
+                        title="Password must be 6-8 characters long, contain at least one letter and one number, and no special characters."
                         required>
                       @error('Password')
                       <div class="text-danger">{{ $message }}</div>
@@ -143,7 +150,7 @@
                     </div> -->
                     <div class="form-group col-md-4">
                       <label for="exampleInputcommerticalregisternumber" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Commerical register number <span style="color: red;">*</span></label>
-                      <input type="phone" name="Crnumber" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputcommerticalregisternumber" placeholder="Enter commerical register number" value="{{ old('Crnumber') }}" style="font-size: 17px;">
+                      <input type="phone" name="Crnumber" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputcommerticalregisternumber" placeholder="Commerical register number" value="{{ old('Crnumber') }}" style="font-size: 17px;">
                     </div>
                   </div>
                   <div class="form-row zw_form_row">
@@ -298,7 +305,7 @@
                       </select>
                     </div>
                     <div class="form-group col-md-4">
-                    <label for="exampleInputvisitfees" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535"></label>
+                      <label for="exampleInputvisitfees" class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535"></label>
                       <div class="form-check form-check-inline pb35">
                         <input type="radio" name="Location" id="visitCenter" class="form-check-input" value="Visit Center" checked>
                         <label for="visitCenter" class="form-check-label poppins-regular zw_18 zw_text_898B9F">Visit Center</label>

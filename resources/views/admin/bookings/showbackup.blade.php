@@ -110,7 +110,7 @@
                         <h3 class="poppins-semibold zw_20 mt-4 mb-4">Booking Details</h3>
                         <div class="shadow p-3">
                             <h5 class="poppins-semibold zw_20  mt-4 mb-4">Patient Details</h5>
-
+                           
 
 
 
@@ -126,7 +126,7 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading" role="tab" id="heading{{ $i }}">
                                                     <h4 class="panel-title">
-                                                        <a data-toggle="collapse" class="bg-light" data-parent="#accordion" href="#collapseOne{{ $i }}" aria-expanded="true" aria-controls="collapseOne">
+                                                        <a data-toggle="collapse{{ $i }}" class="bg-light" data-parent="#accordion" href="#collapseOne{{ $i }}" aria-expanded="true" aria-controls="collapseOne">
                                                         </a>
                                                     </h4>
                                                 </div>
@@ -206,13 +206,103 @@
 
                                         </div>
                                     </div>
-                                    @php
-                                    $i++; // Increment the index for the next item
-                                    @endphp
                                     @endforeach
                                 </div>
                             </div>
-                            
+                            <div id="accordion" class="accordion">
+                                @foreach ($Patients as $Patient)
+                                <div class="card bookings-show-background">
+                                    <div class="card-body">
+                                        <div class="container">
+                                            <div class="">
+                                                <div class="" id="heading{{ $i }}">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn float-right bg-light" data-toggle="collapse" data-target="#collapse{{ $i }}" aria-expanded="false" aria-controls="collapse{{ $i }}">
+                                                            <i class="fas fa-minus float-right"></i>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+
+                                                <div id="collapse{{ $i }}" class="collapse show" aria-labelledby="heading{{ $i }}" data-parent="#accordion">
+                                                    <div class="card-body">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Patient name</p>
+                                                                <p class="zw_15 font-weight-bold"> {{ $Patient['Firstname'] }} {{$Patient['Lastname']}}</p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Patient ID</p>
+                                                                <p class="zw_15 font-weight-bold"> TRF4R54385735 </p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Gender</p>
+                                                                <p class="zw_15 font-weight-bold">{{ $Patient['Gender'] }}</p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Blood Group</p>
+                                                                <p class="zw_15 font-weight-bold">False</p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Phone mobile if any</p>
+                                                                <p class="zw_15 font-weight-bold"> {{ $Patient['Phone'] }} </p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Date of birth</p>
+                                                                <p class="zw_15 font-weight-bold"> {{ $Patient['Dob'] }} </p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Nationality </p>
+                                                                <p class="zw_15 font-weight-bold">{{ $Patient['Country'] }}</p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Nationality ID</p>
+                                                                <p class="zw_15 font-weight-bold">{{ $Patient['Nationalid'] }}</p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Relationship</p>
+                                                                <p class="zw_15 font-weight-bold"> My self </p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Booking Reference ID </p>
+                                                                <p class="zw_15 font-weight-bold"> BKD325331 </p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Final appointment status </p>
+                                                                <p class="zw_15 font-weight-bold">Completed</p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">VAT Applied</p>
+                                                                <p class="zw_15 font-weight-bold">Yes</p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Service</p>
+                                                                <p class="zw_15 font-weight-bold">My self</p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Transaction Date & Time </p>
+                                                                <p class="zw_15 font-weight-bold"> My self </p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Status </p>
+                                                                <p class="zw_15 font-weight-bold">Confirm</p>
+                                                            </div>
+                                                            <div class="form-group col-md-3 zw_18 poppins-medium">
+                                                                <p class="zw_15">Transaction ID</p>
+                                                                <p class="zw_15 font-weight-bold">App536576543</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                @php
+                                $i++; // Increment the index for the next item
+                                @endphp
+                                @endforeach
+                            </div>
                         </div>
 
 
