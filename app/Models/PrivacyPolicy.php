@@ -16,6 +16,7 @@ class PrivacyPolicy extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'Name',
         'Tcenglish',
         'Tcarabic',
         'Status',

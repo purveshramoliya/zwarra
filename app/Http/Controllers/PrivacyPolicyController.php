@@ -44,14 +44,9 @@ class PrivacyPolicyController extends Controller
             'Tcenglish' => 'required|string',
         ]);
 
-        $existingPolicy = PrivacyPolicy::where('Status', 1)->first();
-
-        if ($existingPolicy) {
-            return response()->json(['error' => 'An active privacy policy already exists. Please deactivate the current policy before adding a new one. '], 400);
-        }
-
          // Store file information in the database
         $privacypolicy = new PrivacyPolicy();
+        $privacypolicy->Name = $request->input('Name');
         $privacypolicy->Tcenglish = $request->input('Tcenglish');
         $privacypolicy->Tcarabic = $request->input('Tcarabic');
         $privacypolicy->Status = 1;
@@ -96,7 +91,7 @@ class PrivacyPolicyController extends Controller
     {
         //
      $request->validate([
-        'Tcenglish' => 'required',
+        'Name' => 'required',
     ]);
 
      $privacypolicy->update($request->all());
@@ -147,7 +142,20 @@ class PrivacyPolicyController extends Controller
     // Method to retrieve the current PrivacyPolicy
     public function GetPrivacypolicy()
     {
-        $privacyPolicy = PrivacyPolicy::where('Status', 1)->first(['id','Tcenglish','Tcarabic']);
+        $privacyPolicy = PrivacyPolicy::where('Status', 1)->first(['id','Name','Tcenglish','Tcarabic']);
+
+        if (!$privacyPolicy) {
+            return response()->json(['error' => 'No active privacy policy found'], 404);
+        }
+
+        return response()->json($privacyPolicy);
+    }
+
+    
+    // Method to retrieve the current PrivacyPolicy
+    public function GetAllPrivacypolicy()
+    {
+        $privacyPolicy = PrivacyPolicy::where('Status', 1)->get(['id','Name','Tcenglish','Tcarabic']);
 
         if (!$privacyPolicy) {
             return response()->json(['error' => 'No active privacy policy found'], 404);

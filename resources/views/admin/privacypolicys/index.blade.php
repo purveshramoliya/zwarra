@@ -55,6 +55,7 @@
                 <table class="table table-hover text-nowrap zw_table">
                   <thead class="zw_bg_AF2245 zw_text_ffffff">
                     <tr>
+                      <th class="poppins-medium zw_18">Name</th>
                       <th class="poppins-medium zw_18">English Privacy & Policy</th>
                       <th class="poppins-medium zw_18">Arabic Privacy & Policy</th>
                       <th class="poppins-medium zw_18" colspan="2"></th>
@@ -63,6 +64,7 @@
                   <tbody>
                     @foreach ($privacypolicy as $privacypolicy)
                     <tr>
+                      <td class="poppins-regular zw_14 zw_text_333333">{{ $privacypolicy->Name }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $privacypolicy->Tcenglish }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $privacypolicy->Tcarabic }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333" >

@@ -150,5 +150,18 @@ class TermConditionController extends Controller
             }
     
             return response()->json($termCondition);
-        }
+    }
+
+    public function GetAllTermcondition(Request $request)
+    {
+            // Fetch the terms and conditions with status = 1
+            $termCondition = TermCondition::where('Status', 1)
+                ->get(['id','Name','Tcenglish', 'Tcarabic']); // Select only the necessary columns
+    
+            if (!$termCondition) {
+                return response()->json(['error' => 'Terms and conditions not found or inactive'], 404);
+            }
+    
+            return response()->json($termCondition);
+    }
 }

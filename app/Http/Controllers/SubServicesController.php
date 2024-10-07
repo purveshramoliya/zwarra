@@ -410,14 +410,24 @@ class SubServicesController extends Controller
                             ->whereNull('Subservicename')
                             ->where('status', 1)
                             ->get();
+         // Calculate the sum of the prices of the retrieved services
+         $totalPrice = $services->sum('Price');
 
        // Check if any services are found
         if ($services->isEmpty()) {
             return response()->json(['error' => 'Sub services not found'], 404);
         }
-        
-        return response()->json($services);
-    }
+
+         // Prepare the response data
+         $response = [
+            'packagename' => $request->packagename,
+            'total_price' => $totalPrice,
+            'services' => $services
+        ];
+
+        // Return the JSON response
+        return response()->json($response);
+    }  
 
      public function subservicesinsideapi(Request $request)
     {

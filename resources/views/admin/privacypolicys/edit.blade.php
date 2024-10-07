@@ -41,13 +41,21 @@
                                 @method('PUT')
                                 <div class="card-body">
                                 <div class="form-row zw_form_row">
+                                    <div class="form-group col-md-6">
+                                        <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputName">Name</label>
+                                        <input type="text" name="Name" value="{{ $privacypolicy->Name }}" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputName" placeholder="Enter Name">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                    </div>
+                                </div>
+                                <div class="form-row zw_form_row">
                                    <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputTcenglish">English Privacy & Policy</label>
                                    <textarea name="Tcenglish"class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="editor" placeholder="Enter Terms & Conditions in english">{{ $privacypolicy->Tcenglish}}</textarea>
                                </div>
                                <div class="form-row zw_form_row">
                                 <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputTcarabic">Arabic Privacy & Policy <span style="color: red;">*</span></label>
                                 <textarea name="Tcarabic"class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="editor" placeholder="Enter Terms & Conditions in arabic">{{ $privacypolicy->Tcarabic}}</textarea>
-                            </div>
+                               </div>
                         </div>
                         <div class="row">
                             <div class="col-12">

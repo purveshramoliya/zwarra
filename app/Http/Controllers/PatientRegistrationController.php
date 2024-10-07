@@ -182,18 +182,36 @@ class PatientRegistrationController extends Controller
 
         if ($patient) {
             // Example: Creating a token (assuming you use Laravel Sanctum for API authentication)
-             $token = $patient->createToken('authToken')->plainTextToken;
+            $token = $patient->createToken('authToken')->plainTextToken;
              // Retrieve firstname and lastname
+            $patientid = $patient->id;
             $firstname = $patient->Firstname;
             $lastname = $patient->Lastname;
+            $phone = $patient->Phone;
+            $email = $patient->Email;
+            $dob = $patient->Dob;
+            $nationalid = $patient->Nationalid;
+            $maritalstatus = $patient->Maritalstatus;
+            $country = $patient->Country;
+            $gender = $patient->Gender;
+            $type = $patient->Type;
     
             // Create the username by concatenating firstname and lastname
             $username = $firstname . ' ' . $lastname;
 
             return response()->json([
                 'message' => 'Login successful',
-                 'token' => $token, // Uncomment if using token authentication
+                 'token' => $token, 
+                 'id' => $patientid, // Uncomment if using token authentication
                  'username' => $username,
+                 'phone' => $phone,
+                 'email' => $email,
+                 'dob' => $dob,
+                 'nationalid' => $nationalid,
+                 'maritalstatus' => $maritalstatus,
+                 'country' => $country,
+                 'gender' => $gender,
+                 'type' => $type,
             ], 200);
         } else {
             return response()->json([

@@ -39,6 +39,14 @@
               <form action="{{ route('privacypolicys.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
+                <div class="form-row zw_form_row">
+                  <div class="form-group col-md-6">
+                      <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEnname">Name</label>
+                      <input type="text" name="Name" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputname" placeholder="Enter Name">
+                    </div>
+                    <div class="form-group col-md-6">
+                  </div>
+                  </div>
                   <div class="form-row zw_form_row">
                     <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputTcenglish">English Privacy & Policy</label>
                     <textarea name="Tcenglish"class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="editor" placeholder="Enter Privacy & Policy in english"></textarea>

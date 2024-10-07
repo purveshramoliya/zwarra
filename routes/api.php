@@ -26,6 +26,7 @@ use App\Http\Controllers\BookingsAttachmentController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\TermConditionController;
 use App\Http\Controllers\PrivacyPolicyController;
+use App\Http\Controllers\PatientAddressController;
 
 
 
@@ -102,6 +103,11 @@ Route::get('/fetchZoneData/{latitude}/{longitude}', [ZoneController::class, 'fet
 Route::get('/getHealthcare/{id}', [ServiceProviderController::class, 'getHealthcare']);
 Route::post('/storepayment', [PaymentsController::class, 'store']);
 Route::get('/terms-conditions', [TermConditionController::class, 'GetTermcondition']);
+Route::get('/all-terms-conditions', [TermConditionController::class, 'GetAllTermcondition']);
 Route::get('/privacy-policy', [PrivacyPolicyController::class, 'GetPrivacypolicy']);
+Route::get('/all-privacy-policy', [PrivacyPolicyController::class, 'GetAllPrivacypolicy']);
 
-
+Route::post('/createaddress', [PatientAddressController::class, 'store']); // Add address
+Route::put('updateaddress/{id}', [PatientAddressController::class, 'update']); // Update address
+Route::delete('deleteaddress/{id}', [PatientAddressController::class, 'destroy']);
+Route::get('getaddress/{userid}', [PatientAddressController::class, 'GetAddressByUserid']);
