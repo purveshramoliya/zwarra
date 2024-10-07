@@ -135,7 +135,7 @@
                                   <input type="text" name="Entitle" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputEntitle" placeholder="Services">
                                 </div>
                                 <div class="form-group col-md-6">
-                                  <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputArtitle">Arabic available test title 
+                                  <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputArtitle">Arabic available test title
                                   </label>
                                   <input type="text" name="Artitle" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputArtitle" placeholder="Services">
                                 </div>
@@ -146,7 +146,7 @@
                                   <input type="text" name="Entitle" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputEntitle" placeholder="Enter test name">
                                 </div>
                                 <div class="form-group col-md-6">
-                                  <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputArtitle">Test Included Arabic 
+                                  <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputArtitle">Test Included Arabic
                                   </label>
                                   <input type="text" name="Artitle" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputArtitle" placeholder="Enter test name">
                                 </div>
@@ -255,6 +255,7 @@
                     <th class="poppins-medium zw_18">Price</th>
                     <th class="poppins-medium zw_18">Description</th>
                     <th class="poppins-medium zw_18">Instrucation</th>
+                    <th class="poppins-medium zw_18">Single</th>
                     <th class="poppins-medium zw_18">Status</th>
                     <!-- <th class="poppins-medium zw_18">Single</th>
                     <th class="poppins-medium zw_18">Packages</th> -->
@@ -272,6 +273,9 @@
                     </td>
                     <td class="poppins-regular zw_14 zw_text_333333">
                       <div class="sub-description">{{ $subservice->Eninstrucation }}</div>
+                    </td>
+                    <td class="poppins-regular zw_14 zw_text_333333">
+                      <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('subservices.single',['id' => $subservice->id]) }}"><i class="fa fa-cloud" aria-hidden="true"></i> </a>
                     </td>
                     <td class="poppins-regular zw_14 zw_text_333333">
                       <label class="switch">
