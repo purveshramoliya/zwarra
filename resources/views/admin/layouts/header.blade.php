@@ -30,9 +30,9 @@
           </a>
         </div>
       </li>
-      <!-- <a class="btn zw_lanbtn float-right m-2 poppins-medium zw_18" href="{{ route('images.index') }}" >
+      <a class="btn zw_lanbtn float-right m-2 poppins-medium zw_18" href="{{ route('images.index') }}" >
         Banner
-      </a> -->
+      </a>
      <!--  @guest
           <li class="nav-item">
             <a class="nav-link" href="{{ route('login') }}">Login</a>
