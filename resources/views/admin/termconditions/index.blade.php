@@ -10,21 +10,22 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <div class="container-fluid">
-         <!--  <div class="row mb-2">
+          <div class="row mb-2">
             <div class="col-sm-6 zw_back">
-              <a href="" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
+              <a onclick="history.back()" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
                 <i class="fas fa-arrow-left right mr-2"></i>Back
               </a>
             </div>
-          </div> -->
+          </div>
           <div class="row">
-           <div class="col-12 col-md-12 col-lg-6">
+            <div class="col-12 col-md-12 col-lg-6">
               <h1 class="poppins-semibold zw_46 zw_text_AF2245 mt-2">
-              <span class="mr-3"><img src="{{url('dist/img/zwaara_user.png')}}" alt="Zwaara User" class=" "></span> Terms & Conditions</h1>
+                <span class="mr-3"><img src="{{url('dist/img/zwaara_user.png')}}" alt="Zwaara User" class=" "></span> Terms & Conditions
+              </h1>
               <!-- <p class="poppins-regular zw_16 zw_text_111535 mt-2 mb-1">You have 10 List of main services</p> -->
               <!-- <h1>Our MedicalSpecialties</h1> -->
             </div>
-           <div class="col-12 col-md-12 col-lg-6">
+            <div class="col-12 col-md-12 col-lg-6">
               <!-- <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item active"> MedicalSpecialties</li>
@@ -67,12 +68,12 @@
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $termcondition->Name }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $termcondition->Tcenglish }}</td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $termcondition->Tcarabic }}</td>
-                      <td class="poppins-regular zw_14 zw_text_333333" >
+                      <td class="poppins-regular zw_14 zw_text_333333">
                         <form id="statusForm" class="statusForm">
                           @csrf
                           <input type="hidden" name="tcid" id="tcid" class="tcid" value="{{ $termcondition->id }}">
-                          <input type="checkbox" data-toggle="toggle" data-size="sm" id="StatusUpdate" class="StatusUpdate" data-on="Active" data-off="In Active"  onclick="event.preventDefault();" {{ $termcondition->Status ? 'checked' : '' }}> 
-                        </form>     
+                          <input type="checkbox" data-toggle="toggle" data-size="sm" id="StatusUpdate" class="StatusUpdate" data-on="Active" data-off="In Active" onclick="event.preventDefault();" {{ $termcondition->Status ? 'checked' : '' }}>
+                        </form>
                       </td>
                       <td>
                         <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('termconditions.edit',$termcondition->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> </a>
@@ -94,10 +95,10 @@
   </div>
   <script>
     $(document).ready(function() {
-       $('.StatusUpdate').change(function() {
+      $('.StatusUpdate').change(function() {
         var status = $(this).prop('checked');
         var tcid = $(this).closest('.statusForm').find('.tcid').val();
-        
+
         $.ajax({
           url: "{{ route('tcupdate.status') }}",
           method: 'POST',
@@ -108,7 +109,7 @@
           },
           success: function(response) {
             console.log('Status updated successfully');
-                // You can add any additional logic here if needed
+            // You can add any additional logic here if needed
           },
           error: function(xhr, status, error) {
             console.error('Error updating status:', error);
@@ -117,8 +118,8 @@
       });
     });
     $(".StatusUpdate INPUT[type='checkbox']").click(function(evt) {
-    evt.stopPropagation();
-});
+      evt.stopPropagation();
+    });
   </script>
 </body>
 </html>

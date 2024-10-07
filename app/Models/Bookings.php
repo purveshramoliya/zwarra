@@ -39,6 +39,7 @@ class Bookings extends Model
         'Typeoftest',
         'Typeofvisit',
         'Gender',
+        'Phone',
     ];
 
     public function bookingsattachment()

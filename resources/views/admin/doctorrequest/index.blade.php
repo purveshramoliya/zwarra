@@ -10,7 +10,14 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <div class="container-fluid">
-        <!-- <div class="row mb-2">
+          <div class="row mb-2">
+            <div class="col-sm-6 zw_back">
+              <a onclick="history.back()" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
+                <i class="fas fa-arrow-left right mr-2"></i>Back
+              </a>
+            </div>
+          </div>
+          <!-- <div class="row mb-2">
             <div class="col-sm-6 zw_back">
               <a href="" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
                 <i class="fas fa-arrow-left right mr-2"></i>Back
@@ -18,9 +25,11 @@
             </div>
           </div> -->
           <div class="row">
-           <div class="col-12 col-md-12 col-lg-6">
-            <h1 class="poppins-semibold zw_46 zw_text_AF2245 mt-2">
-              <span class="mr-3"><img src="{{url('dist/img/zwaara_user.png')}}" alt="Zwaara User" class=" "></span>Join Doctor Requests</h1>
+            <div class="col-12 col-md-12 col-lg-6">
+              <h1 class="poppins-semibold zw_46 zw_text_AF2245 mt-2">
+                <span class="mr-3"><img src="{{url('dist/img/zwaara_user.png')}}" alt="Zwaara User" class=" "></span>Join Doctor Requests
+              </h1>
+              <h5 class="pt-2" style="font-size: 12px;">You have 4 Join request doctors</h5>
               <!-- <p class="poppins-regular zw_16 zw_text_111535 mt-2 mb-1">You have 4 Join request doctors</p> -->
               <!-- <h1>Join Doctor Requests</h1> -->
             </div>
@@ -38,7 +47,7 @@
       </div> -->
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-12 col-md-12 col-lg-6">
             <form class="zw_search_form ">
               <div class="input-group input-group-sm">
@@ -54,7 +63,7 @@
           <div class="col-12 col-md-12 col-lg-6">
             <a class="btn zw_add_btn float-right  poppins-medium zw_18" href="{{ route('doctorrequest.create') }}"> <i class="fas fa-plus right mr-2"></i>Add New Join Doctor Request</a>
           </div>
-        </div>
+        </div> -->
         <!-- <div class="row">
           <div class="col-12">
             <a class="btn btn-success float-right m-2" href="{{ route('doctorrequest.create') }}">Add New Join Doctor Request</a>
@@ -77,85 +86,107 @@
                 <table class="table table-hover text-nowrap zw_table">
                   <thead class="zw_bg_AF2245 zw_text_ffffff">
                     <tr>
-                      <th class="poppins-medium zw_18">Firstname</th>
-                      <th class="poppins-medium zw_18">Lastname</th>
+                      <th class="poppins-medium zw_18">Date</th>
+                      <th class="poppins-medium zw_18">Name</th>
                       <th class="poppins-medium zw_18">Email</th>
                       <th class="poppins-medium zw_18">Phone</th>
-                      <th class="poppins-medium zw_18">City</th>
-                      <th class="poppins-medium zw_18">Country</th>
-                      <th class="poppins-medium zw_18">Degree</th>
-                      <th class="poppins-medium zw_18">Department</th>
-                      <th class="poppins-medium zw_18" colspan="3"></th>
+                      <th class="poppins-medium zw_18">Year experience</th>
+                      <th class="poppins-medium zw_18">Medical specialties</th>
+                      <th class="poppins-medium zw_18" colspan="3">Doctor position</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach ($doctorrequest as $doctorrequest)
                     <tr>
-                     <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->firstname }}</td>
-                     <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->lastname }}</td>
-                     <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->email }}</td>
-                     <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->phone }}</td>
-                     <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->city }}</td>
-                     <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->country }}</td>
-                     <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->degree }}</td>
-                     <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->department }}</td>
-                     <td class="poppins-regular zw_14 zw_text_333333">
-                       <form id="statusForm" class="statusForm">
-                        @csrf
-                        <input type="hidden" name="drid" id="drid" class="drid" value="{{ $doctorrequest->id }}">
-                        <input type="checkbox" data-toggle="toggle" data-size="sm" id="StatusUpdate" class="StatusUpdate" data-on="Approved" data-off="Decline"  {{ $doctorrequest->Status ? 'checked' : '' }}> 
-                      </form> 
-                    </td>
-                    <td class="poppins-regular zw_14 zw_text_333333">
-                     <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('doctorrequest.show',$doctorrequest->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> </a>
-                   </td>
-                   <td class="poppins-regular zw_14 zw_text_333333">
-                     <form action="{{ route('doctorrequest.destroy',$doctorrequest->id) }}" method="POST">
-                      <!-- <a class="btn zw_btn" href="{{ route('doctorrequest.show',$doctorrequest->id) }}">Show</a> -->
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn zw_text_AF2245 zw_a zw_24"><i class="fas fa-trash"></i></button>
-                    </form>
-                  </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-          <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-      </div>
-    </div>
-    <!-- /.row -->
-  </section>
-</div>
-@include('admin.layouts.footer')
-</div>
-<script>
-  $(document).ready(function() {
-    $('.StatusUpdate').change(function() {
-      var status = $(this).prop('checked');
-      var drid = $(this).closest('.statusForm').find('.drid').val();
+                      <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->created_at }}</td>
+                      <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->firstname }}</td>
+                      <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->email }}</td>
+                      <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->phone }}</td>
+                      <td class="poppins-regular zw_14 zw_text_333333">3</td>
+                      <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->specialization }}</td>
+                      <td class="poppins-regular zw_14 zw_text_333333">Specialist</td>
+                      <td class="poppins-regular zw_14 zw_text_333333">{{ $doctorrequest->department }}</td>
+                      <td class="poppins-regular zw_14 zw_text_333333">
+                        <a class="btn zw_btn_pdf" href="">Approve</a>
+                        <a class="btn zw_btn_decline" href="">Decline</a>
+                        <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('doctorrequest.show',$doctorrequest->id) }}" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit" aria-hidden="true"></i> </a>
 
-      $.ajax({
-        url: "{{ route('drupdate.status') }}",
-        method: 'POST',
-        data: {
-          _token: "{{ csrf_token() }}",
-          id:  drid,
-          status: status
-        },
-        success: function(response) {
-          console.log('Status updated successfully');
-                // You can add any additional logic here if needed
-        },
-        error: function(xhr, status, error) {
-          console.error('Error updating status:', error);
-        }
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="form-row zw_form_row">
+                                  <div class="form-group col-md-6">
+                                    <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEnname">Email</label>
+                                    <input type="text" name="email" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputEnname" placeholder="Abdulrehman.essa@gmail.com">
+                                  </div>
+                                  <div class="form-group col-md-6">
+                                    <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputArname">Phone</label>
+                                    <input type="text" name="phone" class="form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputArname" placeholder="580720234">
+                                  </div>
+                                </div>
+                                <div class="form-row zw_form_row">
+                                  <div class="col-md-6">
+                                    <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="statusActive" style="color: #af2245;">Status</label><br>
+                                    <input type="radio" class="mr-2" id="statusActive" style="width:20px;height:20px;" name="status" checked>
+                                    <label for="statusActive" style="font-weight:400;">Active</label>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="row">
+                                        <button type="submit" class="btn zw_submit zw_submit_wh">Update</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <!-- /.row -->
+      </section>
+    </div>
+    @include('admin.layouts.footer')
+  </div>
+  <script>
+    $(document).ready(function() {
+      $('.StatusUpdate').change(function() {
+        var status = $(this).prop('checked');
+        var drid = $(this).closest('.statusForm').find('.drid').val();
+
+        $.ajax({
+          url: "{{ route('drupdate.status') }}",
+          method: 'POST',
+          data: {
+            _token: "{{ csrf_token() }}",
+            id: drid,
+            status: status
+          },
+          success: function(response) {
+            console.log('Status updated successfully');
+            // You can add any additional logic here if needed
+          },
+          error: function(xhr, status, error) {
+            console.error('Error updating status:', error);
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
 </body>
 </html>
