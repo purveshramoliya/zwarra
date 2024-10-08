@@ -23,6 +23,7 @@ use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\HealthcareController;
 use App\Http\Controllers\OurServicesController;
 use App\Http\Controllers\SubServicesController;
+use App\Http\Controllers\PendingOrderController;
 use App\Http\Controllers\PractitionersController;
 use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\TermConditionController;
@@ -88,6 +89,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('admin/registered-and-non-registered-patients', [RegisteredAndNonRegisteredPatients::class, 'index'])
     ->name('admin.registeredAndNonRegisteredPatients');
     Route::get('admin/body', [BodyController::class,'index'])->name('admin.body');
+    Route::get('admin/pendingorder', [PendingOrderController::class,'index'])->name('admin.pendingorder');
+    Route::get('admin/pendingorderdecline', [PendingOrderController::class, 'decline'])->name('admin.pendingorderdecline');
     Route::get('admin/body/create', [BodyController::class,'create'])->name('admin.body.create');
 
     Route::resource('admin/bankings', BankingsController::class);
