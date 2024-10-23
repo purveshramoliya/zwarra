@@ -1,4 +1,10 @@
 @include('admin.layouts.headermodule')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
   /* styles.css */
   body {
@@ -51,6 +57,10 @@
     font-size: 16px;
     border: none;
   }
+
+  .error {
+    color: red;
+  }
 </style>
 
 <body class="hold-transition sidebar-mini zw_sidebar">
@@ -80,7 +90,7 @@
               <a class="btn btn-primary m-2" href="{{ route('serviceproviders.index') }}"> Back</a>
             </div> -->
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="">
               <!-- <div class="card-header m-2">
                 <h3 class="card-title">Add new service provider</h3>
               </div> -->
@@ -96,7 +106,8 @@
               </div>
               @endif
               <!-- form start -->
-              <form action="{{ route('serviceproviders.store') }}" method="POST" enctype="multipart/form-data">
+              <!-- <form id="providerform" action="{{ route('serviceproviders.store') }}" method="POST" enctype="multipart/form-data"> -->
+              <form id="providerform"  method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
                   <div class="form-row zw_form_row">
@@ -112,6 +123,7 @@
                       <label for="exampleInputEmail1" class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535">Email<span style="color: red;">*</span></label>
                       <input type="email" name="Email" class="pb35 form-control @error('Email') is-invalid @enderror poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputEmail1" placeholder="Enter email" value="{{ old('Email') }}" required autofocus>
                     </div>
+                    <p id="Email"></p>
                     @error('Email')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -212,8 +224,8 @@
                       </div>
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" name="Regcertificate" class="custom-file-input" id="exampleInputvatcertificate" onchange="updateFileName(this)">
-                          <label class="custom-file-label zw_form_control" for="exampleInputvatcertificate">Choose file</label>
+                          <input type="file" name="Regcertificate" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" id="exampleInputvatcertificate" value="{{ old('Regcertificate') }}" onchange="updateFileName(this)">
+                          <!-- <label class="custom-file-label zw_form_control" for="exampleInputvatcertificate">Choose file</label> -->
                         </div>
                       </div>
                       <!-- <input type="file" name="Regcertificate" id="Regcertificate"> -->
@@ -225,8 +237,8 @@
                       </div>
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" name="Logo" class="custom-file-input" id="exampleInputlogo" onchange="updateFileName(this)">
-                          <label class="custom-file-label zw_form_control" for="exampleInputlogo">Choose file</label>
+                          <input type="file" name="Logo" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" value="{{ old('Logo') }}" id="exampleInputlogo" onchange="updateFileName(this)">
+                          <!-- <label class="custom-file-label zw_form_control" for="exampleInputlogo">Choose file</label> -->
                         </div>
                       </div>
                       <!-- <input type="file" name="Logo" id="Logo"> -->
@@ -238,8 +250,8 @@
                       </div>
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" name="Comcerregister" class="custom-file-input" id="exampleInputcomregister" onchange="updateFileName(this)">
-                          <label class="custom-file-label zw_form_control" for="exampleInputcomregister">Choose file</label>
+                          <input type="file" name="Comcerregister" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" value="{{ old('Comcerregister') }}" id="exampleInputcomregister" onchange="updateFileName(this)">
+                          <!-- <label class="custom-file-label zw_form_control" for="exampleInputcomregister">Choose file</label> -->
                         </div>
                       </div>
                       <!-- <input type="file" name="Comcerregister" id="Comcerregister"> -->
@@ -253,8 +265,8 @@
                       </div>
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" name="Healthlicence" class="custom-file-input" id="exampleInputhealthlicence" onchange="updateFileName(this)">
-                          <label class="custom-file-label zw_form_control" for="exampleInputhealthlicence">Choose file</label>
+                          <input type="file" name="Healthlicence" class="pb35 form-control poppins-regular zw_18 zw_text_898B9F zw_form_control" value="{{ old('Healthlicence') }}" id="exampleInputhealthlicence" onchange="updateFileName(this)">
+                          <!-- <label class="custom-file-label zw_form_control" for="exampleInputhealthlicence">Choose file</label> -->
                         </div>
                       </div>
                     </div>
@@ -409,6 +421,11 @@
   <script>
     $(document).ready(function() {
       var countries = [{
+          "code": "SA",
+          "flag": "sa",
+          "phoneCode": "+966",
+          "name": "Saudi Arabia"
+        }, {
           "code": "AF",
           "flag": "af",
           "phoneCode": "+93",
@@ -1500,13 +1517,7 @@
           "phoneCode": "+239",
           "name": "Sao Tome and Principe"
         },
-        {
-          "code": "SA",
-          "flag": "sa",
-          "phoneCode": "+966",
-          "name": "Saudi Arabia"
-        },
-        {
+   {
           "code": "SN",
           "flag": "sn",
           "phoneCode": "+221",
@@ -1807,6 +1818,161 @@
       });
     });
   </script>
+  <!-- Include jQuery -->
+  <!-- Include jQuery Validation Plugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Custom method to check if the email is unique
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      $.validator.addMethod("uniqueEmail", function(value, element) {
+        var emailValid = $.Deferred();
+
+        // Perform the AJAX request
+        $.ajax({
+          url: '/check-email', // Adjust this URL to your endpoint
+          type: 'POST',
+          data: {
+            email: value,
+            csrf_token: $('meta[name="csrf-token"]').attr('content')
+          },
+          dataType: 'json'
+        }).done(function(response) {
+          emailValid.resolve(response.isUnique); // Resolve with the unique status
+        }).fail(function() {
+          emailValid.resolve(false); // Treat errors as invalid
+        });
+
+        return emailValid.promise(); // Return the promise
+      }, "This email is already in use.");
+
+      // Custom method to validate image file types
+      $.validator.addMethod("imageFile", function(value, element) {
+        if (element.files.length === 0) return false; // Check if file is selected
+        var fileType = element.files[0].type; // Get the file type
+        return this.optional(element) || /^(image\/png|application\/pdf)$/.test(fileType);
+      }, "Please select a valid file (PNG or PDF).");
+      $.validator.addMethod("imageFilepng", function(value, element) {
+        if (element.files.length === 0) return false; // Check if file is selected
+        var fileType = element.files[0].type; // Get the file type
+        return this.optional(element) || /^(image\/png)$/.test(fileType);
+      }, "Please select a valid file (PNG).");
+
+      // Custom method to validate file size
+      $.validator.addMethod("filesize", function(value, element, param) {
+        if (element.files.length === 0) return false; // Check if file is selected
+        var fileSize = element.files[0].size; // Get the size of the file
+        return this.optional(element) || (fileSize <= param); // Check size
+      }, "File size must be less than {0} bytes.");
+
+      $('#providerform').validate({
+        rules: {
+          Enname: {
+            required: true
+          },
+          Arname: {
+            required: true
+          },
+          Email: {
+            required: true,
+            email: true,
+            uniqueEmail: true // Add unique email rule
+          },
+          Password: {
+            required: true,
+            minlength: 6,
+            maxlength: 8
+          },
+          Phone: {
+            required: true,
+            digits: true,
+          },
+          City: {
+            required: true
+          },
+          Countrycode: {
+            required: true
+          },
+          Vat: {
+            required: true,
+            digits: true
+          },
+          Logo: {
+            required: true,
+            imageFilepng: true,
+            filesize: 3000000 // Size in bytes (3MB)
+          },
+          Regcertificate: {
+            required: true,
+            imageFile: true,
+            filesize: 3000000
+          },
+          Comcerregister: {
+            required: true,
+            imageFile: true,
+            filesize: 3000000
+          },
+          Healthlicence: {
+            required: true,
+            imageFile: true,
+            filesize: 3000000
+          },
+          // Repeat for other image inputs as needed
+        },
+        messages: {
+          Logo: {
+            required: "Logo is required.",
+            imageFile: "Please upload a valid image.",
+            filesize: "Logo must be less than 3MB."
+          },
+          Email: {
+            required: "Email is required.",
+            email: "Please enter a valid email address.",
+            uniqueEmail: "This email is already in use."
+          },
+          // Custom messages for other fields...
+        },
+        submitHandler: function(form) {
+          var formData = new FormData(form);
+
+          $.ajax({
+            url: '{{ route("serviceproviders.store") }}',
+            type: "POST",
+            data: formData,
+            contentType: false, // Prevent jQuery from overriding content type
+            processData: false, // Prevent jQuery from converting the data into a query string
+            success: function(response) {
+              // Show success alert
+              Swal.fire({
+                icon: 'success',
+                title: 'Service Provider Added Successfully',
+                text: 'Your service provider has been added.',
+                confirmButtonText: 'OK'
+              }).then((result) => {
+                // Redirect after the user clicks OK
+                if (result.isConfirmed) {
+                  window.location.href = '{{ route("serviceproviders.index") }}';
+                }
+              });
+            },
+            error: function(xhr, status, error) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Email already exists',
+                text: 'The email you entered is already in use. Please try a different one.',
+                confirmButtonText: 'OK'
+              });
+            }
+          });
+        }
+      });
+    });
+  </script>
+
 </body>
 
 </html>

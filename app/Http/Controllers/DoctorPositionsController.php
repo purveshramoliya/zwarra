@@ -51,15 +51,7 @@ class DoctorPositionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $request->validate([
-            'Enname' => 'required',
-            'Arname' => 'required',
-            // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
-            // 'Regcertificate' => 'required|mimes:pdf,jpg,png|max:2048',
-
-        ]);
-        // Store file information in the database
+// Store file information in the database
         $doctorpositions = new DoctorPositions();
         DoctorPositions::create($request->all());
 

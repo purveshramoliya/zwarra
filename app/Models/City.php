@@ -10,7 +10,7 @@ class City extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'country_id'];
+    protected $fillable = ['name', 'country_id','Arcityname','coordinates','shapeType'];
 
     public function country()
     {

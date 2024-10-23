@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand zw_bg_f7e9ec navbar-light">
+<nav class="main-header navbar navbar-expand zw_bg_f7e9ec navbar-light" style="margin-left: 18rem !important;">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item dropdown">

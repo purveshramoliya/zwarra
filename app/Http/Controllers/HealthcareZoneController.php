@@ -26,20 +26,20 @@ class HealthcareZoneController extends Controller
         $validated = $request->validate([
             'country_id' => 'required|integer',
             'city_id' => 'required|integer',
-            'zone_id' => 'required|integer',
+            'zone_id' => 'required|string', // Adjust according to your database schema
         ]);
+        $id = Auth::guard('serviceprovider')->id();
 
         // Fetch the zone based on the provided parameters
         $zone = Zone::where('country_id', $countryId)
-                    ->where('city_id', $cityId)
-                    ->where('zone_id', $zoneId)
-                    ->where('Healthcareid', 0)
-                    ->first();
-
+            ->where('city_id', $cityId)
+            ->where('Enname', $zoneId)
+            ->where('Healthcareid', $id)
+            ->first();
         if ($zone) {
             return response()->json([
-                'coordinates' => $zone->coordinates,
-                'shape_type' => $zone->shape_type,
+                'coordinates' => json_decode($zone->coordinates), // Ensure the coordinates are decoded if they are stored as JSON
+                'shape_type' => 'Polygon' // Adjust shape type as needed
             ]);
         } else {
             return response()->json(['error' => 'No matching zone found'], 404);
@@ -60,10 +60,12 @@ class HealthcareZoneController extends Controller
         }
 
         // Retrieve all countries
+        $zoness = Zone::where('Healthcareid', 0)->get();
         $countries = Country::all();
+        $cities = City::all();
 
         // Pass the necessary data to the view
-        return view('healthcare.zones.index', compact('zones', 'countries'));
+        return view('healthcare.zones.index', compact('zones', 'zoness', 'countries', 'cities'));
     }
 
 
@@ -74,64 +76,93 @@ class HealthcareZoneController extends Controller
         $countries = Country::all();
         $cities = City::all();
 
-        return view('healthcare.locations.index', compact('countries','cities','id'));
+        return view('healthcare.locations.index', compact('countries', 'cities', 'id'));
     }
 
-     public function hgetRectangles(Request $request) {
-    // Assuming you have a Rectangle model with a 'coordinates' field
+    public function hgetRectangles(Request $request)
+    {
+        // Get the ID of the authenticated service provider
         $id = Auth::guard('serviceprovider')->id();
-        Log::info('User r before save: ' . $id);
-        if($id)
-        {$zones = Zone::where('Healthcareid', $id)->get();}
-        else{$zones = zone::all();} 
-        Log::info('User r after save: ' . $id);  
-    
-       return response()->json($zones);
-    }
+        Log::info('User ID before retrieval: ' . $id);
 
+        if ($id) {
+            // Retrieve zones for the authenticated user with Status 1
+            $zones = Zone::where('Healthcareid', $id)->where('Status', 1)->get();
+        } else {
+            // Retrieve all zones with Status 1
+            $zones = Zone::where('Status', 1)->get();
+        }
+
+        Log::info('User ID after retrieval: ' . $id);
+
+        return response()->json($zones);
+    }
     public function hsaveZonemap(Request $request)
     {
-        $request->validate([
-            // 'Healthcareid' => 'required|integer',
-            'country_id' => 'required',
-            'city_id' => 'required',
-            'zone_id' => 'required',
-            // 'shape_type' => 'required',
-            // 'coordinates' => 'required', // Adjust validation as per your needs
-        ]);
+        // Get the array of selected zone IDs
+        $zoneIds = $request->input('zone_id');
 
-        // Check if the zone already exists
-        $exists = Zone::where('country_id', $request->input('country_id'))
-            ->where('city_id', $request->input('city_id'))
-            ->where('zone_id', $request->input('zone_id'))
-            ->where('Healthcareid', Auth::guard('serviceprovider')->id())
-            ->exists();
-        // dd($exists);
-        if ($exists) {
-            // Return error response indicating the zone already exists
-            return response()->json(['error' => 'Zone already exists.'], 409);
+        // Check if any zones were selected
+        if (empty($zoneIds)) {
+            return response()->json(['error' => 'No zones selected.'], 400);
         }
-        $notexists = Zone::where('country_id', $request->input('country_id'))
+
+        $savedZones = [];
+        $duplicateZones = []; // Array to hold names of existing zones
+
+        // Retrieve zones with Healthcareid = 0 for the selected zone IDs
+        $zones = Zone::where('Healthcareid', 0)
+            ->where('country_id', $request->input('country_id'))
             ->where('city_id', $request->input('city_id'))
-            ->where('zone_id', $request->input('zone_id'))
-            ->exists();
-        if(!$notexists){
-            return response()->json(['error' => 'Zone Not exists.'], 409);
+            ->whereIn('Enname', $zoneIds) // Filter by selected zone IDs
+            ->get();
+
+        // Check if any zones were found
+        if ($zones->isEmpty()) {
+            return response()->json(['error' => 'No valid zones found.'], 404);
         }
-        // Save the shape data to the database
-        $coordinatesString = $request->input('coordinates');
-        $cleanedCoordinatesString = str_replace('"', '', $coordinatesString);
-        // Decode and re-encode to ensure it's valid JSON
-        $coordinates = json_decode($cleanedCoordinatesString, true);
-        $shape = Zone::create([
-            'Healthcareid' => Auth::guard('serviceprovider')->id(),
-            'country_id' => $request->input('country_id'),
-            'city_id' => $request->input('city_id'),
-            'zone_id' => $request->input('zone_id'),
-            'shape_type' => $request->input('shape_type'),
-            'coordinates' => json_encode($coordinates), // Store coordinates as JSON string
-        ]);
-        return response()->json(['success' => 'zone saved successfully', 'shape' => $shape]);
+
+        // Check for existing zones before trying to insert
+        foreach ($zones as $zoneData) {
+            // Check if the zone already exists for this Healthcare ID
+            $exists = Zone::where('country_id', $request->input('country_id'))
+                ->where('city_id', $request->input('city_id'))
+                ->where('Enname', $zoneData->Enname) // Use the retrieved zone name
+                ->where('Healthcareid', Auth::guard('serviceprovider')->id())
+                ->exists();
+
+            if ($exists) {
+                $duplicateZones[] = $zoneData->Enname; // Add to duplicates array
+            }
+        }
+
+        // If there are duplicates, return them without inserting new zones
+        if (!empty($duplicateZones)) {
+            return response()->json(['error' => 'The following zones already exist: ' . implode(', ', $duplicateZones)], 409);
+        }
+
+        // Proceed to save zones only if no duplicates were found
+        foreach ($zones as $zoneData) {
+            // Decode and prepare coordinates
+            $coordinatesString = $zoneData->coordinates;
+            $cleanedCoordinatesString = str_replace('"', '', $coordinatesString);
+            $coordinates = json_decode($cleanedCoordinatesString, true);
+
+            // Create the new zone entry with the Arabic name
+            $shape = Zone::create([
+                'Healthcareid' => Auth::guard('serviceprovider')->id(),
+                'country_id' => $request->input('country_id'),
+                'city_id' => $request->input('city_id'),
+                'Enname' => $zoneData->Enname, // Use the zone name
+                'Arname' => $zoneData->Arname, // Get the Arabic name
+                'shape_type' => $zoneData->shape_type,
+                'coordinates' => json_encode($coordinates), // Store coordinates as JSON string
+                'Status' => 1
+            ]);
+            $savedZones[] = $shape; // Keep track of saved shapes
+        }
+
+        return response()->json(['success' => 'Zones saved successfully', 'shapes' => $savedZones]);
     }
 
 
@@ -142,11 +173,19 @@ class HealthcareZoneController extends Controller
      * @param  \App\Models\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Zone $zone)
+    public function destroy($id)
     {
-       $zone->delete();
-       return redirect()->route('zone.zonelist')->with('success',' Zone deleted successfully');
+        $zone = Zone::find($id);
+
+        if (!$zone) {
+            return redirect()->back()->with('error', 'Zone not found.');
+        }
+
+        $zone->delete();
+
+        return redirect()->back()->with('success', 'Zone deleted successfully.');
     }
+
 
     public function updatestatus(Request $request)
     {
@@ -154,15 +193,15 @@ class HealthcareZoneController extends Controller
 
         // Retrieve the user or whatever model you're updating
         $updatestatus = Zone::findOrFail($id); // Change 'user_id' to the actual field name
-        
+
         // Update status logic here
         $status = $request->input('status');
 
         // Update the status in the database
         //$updatestatus->update(['Status' => $status]);
-        if($status == 'true'){
+        if ($status == 'true') {
             $status = 1;
-        }else{
+        } else {
             $status = 0;
         }
         $updatestatus->Status = $status;
@@ -171,5 +210,13 @@ class HealthcareZoneController extends Controller
         // Respond with JSON
         return response()->json(['success' => true]);
     }
+    public function getZones(Request $request)
+    {
+        $cityId = $request->input('city_id');
+        $zones = Zone::where('city_id', $cityId)
+            ->where('Healthcareid', 0)
+            ->get(); // Adjust the query as needed
 
+        return response()->json($zones);
+    }
 }

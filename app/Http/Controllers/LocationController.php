@@ -4,10 +4,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Country;
 use App\Models\City;
+use App\Models\Zone;
 use App\Models\Zones;
+use App\Models\Country;
+use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
@@ -29,7 +30,7 @@ class LocationController extends Controller
 
     public function getZonesByCity($city_id)
     {
-        $zones = Zones::where('city_id', $city_id)->get();
+        $zones = Zone::where('city_id', $city_id)->get();
         return response()->json($zones);
     }
 

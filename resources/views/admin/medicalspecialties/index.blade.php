@@ -81,23 +81,13 @@
                         </button>
                       </div>
                       <!-- left column -->
-                      @if ($errors->any())
-                      <div class="alert zw_alert_danger col-md-12">
-                        There were some problems with your input.<br><br>
-                        <ul>
-                          @foreach ($errors->all() as $error)
-                          <li>{{ $error }}</li>
-                          @endforeach
-                        </ul>
-                      </div>
-                      @endif
                       <div class="error-message text-danger"></div>
                       <div class="col-md-12">
                         <!-- general form elements -->
                         <div class="">
 
                           <!-- form start -->
-                          <form action="{{ route('medicalspecialties.store') }}" method="POST" enctype="multipart/form-data">
+                          <form id="medicalSpecialtyForm" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="">
                               <div class="container">
@@ -195,11 +185,7 @@
                 </div>
               </div> -->
 
-              @if ($message = Session::get('success'))
-              <div class="alert zw_alert_success">
-                <p>{{ $message }}</p>
-              </div>
-              @endif
+              <div id="alertContainer"></div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
                 <div class="pre_next">
@@ -312,6 +298,71 @@
         document.getElementById('imagePreview').style.display = 'none';
       }
     }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      $("#medicalSpecialtyForm").validate({
+        rules: {
+          Enname: {
+            required: true
+          },
+          Arname: {
+            required: true
+          },
+        },
+        messages: {
+          Enname: "Please enter the English name",
+          Arname: "Please enter the Arabic name",
+        },
+        errorPlacement: function(error, element) {
+          error.addClass('invalid-feedback'); // Add a class for styling
+          element.closest('.form-group').append(error); // Append error to the form group
+        },
+        highlight: function(element) {
+          $(element).addClass('is-invalid'); // Add a class for highlighting errors
+        },
+        unhighlight: function(element) {
+          $(element).removeClass('is-invalid'); // Remove error highlight
+        },
+        submitHandler: function(form) {
+          var formData = new FormData(form);
+          $.ajax({
+            type: 'POST',
+            url: '{{ route("medicalspecialties.store") }}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              $('#exampleModal').modal('hide');
+              showAlert('success', 'Multispecialties Added successfully!');
+            },
+            error: function(response) {
+              showAlert('danger', 'An error occurred. Please try again.');
+            }
+
+          });
+        }
+      });
+
+      // Custom method for file size validation
+      function showAlert(type, message) {
+        const alertHTML = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+`;
+        $('#alertContainer').html(alertHTML);
+        setTimeout(function() {
+          $('.alert').alert('close');
+        }, 3000);
+
+      }
+    });
   </script>
 </body>
 

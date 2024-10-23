@@ -54,48 +54,68 @@
                         <!-- general form elements -->
                         <div class="">
                             <!-- form start -->
-                            <form action="" method="POST" enctype="multipart/form-data">
+                            @if ($errors->any())
+                            <div class="alert zw_alert_danger">
+                                There were some problems with your input.<br><br>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                            <form action="{{ url('save') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-row zw_form_row">
                                         <div class="form-group col-md-6">
                                             <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEnname">EN Country Name</label>
-                                            <select name="Enname" class="form-control zw_18">
+                                            <select id="Encountryname" name="Encountryname" class="form-control zw_18">
                                                 <option value="">EN Name</option>
+                                                @foreach($countries as $contry)
+                                                <option value="{{$contry->id}}">{{$contry->Enname}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputArname">AR Country Name</label>
-                                            <select name="Arname" class="form-control zw_18">
+                                            <select id="Arcountryname"name="Arcountryname" class="form-control zw_18">
                                                 <option value="">Ar Name</option>
+                                                @foreach($countries as $contry)
+                                                <option value="{{$contry->id}}">{{$contry->Arname}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-row zw_form_row">
                                         <div class="form-group col-md-6">
                                             <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEnname">EN City Name</label>
-                                            <select name="Arname" class="form-control zw_18">
-                                                <option value="">Ar Name</option>
+                                            <select id="Encityname" name="Encityname" class="form-control zw_18">
+                                                <option value="">Select City</option>
+                                               
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputArname">AR City Name</label>
-                                            <select name="Arname" class="form-control zw_18">
-                                                <option value="">Ar Name</option>
+                                            <select id="Arcityname" name="Arcityname" class="form-control zw_18">
+                                                <option value="">Select City</option>
+                                               
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-row zw_form_row">
                                         <div class="form-group col-md-6">
                                             <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputEnname">EN Add Zone Name</label>
-                                            <input type="text" name="Enname" class="form-control poppins-regular zw_18 zw_text_898B9F" id="exampleInputEnname" placeholder="Enter Zone Name">
+                                            <input type="text" id="Enzonename" name="Enzonename" class="form-control poppins-regular zw_18 zw_text_898B9F" id="exampleInputEnname" placeholder="Enter Zone Name">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label class="zw_label_height zw_poppins_regular poppins-regular zw_20 zw_text_111535" for="exampleInputArname">Ar Add Zone Name</label>
-                                            <input type="text" name="Arname" class="form-control poppins-regular zw_18 zw_text_898B9F" id="exampleInputArname" placeholder="Enter Zone Name">
+                                            <input type="text" id="Arzonename" name="Arzonename" class="form-control poppins-regular zw_18 zw_text_898B9F" id="exampleInputArname" placeholder="Enter Zone Name">
                                         </div>
                                     </div>
                                     <div class="container-fluid mt-4 mb-4">
+                                        <input type="hidden" id="coordinates" name="coordinates">
+                                        <input type="hidden" id="shapetype" name="shapetype">
                                         <div id="map" class="col-md-12"></div>
                                         <div class="calculation-box">
                                             <!-- <p>Click the map to draw a polygon.</p> -->
@@ -146,8 +166,8 @@
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [45.0792, 23.8859],
-            zoom: 6
+            center: [0, 0],
+            zoom: 2
         });
 
         var draw = new MapboxDraw({
@@ -173,140 +193,106 @@
         });
         map.addControl(geocoder, 'top-left');
 
+        function setMapCenter(lng, lat, zoomLevel) {
+            map.flyTo({
+                center: [lng, lat],
+                zoom: zoomLevel, // Set the zoom level dynamically
+                essential: true // Animation is considered essential
+            });
+        }
+
+
+        // Event listener for country selection
+        document.getElementById('Encountryname').addEventListener('change', function() {
+            const selectedCountry = this.value;
+            fetch(`/getRectanglesCity/${selectedCountry}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.coordinates) {
+                        const [lng, lat] = data.coordinates;
+                        const zoomLevel = 5; // Set your desired zoom level here
+                        setMapCenter(lng, lat, zoomLevel);
+                    }
+                });
+        });
         map.on('draw.create', function(event) {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id') || '0';
-
-            console.log(id);
-
             var coordinates = event.features[0].geometry.coordinates;
-            var shapeType = event.features[0].geometry.type;
+            var coordinatesJson = JSON.stringify(coordinates);
 
-            var countryId = $('#zone_country_id').val();
-            var cityId = $('#zone_city_id').val();
-            var zoneId = $('#zone_id').val();
+            // Set the value of the hidden input field
+            var shape_type = event.features[0].geometry.type;
+            document.getElementById('shapetype').value = shape_type;
+            document.getElementById('coordinates').value = coordinatesJson;
+          
+        });
 
-            var data = {
-                country_id: countryId,
-                city_id: cityId,
-                zone_id: zoneId,
-                shape_type: shapeType,
-                coordinates: coordinates,
-                healthcare_id: id
-            };
+        function fetchAndDisplayShapes() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id') || '0';
 
-            fetch('/save', {
-                    method: 'POST',
+            fetch(`/getrectangles?id=${id}`, {
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    body: JSON.stringify(data)
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'Content-Type': 'application/json'
+                    }
                 })
                 .then(response => {
                     if (!response.ok) {
-                        return response.json().then(err => {
-                            throw new Error(err.message);
-                        });
+                        throw new Error('Network response was not ok');
                     }
                     return response.json();
                 })
                 .then(data => {
-                    if (data.success) {
-                        // Swal.fire({
-                        //     title: 'Success!',
-                        //     text: 'Zone saved successfully',
-                        //     icon: 'success',
-                        //     confirmButtonText: 'OK'
-                        // });
-                    } else {
-                        // Swal.fire({
-                        //     title: 'Error!',
-                        //     text: data.message,
-                        //     icon: 'error',
-                        //     confirmButtonText: 'OK'
-                        // });
-                    }
-                    console.log('Response data:', data);
+                    data.forEach(shape => {
+                        var coordinates = JSON.parse(shape.coordinates);
+
+                        map.addLayer({
+                            id: `shape-${shape.id}`,
+                            type: 'fill',
+                            source: {
+                                type: 'geojson',
+                                data: {
+                                    type: 'Feature',
+                                    geometry: {
+                                        type: shape.shape_type,
+                                        coordinates: coordinates
+                                    }
+                                }
+                            },
+                            layout: {},
+                            paint: {
+                                'fill-color': '#888888',
+                                'fill-opacity': 0.4
+                            }
+                        });
+
+                        map.addLayer({
+                            id: `shape-outline-${shape.id}`,
+                            type: 'line',
+                            source: {
+                                type: 'geojson',
+                                data: {
+                                    type: 'Feature',
+                                    geometry: {
+                                        type: shape.shape_type,
+                                        coordinates: coordinates
+                                    }
+                                }
+                            },
+                            layout: {},
+                            paint: {
+                                'line-color': '#af2245',
+                                'line-width': 2
+                            }
+                        });
+                    });
                 })
                 .catch(error => {
-                    // Swal.fire({
-                    //     title: 'Error!',
-                    //     text: 'Zone Is Alredy Exit',
-                    //     icon: 'error',
-                    //     confirmButtonText: 'OK'
-                    // });
-                    console.error('Error saving shape:', error);
+                    console.error('Error fetching shapes:', error);
                 });
-
-        });
-
-        // function fetchAndDisplayShapes() {
-        //     const urlParams = new URLSearchParams(window.location.search);
-        //     const id = urlParams.get('id') || '0';
-
-        //     fetch(`/getrectangles?id=${id}`, {
-        //             headers: {
-        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-        //                 'Content-Type': 'application/json'
-        //             }
-        //         })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error('Network response was not ok');
-        //             }
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             data.forEach(shape => {
-        //                 var coordinates = JSON.parse(shape.coordinates);
-
-        //                 map.addLayer({
-        //                     id: `shape-${shape.id}`,
-        //                     type: 'fill',
-        //                     source: {
-        //                         type: 'geojson',
-        //                         data: {
-        //                             type: 'Feature',
-        //                             geometry: {
-        //                                 type: shape.shape_type,
-        //                                 coordinates: coordinates
-        //                             }
-        //                         }
-        //                     },
-        //                     layout: {},
-        //                     paint: {
-        //                         'fill-color': '#888888',
-        //                         'fill-opacity': 0.4
-        //                     }
-        //                 });
-
-        //                 map.addLayer({
-        //                     id: `shape-outline-${shape.id}`,
-        //                     type: 'line',
-        //                     source: {
-        //                         type: 'geojson',
-        //                         data: {
-        //                             type: 'Feature',
-        //                             geometry: {
-        //                                 type: shape.shape_type,
-        //                                 coordinates: coordinates
-        //                             }
-        //                         }
-        //                     },
-        //                     layout: {},
-        //                     paint: {
-        //                         'line-color': '#af2245',
-        //                         'line-width': 2
-        //                     }
-        //                 });
-        //             });
-        //         })
-        //         .catch(error => {
-        //             console.error('Error fetching shapes:', error);
-        //         });
-        // }
+        }
 
         map.on('draw.create', updateArea);
         map.on('draw.delete', updateArea);
@@ -324,16 +310,15 @@
                 if (e.type !== 'draw.delete') alert('Click the map to draw a polygon.');
             }
         }
-
-        $('#zone_country_id').change(function() {
+        $('#Encountryname').change(function() {
             var countryId = $(this).val();
             $.ajax({
                 url: '{{ route("getCitiesByCountry", ":country_id") }}'.replace(':country_id', countryId),
                 type: 'GET',
                 success: function(data) {
-                    var citiesDropdown = $('#zone_city_id');
+                    var citiesDropdown = $('#Encityname');
                     citiesDropdown.empty();
-                    citiesDropdown.append('<option value="">Select a city</option>');
+                    citiesDropdown.append('<option value="">Select city</option>');
                     $.each(data, function(index, city) {
                         citiesDropdown.append('<option value="' + city.id + '">' + city.name + '</option>');
                     });
@@ -346,22 +331,21 @@
                 }
             });
         });
-
-        $('#zone_city_id').change(function() {
-            var cityId = $(this).val();
+        $('#Arcountryname').change(function() {
+            var countryId = $(this).val();
             $.ajax({
-                url: '{{ route("getZonesByCity", ":city_id") }}'.replace(':city_id', cityId),
+                url: '{{ route("getCitiesByCountry", ":country_id") }}'.replace(':country_id', countryId),
                 type: 'GET',
                 success: function(data) {
-                    var zonesDropdown = $('#zone_id');
-                    zonesDropdown.empty();
-                    zonesDropdown.append('<option value="">Select a zone</option>');
-                    $.each(data, function(index, zone) {
-                        zonesDropdown.append('<option value="' + zone.id + '">' + zone.name + '</option>');
+                    var citiesDropdown = $('#Arcityname');
+                    citiesDropdown.empty();
+                    citiesDropdown.append('<option value="">Select city</option>');
+                    $.each(data, function(index, city) {
+                        citiesDropdown.append('<option value="' + city.id + '">' + city.name + '</option>');
                     });
                 },
                 error: function(error) {
-                    console.error('Error fetching zones:', error);
+                    console.error('Error fetching cities:', error);
                     if (error.status === 401) {
                         window.location.href = '{{ route("login") }}';
                     }

@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BodyController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\OffersController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DoctorBankingInfo;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\RejectedRequested;
@@ -26,9 +28,9 @@ use App\Http\Controllers\SubServicesController;
 use App\Http\Controllers\PendingOrderController;
 use App\Http\Controllers\PractitionersController;
 use App\Http\Controllers\PrivacyPolicyController;
+
 use App\Http\Controllers\TermConditionController;
 use App\Http\Controllers\CustomerReviewController;
-
 use App\Http\Controllers\DoctorSettingsController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\HealthcareZoneController;
@@ -66,8 +68,18 @@ Route::get('registration', [CustomAuthController::class, 'registration'])->name(
 
 // Example for Admin Dashboard
 Route::middleware(['auth:web'])->group(function () {
-    Route::post('/save', [ZoneController::class, 'saveZonemap']);
+    Route::post('/save', [ZoneController::class, 'saveZonemap'])->name('save');
+    Route::post('/saveCountrymap', [CountryController::class, 'saveCountrymap']);
+    Route::post('/countries', [CountryController::class, 'store']);
+    Route::get('/countries', [CountryController::class, 'fetch']);
+    Route::post('/saveCitymap', [CityController::class, 'store'])->name('saveCitymap');
     Route::get('/getrectangles', [ZoneController::class, 'getRectangles']);
+    Route::get('/getRectanglesCountry', [CountryController::class, 'getRectanglesCountry']);
+    Route::get('/getRectanglesCity', [CityController::class, 'getRectanglesCity']);
+
+    // Define the route
+    Route::get('/getRectanglesCity/{id}', [CountryController::class, 'getCountryCoordinates']);
+
 
     Route::get('/admin/dashboard', [DashboardController::class, 'adminIndex'])->name('admin.dashboard');
 
@@ -75,6 +87,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::resource('admin/ourservices', OurServicesController::class);
     Route::resource('admin/doctorbanking', DoctorBankingInfo::class);
     Route::resource('admin/subservices', SubServicesController::class);
+    Route::post('/check-email', [SubServicesController::class, 'checkEmail']);
+
     Route::resource('admin/medicalspecialties', MedicalSpecialtiesController::class);
     Route::resource('admin/submedicalspecialties', SubMedicalSpecialtiesController::class);
     Route::resource('admin/alldoctors', AllDoctorsController::class);
@@ -87,19 +101,22 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('admin/bookingsDecline', [bookingsDeclineController::class, 'decline'])->name('admin.bookingsDecline');
     Route::resource('admin/rejectedrequested', RejectedRequested::class);
     Route::get('admin/registered-and-non-registered-patients', [RegisteredAndNonRegisteredPatients::class, 'index'])
-    ->name('admin.registeredAndNonRegisteredPatients');
-    Route::get('admin/body', [BodyController::class,'index'])->name('admin.body');
-    Route::get('admin/pendingorder', [PendingOrderController::class,'index'])->name('admin.pendingorder');
+        ->name('admin.registeredAndNonRegisteredPatients');
+    Route::get('admin/body', [BodyController::class, 'index'])->name('admin.body');
+    Route::get('admin/pendingorder', [PendingOrderController::class, 'index'])->name('admin.pendingorder');
     Route::get('admin/pendingorderdecline', [PendingOrderController::class, 'decline'])->name('admin.pendingorderdecline');
-    Route::get('admin/body/create', [BodyController::class,'create'])->name('admin.body.create');
+    Route::match(['get', 'post'], 'admin/body/create', [BodyController::class, 'create'])->name('admin.body.create');
+    Route::post('admin/body/store', [BodyController::class, 'store'])->name('body.store');
+
 
     Route::resource('admin/bankings', BankingsController::class);
     Route::resource('admin/contacts', ContactsController::class);
     Route::resource('admin/complaints', ComplaintsController::class);
     Route::resource('admin/zones', ZoneController::class);
-    Route::get('admin/addcountry', [ZoneController::class,'addCountry'])->name('admin/addcountry');
-    Route::get('admin/addcity', [ZoneController::class,'addCity'])->name('admin/addcity');
-    Route::get('admin/addzone', [ZoneController::class,'addZone'])->name('admin/addzone');
+    Route::get('admin/addcountry', [ZoneController::class, 'addCountry'])->name('admin/addcountry');
+    Route::post('/countries', [CountryController::class, 'store'])->name('countries.store');
+    Route::match(['get','post'],'admin/addcity', [ZoneController::class, 'addCity'])->name('admin/addcity');
+    Route::match(['get', 'post'], 'admin/addzone', [ZoneController::class, 'addZone'])->name('admin/addzone');
     Route::resource('admin/termconditions', TermConditionController::class);
     Route::resource('admin/privacypolicys', PrivacyPolicyController::class);
     Route::resource('admin/serviceproviderrequest', ServiceProviderRequestController::class);
@@ -110,14 +127,14 @@ Route::middleware(['auth:web'])->group(function () {
     //Route::get('healthcare/services', [HealthcareSubserviceController::class,'index']);
     Route::get('admin/subservice/createbody', [SubServicesController::class, 'createbody'])->name('subservices.createbody');
     Route::get('admin/subservice/singleservices', [SubServicesController::class, 'single'])->name('subservices.single');
-    Route::get('admin/serviceprovider/{status}', [ServiceProviderController::class,'showStatus'])->name('serviceproviders.status');
-    Route::get('admin/payments/{status}', [PaymentsController::class,'showStatus'])->name('payments.status');
+    Route::get('admin/serviceprovider/{status}', [ServiceProviderController::class, 'showStatus'])->name('serviceproviders.status');
+    Route::get('admin/payments/{status}', [PaymentsController::class, 'showStatus'])->name('payments.status');
     Route::get('admin/subservice/packages', [SubServicesController::class, 'package'])->name('subservices.packages');
     Route::get('admin/subservice/packageservices', [SubServicesController::class, 'packageservices'])->name('subservices.packageservices');
-    Route::get('admin/patient/{status}', [PatientRegistrationController::class,'showStatus'])->name('patient.status');
-    Route::get('admin/patient/{type}', [PatientRegistrationController::class,'showStatus'])->name('patient.type');
-    Route::get('admin/booking/{status}', [BookingsController::class,'showStatus'])->name('bookings.status');
-    Route::get('admin/user/{status}', [UsersController::class,'showStatus'])->name('users.status');
+    Route::get('admin/patient/{status}', [PatientRegistrationController::class, 'showStatus'])->name('patient.status');
+    Route::get('admin/patient/{type}', [PatientRegistrationController::class, 'showStatus'])->name('patient.type');
+    Route::get('admin/booking/{status}', [BookingsController::class, 'showStatus'])->name('bookings.status');
+    Route::get('admin/user/{status}', [UsersController::class, 'showStatus'])->name('users.status');
     Route::get('admin/generalrequest/{type}', [GeneralJoinRequestController::class, 'showType'])->name('generalrequest.type');
 
     // Route to display the form/view
@@ -143,8 +160,9 @@ Route::middleware(['auth:serviceprovider'])->group(function () {
     Route::post('/hsave', [HealthcareZoneController::class, 'hsaveZonemap']);
     Route::get('/fetch-coordinates', [HealthcareZoneController::class, 'fetchCoordinates']);
     Route::get('/hgetrectangles', [HealthcareZoneController::class, 'hgetRectangles']);
+    Route::get('/get-zones', [HealthcareZoneController::class, 'getZones']);
 
-      Route::get('/healthcare/dashboard/{status?}', [DashboardController::class, 'healthcareIndex'])
+    Route::get('/healthcare/dashboard/{status?}', [DashboardController::class, 'healthcareIndex'])
         ->name('healthcare.dashboard');
 
     Route::resource('healthcare/services', HealthcareSubserviceController::class);
@@ -159,16 +177,16 @@ Route::middleware(['auth:serviceprovider'])->group(function () {
     Route::put('healthcare/service/{id}', [HealthcareSubserviceController::class, 'update'])->name('healthcare.services.update');
     Route::delete('healthcare/service/{id}', [HealthcareSubserviceController::class, 'destroy'])->name('healthcare.services.destroy');
 
-    Route::get('healthcare/profile', [HealthcareController::class,'profile']);
-    Route::get('healthcare/updateinfo', [HealthcareController::class,'updatehealthcareinfo']);
-    Route::get('healthcare/updatebankaccount', [HealthcareController::class,'updatebankaccount']);
-    Route::get('healthcare/updatepassword', [HealthcareController::class,'updatepasswordview']);
-    Route::get('healthcare/reports', [HealthcareController::class,'reports']);
-    Route::get('healthcare/locations', [HealthcareZoneController::class,'locations']);
-    Route::get('healthcare/bookings', [HealthcareController::class,'bookings']);
+    Route::get('healthcare/profile', [HealthcareController::class, 'profile']);
+    Route::get('healthcare/updateinfo', [HealthcareController::class, 'updatehealthcareinfo']);
+    Route::get('healthcare/updatebankaccount', [HealthcareController::class, 'updatebankaccount']);
+    Route::get('healthcare/updatepassword', [HealthcareController::class, 'updatepasswordview']);
+    Route::get('healthcare/reports', [HealthcareController::class, 'reports']);
+    Route::get('healthcare/locations', [HealthcareZoneController::class, 'locations']);
+    Route::get('healthcare/bookings', [HealthcareController::class, 'bookings']);
     Route::get('healthcare/settings', [HealthcareController::class, 'setting'])->name('healthcare.settings');
-    Route::get('healthcare/zones', [HealthcareZoneController::class, 'index'])->name('healthcare.zones.index');
-
+    Route::match(['get','post'],'healthcare/zones', [HealthcareZoneController::class, 'index'])->name('healthcare.zones.index');
+    Route::delete('healthcare/zones/delete/{id}', [HealthcareZoneController::class, 'destroy'])->name('healthcare.zones.delete');
 
     Route::post('healthcare/settings/banking', [HealthcareSettingsController::class, 'store'])->name('healthcare.banking.store');
     Route::post('healthcare/settings/updatepassword', [HealthcareSettingsController::class, 'updatepassword'])->name('healthcare.password.update');
@@ -189,9 +207,9 @@ Route::middleware(['auth:serviceprovider'])->group(function () {
 Route::middleware(['auth:doctor'])->group(function () {
     Route::get('doctor/dashboard', [CustomAuthController::class, 'doctordashboard'])->name('doctor.dashboard');
 
-    Route::get('doctor/bookings', [DoctorSettingsController::class,'bookings']);
+    Route::get('doctor/bookings', [DoctorSettingsController::class, 'bookings']);
     Route::get('doctor/settings', [DoctorSettingsController::class, 'setting'])->name('doctor.settings');
-    Route::get('doctor/dashboard/{status}', [CustomAuthController::class,'doctorshowStatus'])->name('doctordashboard.status');
+    Route::get('doctor/dashboard/{status}', [CustomAuthController::class, 'doctorshowStatus'])->name('doctordashboard.status');
 
     Route::get('doctor/profile/show', [DoctorSettingsController::class, 'showprofile'])->name('doctor.profile.show');
     Route::get('doctor/profile/settings', [DoctorSettingsController::class, 'setting'])->name('doctor.profile.setting');
@@ -218,26 +236,27 @@ Route::post('resend-otp', [ForgotPasswordController::class, 'resendOTP'])->name(
 
 
 
-Route::post('spupdate-status', [ServiceProviderController::class,'updatestatus'])->name('spupdate.status');
-Route::post('supdate-status', [ServicesController::class,'updatestatus'])->name('supdate.status');
-Route::post('osupdate-status', [OurServicesController::class,'updatestatus'])->name('osupdate.status');
-Route::post('ssupdate-status', [SubServicesController::class,'updatestatus'])->name('ssupdate.status');
-Route::post('msupdate-status', [MedicalSpecialtiesController::class,'updatestatus'])->name('msupdate.status');
-Route::post('dpupdate-status', [MedicalSpecialtiesController::class,'updatestatus'])->name('dpupdate.status');
-Route::post('smupdate-status', [SubMedicalSpecialtiesController::class,'updatestatus'])->name('smupdate.status');
-Route::post('docupdate-status', [AllDoctorsController::class,'updatestatus'])->name('docupdate.status');
-Route::post('drupdate-status', [JoinDoctorRequestController::class,'updatestatus'])->name('drupdate.status');
-Route::post('oupdate-status', [OffersController::class,'updatestatus'])->name('oupdate.status');
-Route::post('zupdate-status', [ZoneController::class,'updatestatus'])->name('zupdate.status');
-Route::post('srupdate-status', [ServiceProviderRequestController::class,'updatestatus'])->name('srupdate.status');
-Route::post('tcupdate-status', [TermConditionController::class,'updatestatus'])->name('tcupdate.status');
-Route::post('pupdate-status', [PrivacyPolicyController::class,'updatestatus'])->name('pupdate.status');
-Route::post('prupdate-status', [PatientRegistrationController::class,'updatestatus'])->name('prupdate.status');
-Route::post('uupdate-status', [UsersController::class,'updatestatus'])->name('uupdate.status');
-Route::post('dupdate-status', [CustomAuthController::class,'updatestatus'])->name('dupdate.status');
-Route::post('gupdate-status', [GeneralJoinRequestController::class,'updatestatus'])->name('gupdate.status');
-Route::post('prcupdate-status', [PractitionersController::class,'updatestatus'])->name('prcupdate.status');
-Route::post('hzoneupdate-status', [HealthcareZoneController::class,'updatestatus'])->name('hzoneupdate.status');
+Route::post('spupdate-status', [ServiceProviderController::class, 'updatestatus'])->name('spupdate.status');
+Route::post('supdate-status', [ServicesController::class, 'updatestatus'])->name('supdate.status');
+Route::post('osupdate-status', [OurServicesController::class, 'updatestatus'])->name('osupdate.status');
+Route::post('ssupdate-status', [SubServicesController::class, 'updatestatus'])->name('ssupdate.status');
+Route::post('bodyupdate-status', [BodyController::class, 'updatestatus'])->name('bodyupdate.status');
+Route::post('msupdate-status', [MedicalSpecialtiesController::class, 'updatestatus'])->name('msupdate.status');
+Route::post('dpupdate-status', [MedicalSpecialtiesController::class, 'updatestatus'])->name('dpupdate.status');
+Route::post('smupdate-status', [SubMedicalSpecialtiesController::class, 'updatestatus'])->name('smupdate.status');
+Route::post('docupdate-status', [AllDoctorsController::class, 'updatestatus'])->name('docupdate.status');
+Route::post('drupdate-status', [JoinDoctorRequestController::class, 'updatestatus'])->name('drupdate.status');
+Route::post('oupdate-status', [OffersController::class, 'updatestatus'])->name('oupdate.status');
+Route::post('zupdate-status', [ZoneController::class, 'updatestatus'])->name('zupdate.status');
+Route::post('srupdate-status', [ServiceProviderRequestController::class, 'updatestatus'])->name('srupdate.status');
+Route::post('tcupdate-status', [TermConditionController::class, 'updatestatus'])->name('tcupdate.status');
+Route::post('pupdate-status', [PrivacyPolicyController::class, 'updatestatus'])->name('pupdate.status');
+Route::post('prupdate-status', [PatientRegistrationController::class, 'updatestatus'])->name('prupdate.status');
+Route::post('uupdate-status', [UsersController::class, 'updatestatus'])->name('uupdate.status');
+Route::post('dupdate-status', [CustomAuthController::class, 'updatestatus'])->name('dupdate.status');
+Route::post('gupdate-status', [GeneralJoinRequestController::class, 'updatestatus'])->name('gupdate.status');
+Route::post('prcupdate-status', [PractitionersController::class, 'updatestatus'])->name('prcupdate.status');
+Route::post('hzoneupdate-status', [HealthcareZoneController::class, 'updatestatus'])->name('hzoneupdate.status');
 Route::put('/bookings/{id}', [BookingsController::class, 'updatestatus'])->name('bookings.update');
 
 

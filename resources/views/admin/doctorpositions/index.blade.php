@@ -4,7 +4,11 @@
   <div class="wrapper">
     @include('admin.layouts.header')
     @include('admin.layouts.sidebar')
-
+    <style>
+      .error {
+        color: red;
+      }
+    </style>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -115,7 +119,7 @@
                         <div class="">
 
                           <!-- form start -->
-                          <form id="myForm" action="{{ route('doctorpositions.store') }}" method="POST">
+                          <form id="myForm" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
                               <div class="form-row zw_form_row">
@@ -332,46 +336,70 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
   <script>
     $(document).ready(function() {
-      $('#myForm').on('submit', function(e) {
-        e.preventDefault();
-        $('.error-message').text(''); // Clear previous errors
-
-        $.ajax({
-          type: 'POST',
-          url: $(this).attr('action'),
-          data: $(this).serialize(),
-          success: function(response) {
-            $('.modal').modal('hide'); // Hide modal on success
-            console.log(response.success);
-            if (response.success) {
-              // Prepend the success message
-              $('.zw_card').prepend(
-                '<div class="alert alert-success zw_alert_success">' +
-                '<p>Data has been saved successfully!</p>' +
-                '</div>'
-              );
-
-              // Optionally fade out the message after a few seconds
-              setTimeout(function() {
-                $('.zw_alert_success').fadeOut();
-              }, 3000);
-              location.reload();
-            }
-            // location.reload();
+      // Initialize form validation
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      $('#myForm').validate({
+        rules: {
+          Enname: {
+            required: true
           },
-          error: function(xhr) {
-            if (xhr.status === 422) {
-              const errors = xhr.responseJSON.errors;
-              for (let key in errors) {
-                // Join multiple error messages with a line break if needed
-                const errorMessage = errors[key].join('<br>');
-                $(`.${key}-error`).html(errorMessage); // Use .html() to insert line breaks
+          Arname: {
+            required: true
+          }
+        },
+        messages: {
+          Enname: {
+            required: "Please enter the English name."
+          },
+          Arname: {
+            required: "Please enter the Arabic name."
+          }
+        },
+        submitHandler: function(form) {
+          $('.error-message').text(''); // Clear previous errors
+          var formData = new FormData(form);
+          $.ajax({
+            type: 'POST',
+            url: "{{ route('doctorpositions.store') }}", // Replace with your actual endpoint URL
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              $('.modal').modal('hide'); // Hide modal on success
+              if (response.success) {
+                // Prepend the success message
+                $('.zw_card').prepend(
+                  '<div class="alert alert-success zw_alert_success">' +
+                  '<p>Doctorpositions has been saved successfully!</p>' +
+                  '</div>'
+                );
+
+                // Optionally fade out the message after a few seconds
+                setTimeout(function() {
+                  $('.zw_alert_success').fadeOut();
+                }, 3000);
+                location.reload();
+              }
+            },
+            error: function(xhr) {
+              if (xhr.status === 422) {
+                const errors = xhr.responseJSON.errors;
+                for (let key in errors) {
+                  // Join multiple error messages with a line break if needed
+                  const errorMessage = errors[key].join('<br>');
+                  $(`.${key}-error`).html(errorMessage); // Use .html() to insert line breaks
+                }
               }
             }
-          }
-        });
+          });
+        }
       });
     });
   </script>

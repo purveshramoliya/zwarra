@@ -11,7 +11,7 @@ class Country extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['id','Enname','Arname','coordinates','shapeType'];
 
     public function cities()
     {

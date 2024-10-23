@@ -65,23 +65,34 @@ class ServiceProviderController extends Controller
      */
     public function store(Request $request)
     {
+        // $request->validate([
+            
+        //     'Email' => [
+        //         'required',
+        //         'email',
+        //         'unique:serviceprovider,email', // Ensure the email is unique
+        //     ],
+            
+            
+        //     // Other validations...
+        // ]);
         //
-        $request->validate([
-            'Enname' => 'required|alpha',
-            'Arname' => 'required|alpha',
-            'Email' => ['required', 'email', new ValidDomainEmail, 'unique:serviceprovider,email'],
-            'Password' => 'required|min:6|max:8',
-            'Phone' => 'required|numeric',
-            'Crnumber' => 'required|numeric',
-            'City' => 'required',
-            'Countrycode' => 'required',
-            'Vat' => 'required|numeric',
-            'Regcertificate' => 'required|mimes:jpeg,jpg,png|max:2048',
-            'Logo' => 'required|mimes:jpeg,jpg,png|max:2048',
-            'Comcerregister' => 'required|mimes:jpeg,jpg,png|max:2048',
-            'Healthlicence' => 'required|mimes:jpeg,jpg,png|max:2048',
+        // $request->validate([
+        //     'Enname' => 'required',
+        //     'Arname' => 'required',
+        //     'Email' => ['required', 'email', new ValidDomainEmail, 'unique:serviceprovider,email'],
+        //     'Password' => 'required|min:6|max:8',
+        //     'Phone' => 'required|numeric',
+        //     'Crnumber' => 'required|numeric',
+        //     'City' => 'required',
+        //     'Countrycode' => 'required',
+        //     'Vat' => 'required|numeric',
+        //     'Regcertificate' => 'required|mimes:png,pdf|max:3000',
+        //     'Logo' => 'required|mimes:png|max:3000',
+        //     'Comcerregister' => 'required|mimes:png,pdf|max:3000',
+        //     'Healthlicence' => 'required|mimes:png,pdf|max:3000',
            
-        ]);
+        // ]);
         
 
         $Password = Hash::make($request->input('Password'));

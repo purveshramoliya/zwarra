@@ -48,18 +48,8 @@ class MedicalSpecialtiesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-        $request->validate([
-            'Enname' => 'required',
-            'Arname' => 'required',
-            'Estimatedtime' => 'required',
-            // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
-            //'Logo' => 'required|mimes:jpg,png|max:2048',
-
-        ]);
-
-         // Store file information in the database
+    {  
+        // Store file information in the database
         $medicalspecialties = new MedicalSpecialties();
         $medicalspecialties->Enname = $request->input('Enname');
         $medicalspecialties->Arname = $request->input('Arname');

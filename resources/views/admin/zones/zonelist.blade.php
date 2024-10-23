@@ -59,6 +59,11 @@
              </div>
            </div>
          </div>
+         @if ($message = Session::get('success'))
+         <div class="alert zw_alert_success" id="success-message">
+           <p>{{ $message }}</p>
+         </div>
+         @endif
          <div class="card-body table-responsive p-0">
            <table class="table table-hover text-nowrap zw_table">
              <thead class="zw_bg_AF2245 zw_text_ffffff">
@@ -72,18 +77,35 @@
                </tr>
              </thead>
              <tbody>
+               @foreach ($zones as $zone)
                <tr>
-                 <td class="poppins-regular zw_14 zw_text_333333">Saudi Arabia</td>
-                 <td class="poppins-regular zw_14 zw_text_333333">العربية السعودية</td>
-                 <td class="poppins-regular zw_14 zw_text_333333">Jeddah</td>
-                 <td class="poppins-regular zw_14 zw_text_333333">جدة</td>
-                 <td class="poppins-regular zw_14 zw_text_333333">Alsafa</td>
-                 <td class="poppins-regular zw_14 zw_text_333333">الصفا</td>
+                 <td class="poppins-regular zw_14 zw_text_333333">
+                   {{ $zone->country->Enname ?? 'N/A' }}
+                 </td>
+                 <td class="poppins-regular zw_14 zw_text_333333">
+                   {{ $zone->country->Arname ?? 'N/A' }}
+                 </td>
+                 <td class="poppins-regular zw_14 zw_text_333333">
+                   {{ $zone->city->name ?? 'N/A' }}
+                 </td>
+                 <td class="poppins-regular zw_14 zw_text_333333">
+                   {{ $zone->city->Arcityname ?? 'N/A' }}
+                 </td>
+                 <td class="poppins-regular zw_14 zw_text_333333">
+                   {{ $zone->Enname ?? 'N/A' }}
+                 </td>
+                 <td class="poppins-regular zw_14 zw_text_333333">
+                   {{ $zone->Arname ?? 'N/A' }}
+                 </td>
                  <td class="poppins-regular zw_14 zw_text_333333 text-right">
-                   <a class="btn zw_text_AF2245 zw_a zw_24" href=""><i class="fa fa-edit" aria-hidden="true"></i> </a>
+                   <a class="btn zw_text_AF2245 zw_a zw_24" href="">
+                     <i class="fa fa-edit" aria-hidden="true"></i>
+                   </a>
                  </td>
                </tr>
-               <tr>
+               @endforeach
+
+               <!-- <tr>
                  <td class="poppins-regular zw_14 zw_text_333333">Saudi Arabia</td>
                  <td class="poppins-regular zw_14 zw_text_333333">العربية السعودية</td>
                  <td class="poppins-regular zw_14 zw_text_333333">Dubai</td>
@@ -93,7 +115,7 @@
                  <td class="poppins-regular zw_14 zw_text_333333 text-right">
                    <a class="btn zw_text_AF2245 zw_a zw_24" href=""><i class="fa fa-edit" aria-hidden="true"></i> </a>
                  </td>
-               </tr>
+               </tr> -->
              </tbody>
            </table>
          </div>
@@ -101,7 +123,7 @@
 
      </section>
      <div class="container-fluid mt-4">
-       <div id="map" class="offset-md-2 col-md-8"></div>
+       <div id="map" class="offset-md-1 col-md-10"></div>
        <div class="calculation-box">
          <p>Click the map to draw a polygon.</p>
          <div id="calculated-area"></div>
@@ -133,22 +155,22 @@
    var map = new mapboxgl.Map({
      container: 'map',
      style: 'mapbox://styles/mapbox/streets-v11',
-     center: [45.0792, 23.8859],
-     zoom: 6
+     center: [0, 0],
+     zoom: 2
    });
 
-   var draw = new MapboxDraw({
-     displayControlsDefault: true,
-     controls: {
-       point: true,
-       line_string: true,
-       polygon: true,
-       trash: true,
-       combine_features: true,
-       uncombine_features: true
-     }
-   });
-   map.addControl(draw);
+  //  var draw = new MapboxDraw({
+  //    displayControlsDefault: true,
+  //    controls: {
+  //      point: true,
+  //      line_string: true,
+  //      polygon: true,
+  //      trash: true,
+  //      combine_features: true,
+  //      uncombine_features: true
+  //    }
+  //  });
+  //  map.addControl(draw);
 
    map.addControl(new mapboxgl.NavigationControl());
 
@@ -201,99 +223,99 @@
        })
        .then(data => {
          if (data.success) {
-          //  Swal.fire({
-          //    title: 'Success!',
-          //    text: 'Zone saved successfully',
-          //    icon: 'success',
-          //    confirmButtonText: 'OK'
-          //  });
+           //  Swal.fire({
+           //    title: 'Success!',
+           //    text: 'Zone saved successfully',
+           //    icon: 'success',
+           //    confirmButtonText: 'OK'
+           //  });
          } else {
-          //  Swal.fire({
-          //    title: 'Error!',
-          //    text: data.message,
-          //    icon: 'error',
-          //    confirmButtonText: 'OK'
-          //  });
+           //  Swal.fire({
+           //    title: 'Error!',
+           //    text: data.message,
+           //    icon: 'error',
+           //    confirmButtonText: 'OK'
+           //  });
          }
          console.log('Response data:', data);
        })
        .catch(error => {
-        //  Swal.fire({
-        //    title: 'Error!',
-        //    text: 'Zone Is Alredy Exit',
-        //    icon: 'error',
-        //    confirmButtonText: 'OK'
-        //  });
+         //  Swal.fire({
+         //    title: 'Error!',
+         //    text: 'Zone Is Alredy Exit',
+         //    icon: 'error',
+         //    confirmButtonText: 'OK'
+         //  });
          console.error('Error saving shape:', error);
        });
 
    });
 
-  //  function fetchAndDisplayShapes() {
-  //    const urlParams = new URLSearchParams(window.location.search);
-  //    const id = urlParams.get('id') || '0';
+   function fetchAndDisplayShapes() {
+     const urlParams = new URLSearchParams(window.location.search);
+     const id = urlParams.get('id') || '0';
 
-  //    fetch(`/getrectangles?id=${id}`, {
-  //        headers: {
-  //          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-  //          'Content-Type': 'application/json'
-  //        }
-  //      })
-  //      .then(response => {
-  //        if (!response.ok) {
-  //          throw new Error('Network response was not ok');
-  //        }
-  //        return response.json();
-  //      })
-  //      .then(data => {
-  //        data.forEach(shape => {
-  //          var coordinates = JSON.parse(shape.coordinates);
+     fetch(`/getrectangles?id=${id}`, {
+         headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+           'Content-Type': 'application/json'
+         }
+       })
+       .then(response => {
+         if (!response.ok) {
+           throw new Error('Network response was not ok');
+         }
+         return response.json();
+       })
+       .then(data => {
+         data.forEach(shape => {
+           var coordinates = JSON.parse(shape.coordinates);
 
-  //          map.addLayer({
-  //            id: `shape-${shape.id}`,
-  //            type: 'fill',
-  //            source: {
-  //              type: 'geojson',
-  //              data: {
-  //                type: 'Feature',
-  //                geometry: {
-  //                  type: shape.shape_type,
-  //                  coordinates: coordinates
-  //                }
-  //              }
-  //            },
-  //            layout: {},
-  //            paint: {
-  //              'fill-color': '#888888',
-  //              'fill-opacity': 0.4
-  //            }
-  //          });
+           map.addLayer({
+             id: `shape-${shape.id}`,
+             type: 'fill',
+             source: {
+               type: 'geojson',
+               data: {
+                 type: 'Feature',
+                 geometry: {
+                   type: shape.shape_type,
+                   coordinates: coordinates
+                 }
+               }
+             },
+             layout: {},
+             paint: {
+               'fill-color': '#888888',
+               'fill-opacity': 0.4
+             }
+           });
 
-  //          map.addLayer({
-  //            id: `shape-outline-${shape.id}`,
-  //            type: 'line',
-  //            source: {
-  //              type: 'geojson',
-  //              data: {
-  //                type: 'Feature',
-  //                geometry: {
-  //                  type: shape.shape_type,
-  //                  coordinates: coordinates
-  //                }
-  //              }
-  //            },
-  //            layout: {},
-  //            paint: {
-  //              'line-color': '#af2245',
-  //              'line-width': 2
-  //            }
-  //          });
-  //        });
-  //      })
-  //      .catch(error => {
-  //        console.error('Error fetching shapes:', error);
-  //      });
-  //  }
+           map.addLayer({
+             id: `shape-outline-${shape.id}`,
+             type: 'line',
+             source: {
+               type: 'geojson',
+               data: {
+                 type: 'Feature',
+                 geometry: {
+                   type: shape.shape_type,
+                   coordinates: coordinates
+                 }
+               }
+             },
+             layout: {},
+             paint: {
+               'line-color': '#af2245',
+               'line-width': 2
+             }
+           });
+         });
+       })
+       .catch(error => {
+         console.error('Error fetching shapes:', error);
+       });
+   }
 
    map.on('draw.create', updateArea);
    map.on('draw.delete', updateArea);
@@ -380,4 +402,13 @@
        });
      });
    });
+ </script>
+ <script>
+   // Check if the success message is present
+   const successMessage = document.getElementById('success-message');
+   if (successMessage) {
+     setTimeout(() => {
+       successMessage.style.display = 'none'; // Hide the message after 3 seconds
+     }, 3000); // 3000 milliseconds = 3 seconds
+   }
  </script>

@@ -1,4 +1,97 @@
 @include('admin.layouts.headermodule')
+<style>
+  .error {
+    color: red;
+  }
+</style>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+  }
+
+  .container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    text-align: center;
+    color: #4a4a4a;
+    margin-bottom: 20px;
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .dropdown-button {
+    width: 100%;
+    padding: 12px;
+    border-bottom: 2px solid #af2245;
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-size: 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+
+  .dropdown-button:hover {
+    border-color: #007bff;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 2px;
+  }
+
+  .dropdown-content label {
+    display: block;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .dropdown-content label:hover {
+    background-color: #f1f1f1;
+  }
+
+  .show {
+    display: block;
+  }
+
+  .select-all,
+  .deselect-all {
+    margin: 10px 15px;
+    cursor: pointer;
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  .select-all:hover,
+  .deselect-all:hover {
+    text-decoration: underline;
+  }
+</style>
 
 <body class="hold-transition sidebar-mini zw_sidebar">
   <div class="wrapper">
@@ -42,7 +135,8 @@
                             <ul> @foreach ($errors->all() as $error) <li>{{ $error }}</li> @endforeach </ul>
                           </div> @endif
                           <!-- form start -->
-                          <form action="{{ route('subservices.store') }}" method="POST" enctype="multipart/form-data"> @csrf <input type="hidden" name="Healthcareid" value="{{ $id }}">
+                          <!-- <form id="myForm" action="{{ route('subservices.store') }}" method="POST" enctype="multipart/form-data"> @csrf <input type="hidden" name="Healthcareid" value="{{ $id }}"> -->
+                          <form id="myForm" method="POST" enctype="multipart/form-data"> @csrf <input type="hidden" name="Healthcareid" value="{{ $id }}">
                             <div class="card-body">
                               {{-- <div class="form-row zw_form_row">
 																				  <div class="form-group col-md-6"> --}}
@@ -63,20 +157,7 @@
                                   <span aria-hidden="true">&times;</span>
                                 </button>
                               </div>
-                              {{-- </div>
-																				  </div> --}}
-                              <div class="form-row zw_form_row hide" id="Ennameinputhidenshow">
-                                <div class="form-group col-md-6">
-                                  <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputEnname">En name <span style="color: red;">*</span>
-                                  </label>
-                                  <input type="text" name="Enname" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputEnname" placeholder="Enter Enname">
-                                </div>
-                                <div class="form-group col-md-6">
-                                  <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputArname">Ar name <span style="color: red;">*</span>
-                                  </label>
-                                  <input type="text" name="Arname" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputArname" placeholder="Enter Arname">
-                                </div>
-                              </div>
+
                               <div class="form-row zw_form_row mb-4">
                                 <div class="form-group col-md-6">
                                   <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputEndescription">English Description
@@ -90,13 +171,15 @@
                                 </div>
                               </div>
                               <div class="form-row zw_form_row">
-                                <div class="form-group col-md-3">
-                                  <select name="Testcategory" class="form-control zw_form_control mb-4 zw_17">
+                                <div class="form-group col-md-4">
+                                  <select name="Subservicename" class="form-control zw_form_control mb-4 zw_17">
                                     <option value="">Main Services type <span style="color: red;">*</span>
+                                    <option>Medical</option>
+                                    <option>Non Medical</option>
                                     </option>
                                   </select>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-4">
                                   <select name="Service" class="form-control zw_form_control mb-4 zw_17">
                                     <option value="">Services <span style="color: red;">*</span>
                                     </option> @foreach ($sdropdownOptions as $option) <option value="{{ $option->id . ':' . $option->Enname }}">
@@ -104,20 +187,43 @@
                                     </option> @endforeach
                                   </select>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-4">
                                   <select name="Servicetype" class="form-control zw_form_control mb-4 zw_17">
                                     <option value="">Sub Service Type <span style="color: red;">*</span></option>
                                     <option value="Single">Single</option>
                                     <option value="Package">Package</option>
                                   </select>
                                 </div>
-                                <div class="form-group col-md-3">
-                                  <select name="Servicetype" class="form-control zw_form_control mb-4 zw_17">
-                                    <option value="">Sub Service <span style="color: red;">*</span></option>
-                                    <option value="Single">Single</option>
-                                    <option value="Package">Package</option>
-                                  </select>
+                              </div>
+                              <div class="form-row zw_form_row hide" id="Ennameinputhidenshow">
+                                <div class="form-group col-md-6">
+                                  <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputEnname">En name <span style="color: red;">*</span>
+                                  </label>
+                                  <input type="text" name="Enname" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputEnname" placeholder="Enter Enname">
+                                  <div class="error-message text-danger Enname-error"></div>
                                 </div>
+                                <div class="form-group col-md-6">
+                                  <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputArname">Ar name <span style="color: red;">*</span>
+                                  </label>
+                                  <input type="text" name="Arname" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputArname" placeholder="Enter Arname">
+                                  <div class="error-message text-danger Arname-error"></div>
+                                </div>
+                              </div>
+                              <div class="form-row zw_form_row ">
+                              <div class="form-group form-row hide col-md-6" id="packageinputhidenshow">
+                                <div class="">
+                                  <label class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputPackagename">Package name</label>
+                                  <input type="text" name="Packagename" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputPackagename" placeholder="Enter Package name">
+                                </div>
+                              </div>
+                              <div class="form-group col-md-6 hide" id="Serviceinputhidenshow">
+                                <label class="zw_label_height zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputService">Service Package <span style="color: red;">*</span></label>
+                                <div id="selectedValuesContainer"></div>
+                                <input type="hidden" name="selectedValues" id="selectedValuesInput">
+                                <input type="text" name="Packageservices" id="textInput" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputPrice" placeholder="Enter Package Service">
+                                <!-- purvesh css-->
+                                <button class="btn zw_btn packageservicebtn" type="button" id="addInputValue">Add Package Service</button>
+                              </div>
                               </div>
                               <div class="form-row zw_form_row">
                                 <div class="form-group col-md-6">
@@ -156,7 +262,27 @@
                                   <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputPrice">Price <span style="color: red;">*</span>
                                   </label>
                                   <input name="Price" class="form-control poppins-regular zw_17 zw_text_898B9F zw_form_control" id="exampleInputPrice" placeholder="Enter Price">
-                                </div> @if (empty($id)) <div class="form-group col-md-6">
+                                  <div class="error-message text-danger Price-error"></div>
+                                </div>
+
+                                @if (empty($id))
+                                <div class="form-group col-md-6">
+                                  <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="healthcare">Healthcare <span style="color: red;">*</span></label>
+                                  <div class="dropdown">
+                                    <div class="dropdown-button">Select Healthcare Options</div>
+                                    <div class="dropdown-content">
+                                      <div class="select-all">Select All</div>
+                                      <div class="deselect-all">Deselect All</div>
+                                      @foreach ($dropdownOptions as $option)
+                                      <label>
+                                        <input type="checkbox" name="Healthcare[]" value="{{ $option->id . ':' . $option->Enname }}">{{ $option->Enname }}
+                                      </label>
+                                      @endforeach
+                                    </div>
+                                  </div>
+                                </div>
+                                @endif
+                                <!-- @if (empty($id)) <div class="form-group col-md-6">
                                   <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputHealthcare">Healthcare <span style="color: red;">*</span>
                                   </label>
                                   <select name="Healthcare" class="form-control zw_form_control mb-4 zw_17">
@@ -164,14 +290,18 @@
                                       {{ $option->Enname }}
                                     </option> @endforeach
                                   </select>
-                                </div> @endif
+                                </div>
+                                @endif -->
                               </div>
                               <div class="form-row zw_form_row">
                                 <div class="form-group col-md-6">
                                   <label class="zw_label_height zw_poppins_regular poppins-regular zw_17 zw_text_111535" for="exampleInputHealthcare">The type of practitioner providing the service <span style="color: red;">*</span>
                                   </label>
-                                  <select name="Healthcare" class="form-control zw_form_control mb-4 zw_17">
-                                    <option value="">Physical therapy nurse,docor,lab technician,other </option>
+                                  <select name="Typeofpractitioner" class="form-control zw_form_control mb-4 zw_17">
+                                    <option value="Physical therapy nurse">Physical therapy nurse </option>
+                                    <option value="docor">docor </option>
+                                    <option value="lab technician">lab technician</option>
+                                    <option value="other">other</option>
                                   </select>
                                 </div>
                               </div>
@@ -256,6 +386,7 @@
                     <th class="poppins-medium zw_18">Description</th>
                     <th class="poppins-medium zw_18">Instrucation</th>
                     <th class="poppins-medium zw_18">Single</th>
+                    <th class="poppins-medium zw_18">Packages</th>
                     <th class="poppins-medium zw_18">Status</th>
                     <!-- <th class="poppins-medium zw_18">Single</th>
                     <th class="poppins-medium zw_18">Packages</th> -->
@@ -276,6 +407,9 @@
                     </td>
                     <td class="poppins-regular zw_14 zw_text_333333">
                       <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('subservices.single',['id' => $subservice->id]) }}"><i class="fa fa-cloud" aria-hidden="true"></i> </a>
+                    </td>
+                    <td class="poppins-regular zw_14 zw_text_333333">
+                      <a class="btn zw_text_AF2245 zw_a zw_24" href="{{ route('subservices.packages',['id' => $subservice->id]) }}"><i class="fa fa-bars" aria-hidden="true"></i> </a>
                     </td>
                     <td class="poppins-regular zw_14 zw_text_333333">
                       <label class="switch">
@@ -367,6 +501,196 @@
       }
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      function resetForm() {
+        $('#myForm')[0].reset(); // Reset the form
+        $('.error').html(''); // Clear previous error messages
+      }
+
+      // Reset form when the close button is clicked
+      $('.close').on('click', function() {
+        resetForm(); // Reset the form
+        $('#exampleModal').modal('hide'); // Hide the modal
+      });
+
+      // Reset form when the modal is hidden
+      $('#exampleModal').on('hidden.bs.modal', function() {
+        resetForm();
+      });
+
+      // jQuery validation
+      $('#myForm').validate({
+        rules: {
+          Enname: {
+            required: true
+          },
+          Arname: {
+            required: true
+          },
+          Price: {
+            required: true,
+            number: true // Ensure Price is numeric
+          },
+          Healthcare: {
+            required: true
+          }
+        },
+        messages: {
+          Enname: "Please enter the English name.",
+          Arname: "Please enter the Arabic name.",
+          Price: {
+            required: "Please specify a price.",
+            number: "Price must be a valid number."
+          },
+          Healthcare: "Please enter healthcare information."
+        },
+        submitHandler: function(form) {
+          // Handle AJAX submission
+          $.ajax({
+            type: 'POST',
+            url: '{{ route("subservices.store") }}',
+            data: new FormData(form), // Send the FormData object
+            processData: false, // Important: tell jQuery not to process the data
+            contentType: false, // Important: tell jQuery not to set contentType
+            success: function(response) {
+              $('#exampleModal').modal('hide'); // Hide modal on success
+              // if (response.success) {
+              $('.zw_card').prepend(
+                '<div class="alert alert-success zw_alert_success">' +
+                '<p>Main Service created successfully.</p>' +
+                '</div>'
+              );
+
+              // Optionally fade out the message after a few seconds
+              setTimeout(function() {
+                $('.zw_alert_success').fadeOut();
+              }, 3000);
+              location.reload(); // Reload page if necessary
+              // }
+            },
+            error: function(xhr) {
+              const errors = xhr.responseJSON.errors;
+              for (let key in errors) {
+                const errorMessage = errors[key].join('<br>');
+                $(`.${key}-error`).html(errorMessage); // Display error messages
+              }
+            }
+          });
+        }
+      });
+
+      // Check if the modal should open on page load
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('openModal')) {
+        $('#exampleModal').modal('show'); // Show modal if the parameter exists
+      }
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#addInputValue').click(function() {
+        var value = $('#textInput').val();
+        if (value.trim() !== '') {
+          addValue(value);
+          $('#textInput').val('');
+        }
+      });
+
+      function addValue(value) {
+        $('#selectedValuesContainer').append('<div class="selectedValue">' + value + '<span class="delete">&times;</span></div>');
+        appendSelectedValues(value);
+      }
+
+      function appendSelectedValues(value) {
+
+        var selectedValues = $('#selectedValuesInput').val().split(',');
+        var index = selectedValues.indexOf('');
+        if (index !== -1) {
+          selectedValues.splice(index, 1);
+        }
+        selectedValues.push(value);
+        $('#selectedValuesInput').val(selectedValues.join(','));
+
+        // Append the value to the container below the input field
+        //c $('#selectedValuesContainer').append('<div>' + value + '<span class="delete">&times;</span></div>');
+      }
+
+      $(document).on('click', '.delete', function() {
+        var value = $(this).parent().text().trim();
+        removeSelectedValue(value);
+        $(this).parent().remove();
+      });
+
+      function removeSelectedValue(value) {
+        var selectedValues = $('#selectedValuesInput').val().split(',');
+        var index = selectedValues.indexOf(value);
+        if (index !== -1) {
+          selectedValues.splice(index, 1);
+        }
+        $('#selectedValuesInput').val(selectedValues.join(','));
+
+        // Remove the value from the container below the input field
+        $('#selectedValuesContainer').find('div:contains("' + value + '")').remove();
+      }
+      // Event listener for the change event on the Servicetype dropdown
+      $('#Serviceinputhidenshow').hide();
+      $('#Ennameinputhidenshow').hide();
+      $('#packageinputhidenshow').hide();
+      $('[name="Servicetype"]').change(function() {
+        var value = $(this).val();
+        // Show or hide the selectedValuesInput based on the selected value
+        if (value === 'Package') {
+          $('#Serviceinputhidenshow').show();
+          $('#packageinputhidenshow').show();
+          $('#Ennameinputhidenshow').hide();
+        } else {
+          $('#Serviceinputhidenshow').hide();
+          $('#packageinputhidenshow').hide();
+          $('#Ennameinputhidenshow').show();
+        }
+      });
+    });
+  </script>
+
+  <script>
+    const dropdownButton = document.querySelector('.dropdown-button');
+    const dropdownContent = document.querySelector('.dropdown-content');
+
+    dropdownButton.addEventListener('click', function() {
+      dropdownContent.classList.toggle('show');
+
+      // Position dropdown above the button if there's not enough space below
+      const rect = dropdownButton.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const dropdownHeight = dropdownContent.offsetHeight;
+
+      if (spaceBelow < dropdownHeight) {
+        dropdownContent.style.bottom = `${dropdownHeight + 2}px`;
+      } else {
+        dropdownContent.style.bottom = 'auto';
+      }
+    });
+
+    document.querySelector('.select-all').addEventListener('click', function() {
+      const checkboxes = document.querySelectorAll('.dropdown-content input[type="checkbox"]');
+      checkboxes.forEach(checkbox => checkbox.checked = true);
+    });
+
+    document.querySelector('.deselect-all').addEventListener('click', function() {
+      const checkboxes = document.querySelectorAll('.dropdown-content input[type="checkbox"]');
+      checkboxes.forEach(checkbox => checkbox.checked = false);
+    });
+
+    // Close the dropdown if clicked outside
+    window.addEventListener('click', function(event) {
+      if (!event.target.matches('.dropdown-button')) {
+        dropdownContent.classList.remove('show');
+      }
+    });
+  </script>
+
 </body>
 
 </html>

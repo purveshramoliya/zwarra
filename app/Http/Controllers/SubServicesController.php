@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\ServiceProvider;
 use App\Models\SubServices;
 use App\Models\OurServices;
@@ -16,15 +17,16 @@ class SubServicesController extends Controller
      */
     public function index(Request $request)
     {
-       // Retrieve the ID from the request
+        // Retrieve the ID from the request
         $id = $request->input('id');
-
+        // print_r($id);
+        // die();
         // Check if the ID is provided
         if ($id) {
-        // Retrieve the service provider record based on the Spid
+            // Retrieve the service provider record based on the Spid
             $subservices = SubServices::where('Healthcareid', $id)->latest()->paginate(5);
 
-        // Check if the service provider record exists
+            // Check if the service provider record exists
             /*if ($subservices->isEmpty()) {
                 //return response()->json(['error' => 'Services not found for the provided ID'], 404);
                 // Store the error message in the session
@@ -47,9 +49,9 @@ class SubServicesController extends Controller
 
         $dropdownOptions = ServiceProvider::all();
         $sdropdownOptions = OurServices::all();
-        return view('admin.subservices.index', compact('subservices','sdropdownOptions','dropdownOptions', 'id'));
+        return view('admin.subservices.index', compact('subservices', 'sdropdownOptions', 'dropdownOptions', 'id'));
     }
-   
+
 
     /**
      * Show the form for creating a new resource.
@@ -59,14 +61,13 @@ class SubServicesController extends Controller
     public function create(Request $request)
     {
         $id = $request->input('id');
-        
+
         // Retrieve dropdown options from the database
         $dropdownOptions = ServiceProvider::all();
         $sdropdownOptions = OurServices::all();
 
         // Return the view with the dropdown options
-        return view('admin.subservices.create', compact('dropdownOptions','sdropdownOptions','id'));
-      
+        return view('admin.subservices.create', compact('dropdownOptions', 'sdropdownOptions', 'id'));
     }
 
 
@@ -78,48 +79,49 @@ class SubServicesController extends Controller
         $spOptions = ServiceProvider::all();
         $sOptions = SubServices::where('Testcategory', 'Body Test')->get();
 
-    // Return the view with the dropdown options
-        return view('admin.subservices.createbody', compact('dropdownOptions','spOptions','sOptions','id'));
+        // Return the view with the dropdown options
+        return view('admin.subservices.createbody', compact('dropdownOptions', 'spOptions', 'sOptions', 'id'));
     }
 
     public function single(Request $request)
     {
         $id = $request->input('id');
-      
+
         // Fetch SubServices where Testcategory matches $id
-        $subservices = SubServices::where('Service', $id)->where('Servicetype','Single')
-                    ->latest()
-                    ->paginate(20);
+        $subservices = SubServices::where('Service', $id)->where('Servicetype', 'Single')
+            ->latest()
+            ->paginate(20);
 
         // Return the view with the dropdown options
-        return view('admin.subservices.single', compact('id','subservices'));
+        return view('admin.subservices.single', compact('id', 'subservices'));
     }
 
     public function package(Request $request)
     {
         $id = $request->input('id');
         // Fetch SubServices where Testcategory matches $id
-          $subservices = SubServices::select('Packagename','created_at')
-                    ->where('Service', $id)
-                    ->whereNotNull('Packagename')
-                    ->distinct()
-                    ->latest()
-                    ->paginate(20);
+        $subservices = SubServices::select('Packagename', 'created_at')
+            ->where('Service', $id)
+            ->whereNotNull('Packagename')
+            ->distinct()
+            ->latest()
+            ->paginate(20);
 
-       // Return the view with the dropdown options
-        return view('admin.subservices.package', compact('id','subservices'));
+        // Return the view with the dropdown options
+        return view('admin.subservices.package', compact('id', 'subservices'));
     }
 
-    public function packageservices(Request $request) {
-    $packagename = $request->input('packagename');
-    
-    // Fetch service based on $packagename
-    $subservices = SubServices::where('packagename', $packagename) ->latest()
-                    ->paginate(20);
-    
-    // Pass $service to the view or perform other operations
-    return view('admin.subservices.packageservices', compact('subservices'));
-}
+    public function packageservices(Request $request)
+    {
+        $packagename = $request->input('packagename');
+
+        // Fetch service based on $packagename
+        $subservices = SubServices::where('packagename', $packagename)->latest()
+            ->paginate(20);
+
+        // Pass $service to the view or perform other operations
+        return view('admin.subservices.packageservices', compact('subservices'));
+    }
 
 
     /**
@@ -128,6 +130,12 @@ class SubServicesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function checkEmail(Request $request)
+    {
+        $emailExists = SubServices::where('email', $request->email)->exists();
+        return response()->json(['exists' => $emailExists]);
+    }
+    
     public function store(Request $request)
     {
         // Store file information in the database
@@ -135,49 +143,40 @@ class SubServicesController extends Controller
 
         $Servicetype = $request->input('Servicetype');
 
-        if($Servicetype == 'Single')
-        {
-            $request->validate([
-                'Enname' => 'required',
-                'Service' => 'required',
-              // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
-                //'Logo' => 'required|mimes:jpg,png|max:2048',
-
-            ]);
-
-            if($request->hasfile('Logo'))
-            {
+        if ($Servicetype == 'Single') {
+            if ($request->hasFile('Logo')) {
                 $file = $request->file('Logo');
-
                 $fileName = $file->getClientOriginalName();
-                $filePath = $file->move(public_path()."/uploads/",$fileName);
-               //$ourservices->Logo = $fileName;
-                $subservices->Logo =  "/uploads/".$fileName;
+                $filePath = $file->move(public_path() . "/uploads/", $fileName);
+                $subservices->Logo = "/uploads/" . $fileName;
             }
 
-         // Extracting ID and Enname from the selected option
+            // Extracting ID and Enname from the selected option
             if ($request->has('Service') && !is_null($request->input('Service'))) {
-                // The 'Healthcare' input is set and not null
                 $selectedOption = explode(':', $request->input('Service'));
                 $serviceid = $selectedOption[0];
                 $servicename = $selectedOption[1];
                 $subservices->Service = $serviceid;
                 $subservices->Mainservicename = $servicename;
             }
-                
-            if ($request->has('Healthcare') && !is_null($request->input('Healthcare'))) {
-                // The 'Healthcare' input is set and not null
-                $hselectedOption = explode(':', $request->input('Healthcare'));
-                $hid = $hselectedOption[0];
-                $hname = $hselectedOption[1];
-                $subservices->Healthcareid = $hid;
-                $subservices->Healthcare = $hname;
+
+            // Handle multiple Healthcare selections
+            if ($request->has('Healthcare') && !empty($request->input('Healthcare'))) {
+                $healthcareOptions = $request->input('Healthcare'); // This will be an array of selected values
+                $subservices->Healthcareid = implode(',', array_map(function ($option) {
+                    return explode(':', $option)[0]; // Extract only the ID
+                }, $healthcareOptions));
+                $subservices->Healthcare = implode(',', array_map(function ($option) {
+                    return explode(':', $option)[1]; // Extract only the name
+                }, $healthcareOptions));
             }
+
+            // Additional fields
             $HCid = $request->input('id');
-            if($HCid)
-            {
-             $subservices->Healthcareid = $HCid;
+            if ($HCid) {
+                $subservices->Healthcareid = $HCid;
             }
+
             $subservices->Enname = $request->input('Enname');
             $subservices->Arname = $request->input('Arname');
             $subservices->Testcategory = $request->input('Testcategory');
@@ -190,12 +189,11 @@ class SubServicesController extends Controller
             $subservices->Entitle = $request->input('Entitle');
             $subservices->Artitle = $request->input('Artitle');
             $subservices->Price = $request->input('Price');
+            $subservices->Typeofpractitioner = $request->input('Typeofpractitioner');
             $subservices->Status = 1;
 
             $subservices->save();
-        }
-        else{
-        
+        } else {
             $request->validate([
                 'Service' => 'required',
             ]);
@@ -204,33 +202,33 @@ class SubServicesController extends Controller
             $selectedValues = explode(",", $Values);
 
             foreach ($selectedValues as $selectedValue) {
-            $subservices = new SubServices();
-           // Extracting ID and Enname from the selected option
-            if ($request->has('Service') && !is_null($request->input('Service'))) {
-                // The 'Healthcare' input is set and not null
-                $selectedOption = explode(':', $request->input('Service'));
-                $serviceid = $selectedOption[0];
-                $servicename = $selectedOption[1];
-                $subservices->Service = $serviceid;
-                $subservices->Mainservicename = $servicename;
-            }
-                
-            if ($request->has('Healthcare') && !is_null($request->input('Healthcare'))) {
-                // The 'Healthcare' input is set and not null
-                $hselectedOption = explode(':', $request->input('Healthcare'));
-                $hid = $hselectedOption[0];
-                $hname = $hselectedOption[1];
-                $subservices->Healthcareid = $hid;
-                $subservices->Healthcare = $hname;
-            }
+                $subservices = new SubServices();
 
-
-                // Store file information in the database
-               $HCid = $request->input('id');
-                if($HCid)
-                {
-                 $subservices->Healthcareid = $HCid;
+                // Extracting ID and Enname from the selected option
+                if ($request->has('Service') && !is_null($request->input('Service'))) {
+                    $selectedOption = explode(':', $request->input('Service'));
+                    $serviceid = $selectedOption[0];
+                    $servicename = $selectedOption[1];
+                    $subservices->Service = $serviceid;
+                    $subservices->Mainservicename = $servicename;
                 }
+
+                // Handle multiple Healthcare selections
+                if ($request->has('Healthcare') && !empty($request->input('Healthcare'))) {
+                    $healthcareOptions = $request->input('Healthcare');
+                    $subservices->Healthcareid = implode(',', array_map(function ($option) {
+                        return explode(':', $option)[0];
+                    }, $healthcareOptions));
+                    $subservices->Healthcare = implode(',', array_map(function ($option) {
+                        return explode(':', $option)[1];
+                    }, $healthcareOptions));
+                }
+
+                $HCid = $request->input('id');
+                if ($HCid) {
+                    $subservices->Healthcareid = $HCid;
+                }
+
                 $subservices->Enname = $selectedValue;
                 $subservices->Arname = $request->input('Arname');
                 $subservices->Testcategory = $request->input('Testcategory');
@@ -244,16 +242,15 @@ class SubServicesController extends Controller
                 $subservices->Entitle = $request->input('Entitle');
                 $subservices->Artitle = $request->input('Artitle');
                 $subservices->Price = $request->input('Price');
+                $subservices->Typeofpractitioner = $request->input('Typeofpractitioner');
                 $subservices->Status = 1;
 
-               // Add other fields as needed
                 $subservices->save();
             }
         }
 
-        
         return redirect()->route('subservices.index')
-        ->with('success','Main Service created successfully.');
+            ->with('success', 'Main Service created successfully.');
     }
 
     /**
@@ -264,11 +261,11 @@ class SubServicesController extends Controller
      */
     public function show(SubServices $subservice)
     {
-      // Retrieve dropdown options from the database
+        // Retrieve dropdown options from the database
         $dropdownOptions = ServiceProvider::all();
         $sdropdownOptions = OurServices::all();
         $ssdropdownOptions = SubServices::all();
-        return view('admin.subservices.show',compact('subservice','dropdownOptions','sdropdownOptions','ssdropdownOptions'));
+        return view('admin.subservices.show', compact('subservice', 'dropdownOptions', 'sdropdownOptions', 'ssdropdownOptions'));
     }
 
     /**
@@ -279,11 +276,11 @@ class SubServicesController extends Controller
      */
     public function edit(SubServices $subservice)
     {
-      // Retrieve dropdown options from the database
+        // Retrieve dropdown options from the database
         $dropdownOptions = ServiceProvider::all();
         $sdropdownOptions = OurServices::all();
         $ssdropdownOptions = SubServices::all();
-        return view('admin.subservices.edit',compact('subservice','dropdownOptions','sdropdownOptions','ssdropdownOptions'));
+        return view('admin.subservices.edit', compact('subservice', 'dropdownOptions', 'sdropdownOptions', 'ssdropdownOptions'));
     }
 
     /**
@@ -296,7 +293,7 @@ class SubServicesController extends Controller
     public function update(Request $request, SubServices $subservice)
     {
         //
-         $request->validate([
+        $request->validate([
             'Enname' => 'required',
         ]);
 
@@ -314,40 +311,39 @@ class SubServicesController extends Controller
             // Upload the new image file
             $file = $request->file('Logo');
             $fileName = $file->getClientOriginalName();
-            $filePath = $file->move(public_path()."/uploads/", $fileName);
+            $filePath = $file->move(public_path() . "/uploads/", $fileName);
             $subservice->Logo = "/uploads/" . $fileName; // Update the Logo attribute   
         }
 
         // Extracting ID and Enname from the selected option
         if ($request->has('Service') && !is_null($request->input('Service'))) {
-                // The 'Healthcare' input is set and not null
-                $selectedOption = explode(':', $request->input('Service'));
-                $serviceid = $selectedOption[0];
-                $servicename = $selectedOption[1];
-                $subservice->Service = $serviceid;
-                $subservice->Mainservicename = $servicename;
+            // The 'Healthcare' input is set and not null
+            $selectedOption = explode(':', $request->input('Service'));
+            $serviceid = $selectedOption[0];
+            $servicename = $selectedOption[1];
+            $subservice->Service = $serviceid;
+            $subservice->Mainservicename = $servicename;
         }
 
 
         if ($request->has('Healthcare') && !is_null($request->input('Healthcare'))) {
-                // The 'Healthcare' input is set and not null
-                $hselectedOption = explode(':', $request->input('Healthcare'));
-                $hid = $hselectedOption[0];
-                $hname = $hselectedOption[1];
-                $subservice->Healthcareid = $hid;
-                $subservice->Healthcare = $hname;
+            // The 'Healthcare' input is set and not null
+            $hselectedOption = explode(':', $request->input('Healthcare'));
+            $hid = $hselectedOption[0];
+            $hname = $hselectedOption[1];
+            $subservice->Healthcareid = $hid;
+            $subservice->Healthcare = $hname;
         }
         $HCid = $request->input('id');
-            if($HCid)
-            {
-             $subservices->Healthcareid = $HCid;
-            }
+        if ($HCid) {
+            $subservices->Healthcareid = $HCid;
+        }
 
-     $subservice->save(); // Save the changes to the database
+        $subservice->save(); // Save the changes to the database
 
-     return redirect()->route('subservices.index')
-     ->with('success',' Main Service updated successfully');
- }
+        return redirect()->route('subservices.index')
+            ->with('success', ' Main Service updated successfully');
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -358,27 +354,27 @@ class SubServicesController extends Controller
     public function destroy(SubServices $subservice)
     {
         //
-     $subservice->delete();
+        $subservice->delete();
 
-     return redirect()->route('subservices.index')
-     ->with('success',' Main Service deleted successfully');
- }
+        return redirect()->route('subservices.index')
+            ->with('success', ' Main Service deleted successfully');
+    }
 
- public function updatestatus(Request $request)
- {
-    $id = $request->input('id');
+    public function updatestatus(Request $request)
+    {
+        $id = $request->input('id');
 
         // Retrieve the user or whatever model you're updating
         $updatestatus = SubServices::findOrFail($id); // Change 'user_id' to the actual field name
-        
+
         // Update status logic here
         $status = $request->input('status');
 
         // Update the status in the database
         //$updatestatus->update(['Status' => $status]);
-        if($status == 'true'){
+        if ($status == 'true') {
             $status = 1;
-        }else{
+        } else {
             $status = 0;
         }
         $updatestatus->Status = $status;
@@ -390,38 +386,38 @@ class SubServicesController extends Controller
 
     public function subservicesapi(Request $request)
     {
-         $services = SubServices::where('Service', $request->id)
-                            ->where('Servicetype', $request->servicetype)
-                            ->whereNull('Subservicename')
-                            ->where('status', 1)
-                            ->get();
+        $services = SubServices::where('Service', $request->id)
+            ->where('Servicetype', $request->servicetype)
+            ->whereNull('Subservicename')
+            ->where('status', 1)
+            ->get();
 
-       // Check if any services are found
+        // Check if any services are found
         if ($services->isEmpty()) {
             return response()->json(['error' => 'Sub services not found'], 404);
         }
-        
+
         return response()->json($services);
     }
 
     public function subservicespackageapi(Request $request)
     {
-         $services = SubServices::where('Service', $request->id)
-                            ->where('Servicetype', $request->servicetype)
-                            ->where('Packagename', $request->packagename)
-                            ->whereNull('Subservicename')
-                            ->where('status', 1)
-                            ->get();
-         // Calculate the sum of the prices of the retrieved services
-         $totalPrice = $services->sum('Price');
+        $services = SubServices::where('Service', $request->id)
+            ->where('Servicetype', $request->servicetype)
+            ->where('Packagename', $request->packagename)
+            ->whereNull('Subservicename')
+            ->where('status', 1)
+            ->get();
+        // Calculate the sum of the prices of the retrieved services
+        $totalPrice = $services->sum('Price');
 
-       // Check if any services are found
+        // Check if any services are found
         if ($services->isEmpty()) {
             return response()->json(['error' => 'Sub services not found'], 404);
         }
 
-         // Prepare the response data
-         $response = [
+        // Prepare the response data
+        $response = [
             'packagename' => $request->packagename,
             'total_price' => $totalPrice,
             'services' => $services
@@ -429,9 +425,9 @@ class SubServicesController extends Controller
 
         // Return the JSON response
         return response()->json($response);
-    }  
+    }
 
-     public function subservicesinsideapi(Request $request)
+    public function subservicesinsideapi(Request $request)
     {
         $query = SubServices::where('Subservicename', $request->servicename);
 
@@ -450,25 +446,25 @@ class SubServicesController extends Controller
         if ($services->isEmpty()) {
             return response()->json(['error' => 'Sub services not found'], 404);
         }
-        
+
         return response()->json($services);
     }
 
 
     public function packagenameapi(Request $request)
-     {
+    {
         $services = SubServices::select('Packagename')
-                            ->where('Subservicename', $request->subservicename )
-                            ->where('status', 1)
-                            ->whereNotNull('Packagename')
-                            ->groupBy('Packagename')
-                            ->get();
+            ->where('Subservicename', $request->subservicename)
+            ->where('status', 1)
+            ->whereNotNull('Packagename')
+            ->groupBy('Packagename')
+            ->get();
 
-       // Check if any services are found
+        // Check if any services are found
         if ($services->isEmpty()) {
             return response()->json(['error' => 'Sub services not found'], 404);
         }
-        
+
         return response()->json($services);
     }
 
@@ -491,25 +487,25 @@ class SubServicesController extends Controller
         if ($services->isEmpty()) {
             return response()->json(['error' => 'Sub services not found'], 404);
         }
-        
+
         return response()->json($services);
     }
 
     public function subservicepackagenameapi(Request $request)
-     {
+    {
         $services = SubServices::select('Packagename')
-                            ->where('Service', $request->service)
-                            ->where('Servicetype', $request->servicetype)
-                            ->whereNotNull('Packagename')
-                            ->where('status', 1)
-                            ->groupBy('Packagename')
-                            ->get();
+            ->where('Service', $request->service)
+            ->where('Servicetype', $request->servicetype)
+            ->whereNotNull('Packagename')
+            ->where('status', 1)
+            ->groupBy('Packagename')
+            ->get();
 
-       // Check if any services are found
+        // Check if any services are found
         if ($services->isEmpty()) {
             return response()->json(['error' => 'Sub services not found'], 404);
         }
-        
+
         return response()->json($services);
     }
 }
