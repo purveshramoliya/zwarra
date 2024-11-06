@@ -3,102 +3,123 @@
 body {
     font-family: "Poppins", sans-serif;
 }
+
 .poppins-thin {
     font-family: "Poppins", sans-serif;
     font-weight: 100;
     font-style: normal;
 }
+
 .poppins-extralight {
     font-family: "Poppins", sans-serif;
     font-weight: 200;
     font-style: normal;
 }
+
 .poppins-light {
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-style: normal;
 }
+
 .poppins-regular {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
 }
+
 .poppins-medium {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     font-style: normal;
 }
+
 .poppins-semibold {
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-style: normal;
 }
+
 .poppins-bold {
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-style: normal;
 }
+
 .poppins-extrabold {
     font-family: "Poppins", sans-serif;
     font-weight: 800;
     font-style: normal;
 }
+
 .poppins-black {
     font-family: "Poppins", sans-serif;
     font-weight: 900;
     font-style: normal;
 }
+
 .poppins-thin-italic {
     font-family: "Poppins", sans-serif;
     font-weight: 100;
     font-style: italic;
 }
+
 .poppins-extralight-italic {
     font-family: "Poppins", sans-serif;
     font-weight: 200;
     font-style: italic;
 }
+
 .poppins-light-italic {
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-style: italic;
 }
+
 .poppins-regular-italic {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: italic;
 }
+
 .poppins-medium-italic {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     font-style: italic;
 }
+
 .poppins-semibold-italic {
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-style: italic;
 }
+
 .poppins-bold-italic {
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-style: italic;
 }
+
 .poppins-extrabold-italic {
     font-family: "Poppins", sans-serif;
     font-weight: 800;
     font-style: italic;
 }
+
 .poppins-black-italic {
     font-family: "Poppins", sans-serif;
     font-weight: 900;
     font-style: italic;
 }
+
 .zw_text_AF2245 {
     color: #af2245;
 }
+
 .zw_text_505F65 {
     color: #505f65;
 }
+
 .zw_text_111535 {
     color: #111535;
 }
@@ -1183,8 +1204,57 @@ input.uploadInput {
     margin-right: 10px;
 }
 
+.reports-icon {
+    background-image: url('/images/icon/reports.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+
+.nav-link:hover .reports-icon {
+    background-image: url('/images/icon/reports_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.map-icon {
+    background-image: url('/images/icon/map.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+
+.nav-link:hover .map-icon {
+    background-image: url('/images/icon/map_hover.png');
+    /* Background image on hover */
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
 .dashboard-icon {
     background-image: url('/images/icon/dashboard.png');
+    background-size: cover;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.home-icon {
+    background-image: url('/images/icon/home.png');
     background-size: cover;
     background-position: center;
     width: 25px;
@@ -1197,6 +1267,7 @@ input.uploadInput {
     background-color: #44eb70;
     border-radius: 6px;
 }
+
 .zw_btn_pdf:hover {
     color: #ffffff !important;
 }
@@ -1329,39 +1400,121 @@ input:checked+.slider:before {
 
 }
 
-.main-headerrr{
+.main-headerrr {
     margin-left: 18rem !important;
 }
-.zw_btn_decline{
+
+.zw_btn_decline {
     background: #af2245;
-    color:white;
+    color: white;
 }
-.zw_btn_decline:hover{
+
+.zw_btn_decline:hover {
     background: #af2245;
-    color:white !important;
+    color: white !important;
 }
-.bookings-comments{
+
+.bookings-comments {
     background: rgba(175, 34, 69, 0.1);
     height: 60px;
 }
-.bookings-show-background{
+
+.bookings-show-background {
     background: rgba(175, 34, 69, 0.1);
 }
-.panel-title > a:before {
+
+.panel-title>a:before {
     float: right !important;
     font-family: FontAwesome;
-    content:"\f068";
+    content: "\f068";
     padding-right: 5px;
     background: white;
     padding: 0 5px;
     margin: 10px;
 }
-.panel-title > a.collapsed:before {
+
+.panel-title>a.collapsed:before {
     float: right !important;
-    content:"\f067";
+    content: "\f067";
 }
-.panel-title > a:hover, 
-.panel-title > a:active, 
-.panel-title > a:focus  {
-    text-decoration:none;
+
+.panel-title>a:hover,
+.panel-title>a:active,
+.panel-title>a:focus {
+    text-decoration: none;
+}
+
+.content-wrapper-bg {
+    background-color: #f6f7f9 !important;
+
+}
+
+.back-none {
+    background: none !important;
+}
+
+.back-none::before {
+    background: none !important;
+}
+
+.services-package-tab {
+    background: rgba(175, 34, 69, 0.1);
+    border-bottom: 1px solid #AF2245;
+    color: black;
+    padding: 20px;
+    margin-right: 15px;
+}
+
+.services-single-tab {
+    background: #FFFFFF;
+    border-bottom: 1px solid #AF2245;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    text-align: center;
+    color: #333333;
+}
+
+.healthcare-services-btn {
+    background: #AF2245;
+    border-radius: 3px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 170%;
+    text-align: center;
+    letter-spacing: -0.025em;
+    color: #FFFFFF;
+}
+
+.btn-close {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+}
+
+.inline-container {
+    display: flex;
+    align-items: center;
+    /* Vertically centers the items */
+    justify-content: center;
+    /* Horizontally centers the items */
+    text-align: center;
+    /* Ensures the text is centered */
+}
+
+.inline-image {
+    margin-right: 10px;
+    /* Adjust spacing as needed */
+}
+
+.float-end {
+    FLOAT: INLINE-END;
+}
+
+.full-border-af2245 {
+    border: 1px solid #af2245;
 }

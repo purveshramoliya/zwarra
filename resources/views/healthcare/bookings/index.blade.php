@@ -1,92 +1,149 @@
-@include('healthcare.layouts.headermodule')
+<!DOCTYPE html>
+<html>
 
-<body class="hold-transition sidebar-mini zw_sidebar">
-  <div class="wrapper">
-    @include('healthcare.layouts.header')
-    @include('healthcare.layouts.sidebar')
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet">
+  @section('styles')
+  @endsection
+</head>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6 zw_back">
-              <a href="#" class="poppins-medium zw_18 zw_text_333333 zw_a zw_back">
-                <i class="fas fa-arrow-left right mr-2"></i>Back
-              </a>
+<body>
+  @extends('healthcare.layouts.app')
+  @section('content')
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <div class="container-fluid m-2">
 
-            </div>
-          </div>
-          <div class="row mb-2">
-           <div class="col-12 col-md-12 col-lg-6">
-              <h1 class="poppins-semibold zw_46 zw_text_AF2245 mt-2">Bookings</h1>
-            </div>
-           
-          </div>
-        </div><!-- /.container-fluid -->
-      </section>
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-      <div class="row">
-          <div class="col-12 col-md-12 col-lg-6">
-            <form class="zw_search_form">
-              <div class="input-group input-group-sm">
-                <input type="text" name="search" class=" zw_search_input zw_16 poppins-regular" placeholder="Search by name">
-                <div class="input-group-append zw_input-group-append">
-                  <button type="submit" class="btn zw_search_button zw_bg_ffffff">
-                    <i class="fas fa-search"></i>
-                  </button>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header content-wrapper-bg">
+          <!--- small box end-->
+          <div class="content mt-4 mb-4">
+            <div class="container">
+              <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <h4 class="card-title fw-bold fs-6">All requests</h4>
+                        <button class="bg-transparent" aria-label="More options">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                      </div>
+                      <div class="d-flex justify-content-between my-2">
+                        <h4 class="card-title fw-bold fs-5">3000</h4>
+                        <button class="rounded-3 text-success">
+                          <i class="fa-solid fa-arrow-up"></i> 20%
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <h4 class="card-title fw-bold fs-6">Pending requests</h4>
+                        <button class="bg-transparent" aria-label="More options">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                      </div>
+                      <div class="d-flex justify-content-between my-2">
+                        <h4 class="card-title fw-bold fs-5">100</h4>
+                        <button class="rounded-3 text-success">
+                          <i class="fa-solid fa-arrow-up"></i> 25%
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <h4 class="card-title fw-bold fs-6 text-danger">Rejected requests</h4>
+                        <button class="bg-transparent" aria-label="More options">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                      </div>
+                      <div class="d-flex justify-content-between my-2">
+                        <h4 class="card-title fw-bold fs-5 text-danger">56</h4>
+                        <button class="rounded-3 text-danger">
+                          <i class="fa-solid fa-arrow-down"></i> -11%
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <h4 class="card-title fw-bold fs-6">Completed</h4>
+                        <button class="bg-transparent" aria-label="More options">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                      </div>
+                      <div class="d-flex justify-content-between my-2">
+                        <h4 class="card-title fw-bold fs-5">2800</h4>
+                        <button class="rounded-3 text-success">
+                          <i class="fa-solid fa-arrow-up"></i> 17%
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </form>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="card zw_card">
-
-              @if ($message = Session::get('success'))
-              <div class="alert zw_alert_success">
-                <p>{{ $message }}</p>
-              </div>
-              @endif
-              <!-- /.card-header -->
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap zw_table">
-                  <thead class="zw_bg_AF2245 zw_text_ffffff">
-                    <tr>
-                      <th class="poppins-medium zw_18">Name</th>
-                      <th class="poppins-medium zw_18">New Price</th>
-                      <th class="poppins-medium zw_18">Service Type</th>
-                      <th class="poppins-medium zw_18">Gender</th>
-                      <th class="poppins-medium zw_18">Status</th>
-                      <th class="poppins-medium zw_18" colspan="2"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                      <td class="poppins-regular zw_14 zw_text_333333"></td>
-                       <td class="poppins-regular zw_14 zw_text_333333"></td>
-                        <td class="poppins-regular zw_14 zw_text_333333"></td>
-                         <td class="poppins-regular zw_14 zw_text_333333"></td>
-                          <td class="poppins-regular zw_14 zw_text_333333"></td>
-                           <td class="poppins-regular zw_14 zw_text_333333"></td>
-                            <td class="poppins-regular zw_14 zw_text_333333"></td>
-                          </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
           </div>
-        </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card zw_card">
+
+                <!-- /.card-header -->
+                <div class="card-body  p-0">
+                  <div class="col-12 d-md-flex ">
+                    <div>
+                      <a class=" px-3 btn zw_bg_AF2245 zw_text_ffffff d-flex active" href=""><img src="/dist/img/request-icon.png" class="img-fluid" alt="request-icon"> <span class="px-2">Requests</span></a>
+                    </div>
+                    <div class="mx-3 zw_service_btn w-100 ">
+                      <a class="btn text-start mr-5" href="">All Requests</a>
+                      <a class="btn text-start mr-5" href="">Pending</a>
+                      <a class="btn text-start mr-5" href="">Approved</a>
+                      <a class="btn text-start mr-5" href="">Rejected</a>
+                      <a class="btn text-start mr-5" href="">Completed</a>
+                    </div>
+
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+          <!-- /.row -->
+        </section>
         <!-- /.row -->
-      </section>
+      </div><!-- /.container-fluid -->
     </div>
-    @include('healthcare.layouts.footer')
+    <!-- /.content -->
   </div>
+  <!-- /.content-wrapper -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  @endsection
+
+  @section('scripts')
+  <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  @endsection
 </body>
 
 </html>

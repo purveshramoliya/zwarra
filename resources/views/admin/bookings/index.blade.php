@@ -119,15 +119,15 @@
                       </td>
                       <td class="poppins-regular zw_14 zw_text_333333">Completed</td>
                       <td class="poppins-regular zw_14 zw_text_333333">
-                        Incompleted
-                        <!-- <select name="status" class="status-dropdown poppins-regular zw_form_control zw_14 zw_text_333333 zw_box_shadow_none">
+                        <!-- Incompleted -->
+                        <select name="status" class="status-dropdown poppins-regular zw_form_control zw_14 zw_text_333333 zw_box_shadow_none">
                           <option value="Approved" {{ $booking->Status == 'Approved' ? 'selected' : '' }}>Approved</option>
                           <option value="Rejected" {{ $booking->Status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
                           <option value="Incompleted" {{ $booking->Status == 'Incompleted' ? 'selected' : '' }}>Incompleted</option>
                           <option value="Completed" {{ $booking->Status == 'Completed' ? 'selected' : '' }}>Completed</option>
                           <option value="Pending" {{ $booking->Status == 'Pending' ? 'selected' : '' }}>Pending</option>
                           <option value="Refund" {{ $booking->Status == 'Refund' ? 'selected' : '' }}>Refund</option>
-                        </select> -->
+                        </select>
                       </td>
                       <td class="poppins-regular zw_14 zw_text_333333">{{ $booking->Price }}</td>
                       <td>

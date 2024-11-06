@@ -90,8 +90,11 @@ class DashboardController extends Controller
     } else {
         $booking = Bookings::where('healthcare', $userId)->paginate(10);
     }
-
+    
     return view('healthcare.dashboard', compact('booking', 'totalBookings', 'approvedBookings', 'cancelledBookings'));
+}
+public function decline(){
+    return view('healthcare.decline');
 }
 
 }

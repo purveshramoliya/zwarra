@@ -341,7 +341,7 @@
                     citiesDropdown.empty();
                     citiesDropdown.append('<option value="">Select city</option>');
                     $.each(data, function(index, city) {
-                        citiesDropdown.append('<option value="' + city.id + '">' + city.name + '</option>');
+                        citiesDropdown.append('<option value="' + city.id + '">' + city.Arcityname + '</option>');
                     });
                 },
                 error: function(error) {

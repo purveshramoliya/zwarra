@@ -19,33 +19,33 @@
                with font-awesome or any other icon font library -->
          <li class="nav-item menu-open">
            <a href="{{ url('healthcare/dashboard') }}" class="nav-link active">
-             <i class="nav-icon fas fa-tachometer-alt"></i>
+             <div class="home-icon"></div>
              <p class="zw_12">
-               Dashboard
+               Home
              </p>
            </a>
          </li>
          <li class="nav-item">
-           <a href="{{ url('healthcare/services') }}" class="nav-link">
-             <i class="nav-icon fas fa-copy"></i>
+           <a href="{{ url('healthcare/service') }}" class="nav-link">
+             <div class="visit-service-icon"></div>
              <p class="zw_12">
                Services
              </p>
            </a>
          </li>
          <li class="nav-item">
-           <a href="{{ url('healthcare/bookings') }}" class="nav-link">
-             <i class="nav-icon far fa-envelope"></i>
+           <a href="{{ url('healthcare/reports') }}" class="nav-link">
+             <div class="reports-icon"></div>
              <p class="zw_12">
-               Appointments
+               Reports
              </p>
            </a>
          </li>
-          <li class="nav-item">
+         <li class="nav-item">
            <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-tree"></i>
+             <div class="map-icon"></div>
              <p class="zw_12">
-                 Zone
+               Zone
                <i class="fas fa-angle-left right zw_text_AF2245 zw_16"></i>
              </p>
            </a>
@@ -65,17 +65,40 @@
            </ul>
          </li>
          <li class="nav-item">
-           <a href="{{ url('healthcare/reports') }}" class="nav-link">
-             <i class="nav-icon fas fa-chart-pie"></i>
+           <a href="{{ route('healthcare.payments') }}" class="nav-link">
+             <div class="payment-icon"></div>
              <p class="zw_12">
-               Reports
+               Payments
              </p>
            </a>
          </li>
-        
          <li class="nav-item">
-           <a href="{{ route('healthcare.signout') }}" class="nav-link">
-             <i class="nav-icon fas fa-logout-h"></i>
+           <a href="{{ url('healthcare/bookings') }}" class="nav-link">
+             <div class="finance-icon"></div>
+             <p class="zw_12">
+               Bookings
+             </p>
+           </a>
+         </li>
+         <li class="nav-item">
+           <a href="{{ url('healthcare/Requesttoaddanewservice') }}" class="nav-link">
+             <div class="finance-icon"></div>
+             <p class="zw_12">
+               Request to add a new service
+             </p>
+           </a>
+         </li>
+         <li class="nav-item">
+           <a href="{{ url('healthcare/help') }}" class="nav-link">
+             <div class="finance-icon"></div>
+             <p class="zw_12">
+               Help
+             </p>
+           </a>
+         </li>
+         <li class="nav-item">
+           <a href="{{ route('healthcare.signout') }}" class="nav-link active">
+             <img src="{{url('images/icon/logout.png')}}" alt="Logout Image" style="margin-right: 5px;">
              <p class="zw_12">Logout</p>
            </a>
          </li>

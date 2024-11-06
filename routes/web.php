@@ -33,6 +33,8 @@ use App\Http\Controllers\TermConditionController;
 use App\Http\Controllers\CustomerReviewController;
 use App\Http\Controllers\DoctorSettingsController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\HeaderPaymentsController;
+use App\Http\Controllers\HealthcareHelpController;
 use App\Http\Controllers\HealthcareZoneController;
 use App\Http\Controllers\bookingsDeclineController;
 use App\Http\Controllers\DoctorPositionsController;
@@ -45,6 +47,7 @@ use App\Http\Controllers\PatientRegistrationController;
 use App\Http\Controllers\HealthcareSubserviceController;
 use App\Http\Controllers\SubMedicalSpecialtiesController;
 use App\Http\Controllers\AdminHealthcareServiceController;
+use App\Http\Controllers\RequesToAddaNewServiceController;
 use App\Http\Controllers\ServiceProviderRequestController;
 use App\Http\Controllers\RegisteredAndNonRegisteredPatients;
 
@@ -164,10 +167,17 @@ Route::middleware(['auth:serviceprovider'])->group(function () {
 
     Route::get('/healthcare/dashboard/{status?}', [DashboardController::class, 'healthcareIndex'])
         ->name('healthcare.dashboard');
+    Route::get('/healthcare/decline', [DashboardController::class, 'decline'])
+        ->name('healthcare.dashboard.decline');
+    Route::get('/healthcare/payments', [HeaderPaymentsController::class, 'index'])
+        ->name('healthcare.payments');
 
     Route::resource('healthcare/services', HealthcareSubserviceController::class);
+    Route::get('healthcare/Requesttoaddanewservice', [RequesToAddaNewServiceController::class, 'index'])->name('Requesttoaddanewservice.index');
+    Route::get('healthcare/Requesttoaddanewservice/create', [RequesToAddaNewServiceController::class, 'create'])->name('Requesttoaddanewservice.create');
 
     Route::get('healthcare/service/createbody', [HealthcareSubserviceController::class, 'createbody'])->name('services.createbody');
+    Route::post('healthcare/service', [HealthcareSubserviceController::class, 'index'])->name('healthcare.services.index');
 
     Route::get('healthcare/service', [HealthcareSubserviceController::class, 'index'])->name('healthcare.services.index');
     Route::get('healthcare/service/create', [HealthcareSubserviceController::class, 'create'])->name('healthcare.services.create');
@@ -182,6 +192,7 @@ Route::middleware(['auth:serviceprovider'])->group(function () {
     Route::get('healthcare/updatebankaccount', [HealthcareController::class, 'updatebankaccount']);
     Route::get('healthcare/updatepassword', [HealthcareController::class, 'updatepasswordview']);
     Route::get('healthcare/reports', [HealthcareController::class, 'reports']);
+    Route::resource('healthcare/help', HealthcareHelpController::class);
     Route::get('healthcare/locations', [HealthcareZoneController::class, 'locations']);
     Route::get('healthcare/bookings', [HealthcareController::class, 'bookings']);
     Route::get('healthcare/settings', [HealthcareController::class, 'setting'])->name('healthcare.settings');

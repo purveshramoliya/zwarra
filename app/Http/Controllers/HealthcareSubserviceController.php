@@ -20,29 +20,37 @@ class HealthcareSubserviceController extends Controller
     {
         // Get the currently authenticated healthcare user
         $healthcareUser = Auth::guard('serviceprovider')->id();
-    
+
+        // Initialize the base query for SubServices
+        $querySingle = SubServices::query();
+        $queryPackage = SubServices::query();
+
+        // If the user is authenticated, filter by Healthcareid and Servicetype
         if ($healthcareUser) {
-            // Fetch SubServices where Healthcareid contains the user's ID (e.g., 10)
-            $subservices = SubServices::whereRaw("FIND_IN_SET(?, Healthcareid) > 0", [$healthcareUser])
-                ->latest() // Orders the results by the latest
-                ->paginate(20); // Paginates the results with 20 items per page
-        } else {
-            // Handle case where healthcare user is not authenticated
-            $query = SubServices::query();
-    
-            // Handle search if provided
-            if ($request->has('search')) {
-                $searchTerm = $request->input('search');
-                $query->where('Enhealthcare', 'LIKE', "%$searchTerm%");
-            }
-    
-            // Get paginated results
-            $subservices = $query->latest()->paginate(20);
+            $querySingle = $querySingle->whereRaw("FIND_IN_SET(?, Healthcareid) > 0", [$healthcareUser])
+                ->where('Servicetype', 'Single');
+            $queryPackage = $queryPackage->whereRaw("FIND_IN_SET(?, Healthcareid) > 0", [$healthcareUser])
+                ->where('Servicetype', 'Package');
         }
-    
+
+        // Apply search filter if search term is provided (from POST request)
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $searchTerm = $request->input('search');
+            $querySingle = $querySingle->where('Enname', 'LIKE', "%$searchTerm%");
+            $queryPackage = $queryPackage->where('Enname', 'LIKE', "%$searchTerm%");
+        }
+        // Get paginated results for each type
+        $subservicessingle = $querySingle->latest()->paginate(20);
+        $subservicespackage = $queryPackage->latest()->paginate(20);
+
+        // Get options for dropdowns
+        $dropdownOptions = ServiceProvider::all();
+        $sdropdownOptions = OurServices::all();
+
         // Return the view with the subservices
-        return view('healthcare.services.index', compact('subservices'));
+        return view('healthcare.services.index', compact('subservicessingle', 'subservicespackage', 'dropdownOptions', 'sdropdownOptions'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -83,24 +91,8 @@ class HealthcareSubserviceController extends Controller
 
         $Servicetype = $request->input('Servicetype');
 
+
         if ($Servicetype == 'Single') {
-            $request->validate([
-                'Enname' => 'required',
-                'Service' => 'required',
-                // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
-                //'Logo' => 'required|mimes:jpg,png|max:2048',
-
-            ]);
-
-            if ($request->hasfile('Logo')) {
-                $file = $request->file('Logo');
-
-                $fileName = $file->getClientOriginalName();
-                $filePath = $file->move(public_path() . "/uploads/", $fileName);
-                //$ourservices->Logo = $fileName;
-                $subservices->Logo =  "/uploads/" . $fileName;
-            }
-
             // Extracting ID and Enname from the selected option
             if ($request->has('Service') && !is_null($request->input('Service'))) {
                 // The 'Healthcare' input is set and not null
@@ -110,29 +102,20 @@ class HealthcareSubserviceController extends Controller
                 $subservices->Service = $serviceid;
                 $subservices->Mainservicename = $servicename;
             }
-
-
             $subservices->Enname = $request->input('Enname');
             $subservices->Arname = $request->input('Arname');
-            $subservices->Testcategory = $request->input('Testcategory');
             $subservices->Subservicename = $request->input('Subservicename');
-            $subservices->Endescription = $request->input('Endescription');
-            $subservices->Ardescription = $request->input('Ardescription');
             $subservices->Servicetype = $request->input('Servicetype');
-            $subservices->Eninstrucation = $request->input('Eninstrucation');
-            $subservices->Arinstrucation = $request->input('Arinstrucation');
-            $subservices->Entitle = $request->input('Entitle');
-            $subservices->Artitle = $request->input('Artitle');
             $subservices->Price = $request->input('Price');
             $subservices->Status = $request->input('Status');
+            $subservices->Gender = $request->input('Gender');
+            $subservices->Estimated_time_for_a_service = $request->input('Estimatetime');
+            $subservices->Change_service_price = $request->input('Changeserviceprice');
             $subservices->Healthcareid = Auth::guard('serviceprovider')->id();
 
-            $subservices->save();
-        } 
-        else{
 
-            // dd($request->all());
-            // exit();
+            $subservices->save();
+        } else {
             $request->validate([
                 'Service' => 'required',
             ]);
@@ -153,21 +136,18 @@ class HealthcareSubserviceController extends Controller
                 }
 
                 // Store file information in the database
-                $subservices->Enname = $selectedValue;
-                $subservices->Arname = $request->input('Arname');
-                $subservices->Testcategory = $request->input('Testcategory');
-                $subservices->Packagename = $request->input('Packagename');
+                $Servicetype = $request->input('Servicetype');
                 $subservices->Subservicename = $request->input('Subservicename');
-                $subservices->Endescription = $request->input('Endescription');
-                $subservices->Ardescription = $request->input('Ardescription');
                 $subservices->Servicetype = $request->input('Servicetype');
-                $subservices->Eninstrucation = $request->input('Eninstrucation');
-                $subservices->Arinstrucation = $request->input('Arinstrucation');
-                $subservices->Entitle = $request->input('Entitle');
-                $subservices->Artitle = $request->input('Artitle');
                 $subservices->Price = $request->input('Price');
                 $subservices->Status = $request->input('Status');
+                $subservices->Gender = $request->input('Gender');
+                $subservices->Estimated_time_for_a_service = $request->input('Estimatetime');
+                $subservices->Change_service_price = $request->input('Changeserviceprice');
                 $subservices->Healthcareid = Auth::guard('serviceprovider')->id();
+                $subservices->Enname = $selectedValue;
+                $subservices->Packagename = $request->input('Packagename');
+
 
                 // Add other fields as needed
                 $subservices->save();
@@ -176,7 +156,7 @@ class HealthcareSubserviceController extends Controller
 
 
         return redirect()->route('healthcare.services.index')
-            ->with('success','Service created successfully.');
+            ->with('success', 'Service created successfully.');
     }
 
     /**
@@ -193,7 +173,7 @@ class HealthcareSubserviceController extends Controller
         $ssdropdownOptions = SubServices::all();
 
         $subservices = SubServices::findOrFail($id); // Assuming HealthcareService is the model for healthcare services
-        return view('healthcare.services.show',compact('subservices','dropdownOptions','sdropdownOptions','ssdropdownOptions'));
+        return view('healthcare.services.show', compact('subservices', 'dropdownOptions', 'sdropdownOptions', 'ssdropdownOptions'));
     }
 
     /**
@@ -209,7 +189,7 @@ class HealthcareSubserviceController extends Controller
         $sdropdownOptions = OurServices::all();
         $ssdropdownOptions = SubServices::all();
         $subservices = SubServices::findOrFail($id);
-        return view('healthcare.services.edit', compact('subservices','dropdownOptions','sdropdownOptions', 'ssdropdownOptions'));
+        return view('healthcare.services.edit', compact('subservices', 'dropdownOptions', 'sdropdownOptions', 'ssdropdownOptions'));
     }
 
     /**
@@ -219,48 +199,88 @@ class HealthcareSubserviceController extends Controller
      * @param  \App\Models\Services  $Services
      * @return \Illuminate\Http\Response
      */
+    private function populateSubService($request, $subservice)
+    {
+        $subservice->Enname = $request->input('Enname');
+        $subservice->Arname = $request->input('Arname');
+        // Add other fields as needed
+        $subservice->Healthcareid = Auth::guard('serviceprovider')->id();
+        return $subservice;
+    }
+
     public function update(Request $request, $id)
     {
-        //
-        $request->validate([
-            'Enname' => 'required',
-        ]);
+        // Find the subservice by ID if needed, or create a new one
 
+        $subservices = SubServices::findOrNew($id);
+        $Servicetype = $request->input('Servicetype');
 
-        // Update other attributes
-        $subservices->update($request->except('Logo')); // Update all attributes except Logo
-
-        // Handle file upload if a new file is provided
-        if ($request->hasFile('Logo')) {
-            // Delete the old image file if it exists
-            if ($subservices->Logo) {
-                Storage::delete($subservice->Logo);
+        if ($Servicetype == 'Single') {
+            // Extracting ID and Enname from the selected option
+            if ($request->has('Service') && !is_null($request->input('Service'))) {
+                // The 'Healthcare' input is set and not null
+                $selectedOption = explode(':', $request->input('Service'));
+                $serviceid = $selectedOption[0];
+                $servicename = $selectedOption[1];
+                $subservices->Service = $serviceid;
+                $subservices->Mainservicename = $servicename;
             }
 
-            // Upload the new image file
-            $file = $request->file('Logo');
-            $fileName = $file->getClientOriginalName();
-            $filePath = $file->move(public_path() . "/uploads/", $fileName);
-            $subservices->Logo = "/uploads/" . $fileName; // Update the Logo attribute   
+
+            $subservices->Enname = $request->input('Enname');
+            $subservices->Arname = $request->input('Arname');
+            $subservices->Subservicename = $request->input('Subservicename');
+            $subservices->Servicetype = $request->input('Servicetype');
+            $subservices->Price = $request->input('Price');
+            $subservices->Status = $request->input('Status');
+            $subservices->Gender = $request->input('Gender');
+            $subservices->Estimated_time_for_a_service = $request->input('Estimatetime');
+            $subservices->Change_service_price = $request->input('Changeserviceprice');
+            $subservices->Healthcareid = Auth::guard('serviceprovider')->id();
+
+
+            $subservices->save();
+        } else {
+            $request->validate([
+                'Service' => 'required',
+            ]);
+
+            $Values = $request->input('selectedValues');
+            $selectedValues = explode(",", $Values);
+
+            foreach ($selectedValues as $selectedValue) {
+                $subservices = new SubServices();
+                // Extracting ID and Enname from the selected option
+                if ($request->has('Service') && !is_null($request->input('Service'))) {
+                    // The 'Healthcare' input is set and not null
+                    $selectedOption = explode(':', $request->input('Service'));
+                    $serviceid = $selectedOption[0];
+                    $servicename = $selectedOption[1];
+                    $subservices->Service = $serviceid;
+                    $subservices->Mainservicename = $servicename;
+                }
+
+                // Store file information in the database
+                $Servicetype = $request->input('Servicetype');
+                $subservices->Subservicename = $request->input('Subservicename');
+                $subservices->Servicetype = $request->input('Servicetype');
+                $subservices->Price = $request->input('Price');
+                $subservices->Status = $request->input('Status');
+                $subservices->Gender = $request->input('Gender');
+                $subservices->Estimated_time_for_a_service = $request->input('Estimatetime');
+                $subservices->Change_service_price = $request->input('Changeserviceprice');
+                $subservices->Healthcareid = Auth::guard('serviceprovider')->id();
+                $subservices->Enname = $selectedValue;
+                $subservices->Packagename = $request->input('Packagename');
+
+
+                // Add other fields as needed
+                $subservices->save();
+            }
         }
 
-        // Extracting ID and Enname from the selected option
-        if ($request->has('Service') && !is_null($request->input('Service'))) {
-            // The 'Healthcare' input is set and not null
-            $selectedOption = explode(':', $request->input('Service'));
-            $serviceid = $selectedOption[0];
-            $servicename = $selectedOption[1];
-            $subservices->Service = $serviceid;
-            $subservices->Mainservicename = $servicename;
-        }
 
-
-        $subservices->Healthcareid = Auth::guard('serviceprovider')->id();;
-
-        $subservices->save(); // Save the changes to the database
-
-        return redirect()->route('healthcare.services.index')
-            ->with('success', 'Service updated successfully');
+        return redirect()->route('healthcare.services.index')->with('success', 'Service updated successfully');
     }
 
     /**
@@ -275,6 +295,6 @@ class HealthcareSubserviceController extends Controller
         $subservices->delete();
 
         return redirect()->route('healthcare.services.index')
-            ->with('success','Service deleted successfully');
+            ->with('success', 'Service deleted successfully');
     }
 }

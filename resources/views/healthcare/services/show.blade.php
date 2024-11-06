@@ -32,20 +32,14 @@
                             <!-- /.card-header -->
                             <!-- form start -->
                             <div class="card-body">
-                                <div class="form-row zw_form_row">
-                                    <div class="form-group  zw_18 poppins-medium col-md-6">
-                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputLogo">Logo :</label>
-                                        <img src="{{ asset($subservices->Logo) }}" height="" width="50"/>
-                                    </div>
-                                    <div class="form-group zw_18 poppins-medium col-md-6">
-                                        <label class="zw_text_AF2245 poppins-bold" for="exampleInputLogo">Test Category :</label>
-                                        {{ $subservices->Testcategory }}
-                                    </div>
-                                </div>
                                  <div class="form-row zw_form_row">
                                     <div class="form-group zw_18 poppins-medium col-md-6">
-                                        <label class="zw_text_AF2245 poppins-bold" for="exampleInputLogo">Sub Servicename :</label>
-                                        {{ $subservices->Subservicename }}
+                                        <label class="zw_text_AF2245 poppins-bold" for="exampleInputLogo">Package Name :</label>
+                                        {{ $subservices->Packagename }}
+                                    </div>
+                                    <div class="form-group zw_18 poppins-medium col-md-6">
+                                        <label class="zw_text_AF2245 poppins-bold" for="exampleInputLogo">Estimated time for a service :</label>
+                                        {{ $subservices->Estimated_time_for_a_service }}
                                     </div>
                                 </div>
                                 <div class="form-row zw_form_row">
@@ -54,18 +48,8 @@
                                         {{ $subservices->Enname }}
                                     </div>
                                     <div class="form-group  zw_18 poppins-medium col-md-6">
-                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputArname">Ar name :</label>
-                                        {{ $subservices->Arname }}
-                                    </div>
-                                </div>
-                                <div class="form-row zw_form_row">
-                                    <div class="form-group  zw_18 poppins-medium col-md-6">
-                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputEndescription">En Description :</label>
-                                        {{ $subservices->Endescription }}
-                                    </div>
-                                    <div class="form-group  zw_18 poppins-medium col-md-6">
-                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputArdescription">Ar Description :</label>
-                                        {{ $subservices->Ardescription }}
+                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputArname">Change service price :</label>
+                                        {{ $subservices->Change_service_price }}
                                     </div>
                                 </div>
                                 <div class="form-row zw_form_row">
@@ -80,38 +64,12 @@
                                 </div>
                                 <div class="form-row zw_form_row">
                                     <div class="form-group  zw_18 poppins-medium col-md-6">
-                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputEninstrucation">En Instrucation :</label>
-                                        {{ $subservices->Eninstrucation }}
-                                    </div>
-                                    <div class="form-group  zw_18 poppins-medium col-md-6">
-                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputArinstrucation">Ar Instrucation :</label>
-                                        {{ $subservices->Arinstrucation }}
-                                    </div>
-                                </div>
-                                <div class="form-row zw_form_row">
-                                    <div class="form-group  zw_18 poppins-medium col-md-6">
-                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputEntitle">En available test title :</label>
-                                        {{ $subservices->Entitle }}
-                                    </div>
-                                    <div class="form-group  zw_18 poppins-medium col-md-6">
-                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputArinstrucation">Ar available test title :</label>
-                                        {{ $subservices->Artitle }}
-                                    </div>
-                                </div>
-                                <div class="form-row zw_form_row">
-                                    <div class="form-group  zw_18 poppins-medium col-md-6">
                                        <label class="zw_text_AF2245 poppins-bold" for="exampleInputPrice">Price :</label>
                                         {{ $subservices->Price }}
                                     </div>
                                     <div class="form-group  zw_18 poppins-medium col-md-6">
-                                       <label class="zw_text_AF2245 poppins-bold" for="exampleInputHealthcare">Healthcare :</label>
-                                        {{ $subservices->Healthcare }}
-                                    </div>
-                                </div>
-                                <div class="form-row zw_form_row">
-                                    <div class="form-group  zw_18 poppins-medium col-md-6">
-                                        <label class="zw_text_AF2245 poppins-bold" for="exampleInputStatus">Status :</label>
-                                       {{ $subservices->Status == 1 ? 'Active' : 'In Active' }}
+                                        <label class="zw_text_AF2245 poppins-bold" for="exampleInputStatus">Gender :</label>
+                                       {{ $subservices->Gender }}
                                     </div>
                                 </div>
                             </div>
