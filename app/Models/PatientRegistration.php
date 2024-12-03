@@ -48,6 +48,7 @@ class PatientRegistration extends Model implements Authenticatable
         'Passportid',
         'Description',
         'Email',
+        'Otp',
     ];
 
 }

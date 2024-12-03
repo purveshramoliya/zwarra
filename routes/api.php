@@ -52,6 +52,7 @@ Route::middleware(['auth:web'])->group(function () {
 
 
 Route::post('/register',[PatientRegistrationController::class, 'register']);
+Route::post('/verify-otp', [PatientRegistrationController::class, 'verifyOtp']);
 
 Route::post('/createappointment', [BookingsController::class, 'store']);
 Route::post('appointment/{bookings}/attachments', [BookingsAttachmentController::class, 'store']);
@@ -111,3 +112,5 @@ Route::post('/createaddress', [PatientAddressController::class, 'store']); // Ad
 Route::put('updateaddress/{id}', [PatientAddressController::class, 'update']); // Update address
 Route::delete('deleteaddress/{id}', [PatientAddressController::class, 'destroy']);
 Route::get('getaddress/{userid}', [PatientAddressController::class, 'GetAddressByUserid']);
+Route::post('profileimage/{id}', [PatientRegistrationController::class, 'profileimage']);
+Route::get('getprofileimage/{id}', [PatientRegistrationController::class, 'getprofileimage']);
